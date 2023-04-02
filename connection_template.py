@@ -1,9 +1,9 @@
 from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException
 import argparse
-import time
-import socket
-import pyception
-import math
+# import time
+# import socket
+# import pyception
+# import math
 
 def connectMyCopter():
 
