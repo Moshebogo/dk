@@ -18,8 +18,6 @@ def connectMyCopter():
         sitl = dronekit_sitl.start_default()
         connection_string = sitl.connection_string()
         
-
-
     Vehicle = connect(connection_string, wait_ready=True)
     print(dronekit_sitl)
 
