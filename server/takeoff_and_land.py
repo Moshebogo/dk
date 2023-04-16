@@ -18,23 +18,27 @@ print( str(vehicle.system_status.state) )
 
 
 def arm_and_takeoff(targetHeight):
-    while vehicle.is_armable!=True:
-        print("Waiting for vehicle to become armable.")
-        time.sleep(1)
-    print("Vehicle is now armable.")
-    print("") 
+    print("vehicle mode: ", vehicle.mode, "vehicle system status-state: ", vehicle.system_status.state)
+    # while vehicle.is_armable!=True:
+    #     print("Waiting for vehicle to become armable.")
+    #     time.sleep(1)
+    # print("Vehicle is now armable.")
+    # print("") 
 
-    vehicle.mode = VehicleMode("GUIDED")
-    while vehicle.mode!="GUIDED":
-        print("Waiting for drone to enter GUIDED mode.")
-        time.sleep(1)
-    print("Vehicle is now in GUIDED mode")
+    # vehicle.mode = VehicleMode("GUIDED")
+    # while vehicle.mode!="GUIDED":
+    #     print("Waiting for drone to enter GUIDED mode.")
+    #     time.sleep(1)
+    # print("Vehicle is now in GUIDED mode")
 
-    vehicle.armed = True
+    print("Is vehicle armable? ", vehicle.is_armable)
     while vehicle.armed==False:
         print("Waiting for vehicle to be armed.")
+        vehicle.armed = True
+        if vehicle.armed == True:
+            break
         time.sleep(1)
-    print("Look out! Drone is armed and the propellers are spinning!")
+    print("vehicle is now armed")
 
     vehicle.simple_takeoff(targetHeight)
     while True:
