@@ -25,7 +25,7 @@ def arm():
     # print("Vehicle is now armable.")
     # print("") 
 
-    vehicle.mode = VehicleMode("GUIDED")
+    vehicle.mode = VehicleMode("STABILIZE")
     print("vehicle mode: ", vehicle.mode)
     while vehicle.mode!="GUIDED":
         print("Waiting for drone to enter GUIDED mode.")

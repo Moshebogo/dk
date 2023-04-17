@@ -9,3 +9,18 @@
   width: 50%;
   font-size: 200%;
 }
+#armDrone:hover {
+  opacity: .5;
+  cursor: pointer;
+}
+
+#mavproxy {
+  background-color: red;
+  height: 50%;
+  width: 50%;
+  font-size: 200%;
+}
+#mavproxy:hover {
+  opacity: .5;
+  cursor: pointer;
+}

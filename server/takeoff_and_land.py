@@ -25,7 +25,7 @@ def arm_and_takeoff(targetHeight):
     # print("Vehicle is now armable.")
     # print("") 
 
-    # vehicle.mode = VehicleMode("GUIDED")
+    vehicle.mode = VehicleMode("STABILIZE")
     # while vehicle.mode!="GUIDED":
     #     print("Waiting for drone to enter GUIDED mode.")
     #     time.sleep(1)
@@ -41,15 +41,18 @@ def arm_and_takeoff(targetHeight):
     print("vehicle is now armed")
 
     vehicle.simple_takeoff(targetHeight)
-    while True:
-        current_altitude = vehicle.location.global_relative_frame.alt
-        print("Current Altitude: ", str(current_altitude) )
-        if current_altitude >= .95*targetHeight:
-            break
-        time.sleep(1)
-
+    # while True:
+    #     current_altitude = vehicle.location.global_relative_frame.alt
+    #     print("Current Altitude: ", str(current_altitude) )
+    #     if current_altitude >= .95*targetHeight:
+    #         break
+    #     time.sleep(1)
+    time.sleep(5)
     return None           
 
 arm_and_takeoff(1)
 
 ########################################################################
+
+
+vehicle.mode = VehicleMode("LAND")  
