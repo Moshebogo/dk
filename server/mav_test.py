@@ -1,4 +1,5 @@
 from paramiko import SSHClient, AutoAddPolicy
+from time import sleep
 
 
 
@@ -10,12 +11,21 @@ client = SSHClient()
 client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
 client.set_missing_host_key_policy(AutoAddPolicy())
 # the actual connection the the raspi
-client.connect('192.168.159.245', username= 'pi', password= 'moshe')
+client.connect('192.168.138.245', username= 'pi', password= 'moshe')
 # the commands to happen on the raspi
 stdin, stdout, stderr = client.exec_command('hostname')
 print(f'Host-Name: {stdout.read().decode("utf8")}')
-stdin, stdout, stderr = client.exec_command('python ./.local/bin/mavproxy.py; arm throttle')
-stdin.write("arm throttle\n; set requireexit True\n; exit\n;")
+stdin, stdout, stderr = client.exec_command('python ./.local/bin/mavproxy.py')
+
+
+stdin.writelines
+stdin.write("arm throttle\n;")
+# stdin.write("mode guided\n;")
+# stdin.write("disarm\n;")
+stdin.write("arm throttle\n;")
+# stdin.write("set requireexit True\n;")
+# stdin.write("exit\n;")
+
 # some prints so we can know whats happening
 print(f'STDOUT: {stdout.read().decode("utf8")}')
 print(f'STDERR: {stderr.read().decode("utf8")}')

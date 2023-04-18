@@ -25,7 +25,7 @@ def arm_and_takeoff(targetHeight):
     # print("Vehicle is now armable.")
     # print("") 
 
-    vehicle.mode = VehicleMode("STABILIZE")
+    vehicle.mode = VehicleMode("GUIDED")
     # while vehicle.mode!="GUIDED":
     #     print("Waiting for drone to enter GUIDED mode.")
     #     time.sleep(1)
@@ -53,6 +53,19 @@ def arm_and_takeoff(targetHeight):
 arm_and_takeoff(1)
 
 ########################################################################
+
+def move_wayPoints():
+    # moves forward 3 meters
+    vehicle.velocity(3, 0, 0)
+    time.sleep(3)
+    # yaws to the right 45deg
+    vehicle.yaw(45, 10, 0)
+    time.sleep(3)
+    # vehicle goes up 2 meters
+    vehicle.velocity(0, 0, 2)
+    time.sleep(3)
+    # vehicle 
+
 
 
 vehicle.mode = VehicleMode("LAND")  

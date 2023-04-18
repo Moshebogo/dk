@@ -24,3 +24,14 @@
   opacity: .5;
   cursor: pointer;
 }
+
+#form {
+  display: grid;
+  grid-gap: 5px;
+  padding: 0 150px;
+  margin: 10px;
+  text-align: center;
+}
+.allSelects {
+  margin: 10px;;
+}
