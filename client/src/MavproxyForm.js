@@ -12,12 +12,12 @@ const [stateThirdSelect, setThirdSelect] = useState("")
 const [stateThirdInput, setThirdInput] = useState("")
 
 const commands = {
-    "Fly Right: In Meters": "velocity",
-    "Fly Left: In Meters": "velocity",
-    "Fly Front: In Meters": "velocity",
-    "Fly Up: In Meters": "velocity",
-    "Fly Down: In Meters": "velocity",
-    "Fly Back: In Meters": "velocity",
+    "Fly Right: In Meters": "move_right",
+    "Fly Left: In Meters": "move_left",
+    "Fly Front: In Meters": "move_front",
+    "Fly Up: In Meters": "move_up",
+    "Fly Down: In Meters": "move_down",
+    "Fly Back: In Meters": "fly_back",
     "Take Picture: 1 Is Yes. 2 Is No": "module load message message COMMAND_LONG 0 0 203 0 0 0 0 0 1 0 0",
     "Yaw: In Relative Degrees": "setyaw" 
     }
@@ -25,7 +25,9 @@ const commands = {
 
 
 const finalCommands = {
-        "first command": commands[stateFirstSelect]
+        "first_command": `${commands[stateFirstSelect]}` + "(" + `${stateFirstInput}`   +")"  ,
+        "second_command": ``,
+        "third_command": commands[stateThirdSelect]
 }    
 
 
@@ -35,10 +37,14 @@ function handleSubmit(e) {
     console.log(e)
     // document.querySelector("#form").reset()
 
-    // fetch("http://localhost:5000/mavproxy", 
-    // 'method', 'POST'
-    // 'headers' : 'application/json', {
-    //     body: JSON.stringify(finalCommands)
+    fetch("http://localhost:5000/mavproxy", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(finalCommands)
+    })
+    
     // })
     // .then(resp => resp.json())
     // .then(data => console.log(data))

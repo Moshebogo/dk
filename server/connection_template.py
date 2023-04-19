@@ -1,9 +1,9 @@
 from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException
 import argparse
-# import time
-# import socket
-# import pyception
-# import math
+import time
+import socket
+import pyception
+import math
 
 def connectMyCopter():
 
@@ -18,9 +18,8 @@ def connectMyCopter():
         sitl = dronekit_sitl.start_default()
         connection_string = sitl.connection_string()
         
-    Vehicle = connect(connection_string, wait_ready=True)
-    print(dronekit_sitl)
+    vehicle = connect(connection_string, wait_ready=True)
 
-    return Vehicle
+    return vehicle
 
 vehicle = connectMyCopter()
