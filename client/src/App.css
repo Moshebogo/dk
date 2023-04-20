@@ -1,6 +1,10 @@
 #mainButtons {
-  height: 500px;
-  width: 500px;
+  height: 200px;
+  width: 800px;
+  margin: auto;
+  padding: auto;
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 #armDrone {
@@ -8,6 +12,8 @@
   height: 50%;
   width: 50%;
   font-size: 200%;
+  border-radius: 15px;
+  margin: auto;
 }
 #armDrone:hover {
   opacity: .5;
@@ -19,6 +25,9 @@
   height: 50%;
   width: 50%;
   font-size: 200%;
+  border-radius: 15px;
+  margin: auto;
+
 }
 #mavproxy:hover {
   opacity: .5;
@@ -27,11 +36,37 @@
 
 #form {
   display: grid;
+  grid-auto-rows: 1fr;
   grid-gap: 5px;
-  padding: 0 150px;
-  margin: 10px;
+  padding:auto;
+  margin:auto;
   text-align: center;
+  width: 50%;
+
 }
 .allSelects {
   margin: 10px;;
+}
+
+#submitButton {
+  margin: auto;
+  background-color: red;
+  height: 50px;
+  text-align: center;
+  border-radius: 15px;
+  width:50%;
+  font-size: 150%;
+
+}
+
+#discription {
+  padding:auto;
+  margin:20px auto;
+  text-align: center;
+  width: 50%;
+ 
+}
+
+label {
+  font-size: large;
 }

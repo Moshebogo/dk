@@ -1,16 +1,23 @@
 import { useState } from "react"
 
 export default function MavproxyForm() {
+// state for the ip addres
+const [stateIP, setIP] = useState("")
 
+// state for 1st selection
 const [stateFirstSelect, setFirstSelect] = useState("")
 const [stateFirstInput, setFirstInput] = useState("")
 
+// state for 1st selection
 const [stateSecondSelect, setSecondSelect] = useState("")
 const [stateSecondInput, setSecondInput] = useState("")
 
+// state for 1st selection
 const [stateThirdSelect, setThirdSelect] = useState("")
 const [stateThirdInput, setThirdInput] = useState("")
 
+
+// dictionary for the "finalCommands" dictionary
 const commands = {
     "Fly Right: In Meters": "move_right",
     "Fly Left: In Meters": "move_left",
@@ -22,42 +29,54 @@ const commands = {
     "Yaw: In Relative Degrees": "setyaw" 
     }
 
-
-
+// dictionary for the POST
 const finalCommands = {
-        "first_command": `${commands[stateFirstSelect]}` + "(" + `${stateFirstInput}`   +")"  ,
+        "IP": stateIP,
+        "first_command": `${commands[stateFirstSelect]}` + `(${stateFirstInput})`,
         "second_command": ``,
         "third_command": commands[stateThirdSelect]
 }    
 
 
-
+// actual POST
+let submitCounter = 0
 function handleSubmit(e) {
     e.preventDefault()
     console.log(e)
-    // document.querySelector("#form").reset()
-
-    fetch("http://localhost:5000/mavproxy", {
+    if (submitCounter === 0 ) {
+        alert("Warning! Arming the drone will cause the propellers to spin at high speed! Please ensure the area is clear and click again! ")
+        submitCounter ++
+    } else if (submitCounter === 1) {
+        fetch("http://localhost:5000/mavproxy_2", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(finalCommands)
     })
-    
-    // })
-    // .then(resp => resp.json())
-    // .then(data => console.log(data))
-    // .catch(error => console.log('error: ', error))
-
+    // reset the form
+    document.querySelector("#form").reset()
+    submitCounter = 0
+    }
+   
 }
 
     return (
         <div>
+  
+            <h2 id="discription">This Form simplfies the proccess of flying your personal drone. Simply enter the IP Address of your drone and select a list of commands from the dropdown. Happy Flying!</h2>
+
             <form id="form" onSubmit={ (e) => handleSubmit(e)}>
             
 
                               {/* First */}
+                <label>IP address of drone: </label>
+                <input value={stateIP}
+                       onChange={ (e) => setIP(e.target.value)}
+                       type="text"
+                       placeholder="Example: 192.168.20.245">
+                </input>
+
                 <label>First Command After Takeoff: </label>
                 <select id="firstSelect"
                         value={stateFirstSelect}
@@ -123,7 +142,7 @@ function handleSubmit(e) {
                 </input>
                                {/* Third  */}
 
-                <input type="submit" value="Send Commands To Mavproxy"></input>
+                <input id="submitButton" type="submit" value="Send Commands To Raspberrypi"></input>
             </form>
         </div>
     )

@@ -8,10 +8,10 @@ export default  function App() {
 
 
   return (
-    <div>
+    <>
       <Buttons />
       <MavproxyForm />
-    </div>
+    </>
   )
 }
 

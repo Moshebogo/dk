@@ -23,3 +23,5 @@ def connectMyCopter():
     return vehicle
 
 vehicle = connectMyCopter()
+
+vehicle.mode = VehicleMode("LOITER")
