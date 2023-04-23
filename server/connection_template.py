@@ -1,27 +1,24 @@
 from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException
 import argparse
-import time
-import socket
-import pyception
-import math
 
 def connectMyCopter():
 
-    parser = argparse.ArgumentParser(description='commands')
-    parser.add_argument('--connect')
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(description='commands')
+    # parser.add_argument('--connect')
+    # args = parser.parse_args()
 
-    connection_string = args.connect
+    # connection_string = args.connect
+    
+    # if not connection_string:
+    #     import dronekit_sitl
+    #     sitl = dronekit_sitl.start_default()
+    #     connection_string = sitl.connection_string()
 
-    if not connection_string:
-        import dronekit_sitl
-        sitl = dronekit_sitl.start_default()
-        connection_string = sitl.connection_string()
-        
-    vehicle = connect(connection_string, wait_ready=True)
+    # print(connection_string)
+    # vehicle = connect(connection_string)
+
+    vehicle = connect('127.0.0.1:14550', wait_ready=True, heartbeat_timeout=10)
 
     return vehicle
 
-vehicle = connectMyCopter()
-
-vehicle.mode = VehicleMode("LOITER")
+connectMyCopter()
