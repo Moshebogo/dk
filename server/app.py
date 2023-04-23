@@ -1,6 +1,7 @@
 from paramiko import SSHClient, AutoAddPolicy
 from flask import Flask, jsonify, make_response, request
 from flask_cors import CORS
+from time import sleep
 
 #  instance of flask 
 app = Flask(__name__)
@@ -14,7 +15,7 @@ def arm_drone():
     # some set-up stuff to enable a ssh connection
     client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
     client.set_missing_host_key_policy(AutoAddPolicy())
-    # tye actual connection the the raspi
+    # the actual connection the the raspi
     client.connect('192.168.50.245', username= 'pi', password= 'moshe')
     # the commands to happen on the raspi
     stdin, stdout, stderr = client.exec_command('hostname')
@@ -28,7 +29,7 @@ def arm_drone():
     stdin.close()
     stdout.close()
     stderr.close()
-    client.close()``
+    client.close()
     return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
 
 
@@ -47,7 +48,13 @@ def mavproxy():
     stdin, stdout, stderr = client.exec_command('python ./.local/bin/mavproxy.py;')
 
     stdin.write("arm throttle\n;")
-
+    sleep(3)
+    stdin.write("mode guided")
+    sleep(3)
+    stdin.write("takeoff 1")
+    sleep(1)
+    
+    
     # some prints so we can know whats happening
     print(f'STDOUT: {stdout.read().decode("utf8")}')
     print(f'STDERR: {stderr.read().decode("utf8")}')
@@ -75,6 +82,8 @@ def mavproxy_2():
     stdin, stdout, stderr = client.exec_command('python ./.local/bin/mavproxy.py;')
 
     stdin.write("arm throttle\n;")
+    sleep(2)
+
 
     # some prints so we can know whats happening
     print(f'STDOUT: {stdout.read().decode("utf8")}')

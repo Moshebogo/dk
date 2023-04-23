@@ -64,7 +64,10 @@ function handleSubmit(e) {
     return (
         <div>
   
-            <h2 id="discription">This Form simplfies the proccess of flying your personal drone. Simply enter the IP Address of your drone and select a list of commands from the dropdown. Happy Flying!</h2>
+            <h2 id="discription">
+    This Form simplfies the proccess of flying your personal drone.
+    Simply enter the IP Address of your drone and select a list of commands from the dropdown. Happy Flying!
+            </h2>
 
             <form id="form" onSubmit={ (e) => handleSubmit(e)}>
             

@@ -123,8 +123,8 @@ def move_down(Vz):
     )
     vehicle.send_mavlink(move_down_msg)
     vehicle.flush()
-
     
+# If I know how many commands are being passed through 
 def execute_commands(arg1 = 'print("N\A")', arg2 = 'print("N\A")', arg3 = 'print("N\A")'):
     # execute first command
     exec(arg1)
@@ -135,6 +135,14 @@ def execute_commands(arg1 = 'print("N\A")', arg2 = 'print("N\A")', arg3 = 'print
     # execute third command
     exec(arg3)
     time.sleep(3)
+
+
+# I wonder if this will work
+def second_execute_commands(*commands):
+    for command in commands:
+        exec(command())
+        time.sleep(2)
+
 
 execute_commands(sys.arg[1], sys.arg[2], sys.arg[3])
 
