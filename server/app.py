@@ -9,7 +9,7 @@ CORS(app)
 client = SSHClient()
 
 
-@app.route("/armDrone", methods = ['GET']) 
+@app.route("/armDrone", methods = ['GET'])   
 def arm_drone():
     # some set-up stuff to enable a ssh connection
     client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
