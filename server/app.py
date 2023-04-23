@@ -1,13 +1,22 @@
 from paramiko import SSHClient, AutoAddPolicy
+from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, jsonify, make_response, request
 from flask_cors import CORS
 from time import sleep
 
+# instance  of SQLAlchemy
+db = SQLAlchemy()
 #  instance of flask 
 app = Flask(__name__)
 CORS(app)
 # instance of paramiko
 client = SSHClient()
+
+@app.route("/login")
+def login():
+    pass
+
+
 
 
 @app.route("/armDrone", methods = ['GET'])   
