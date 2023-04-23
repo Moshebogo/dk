@@ -9,7 +9,7 @@ CORS(app)
 client = SSHClient()
 
 
-@app.route("/armDrone", methods = ['GET'])
+@app.route("/armDrone", methods = ['GET']) 
 def arm_drone():
     # some set-up stuff to enable a ssh connection
     client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
@@ -28,7 +28,7 @@ def arm_drone():
     stdin.close()
     stdout.close()
     stderr.close()
-    client.close()
+    client.close()``
     return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
 
 
