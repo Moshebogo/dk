@@ -2,6 +2,7 @@ import './App.css';
 import {useState} from "react"
 import Buttons from './buttons';
 import MavproxyForm from './MavproxyForm';
+import Register from './Register';
 
 
 export default  function App() {
@@ -11,6 +12,7 @@ export default  function App() {
     <>
       <Buttons />
       <MavproxyForm />
+      <Register />
     </>
   )
 }
