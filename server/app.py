@@ -1,23 +1,55 @@
 from paramiko import SSHClient, AutoAddPolicy
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, jsonify, make_response, request, session as browser_session
 from flask_cors import CORS
 from time import sleep
+from models import db, User
 
-# instance  of SQLAlchemy
-db = SQLAlchemy()
 #  instance of flask 
 app = Flask(__name__)
+
+
 CORS(app)
+
+
+
 # instance of paramiko
 client = SSHClient()
 
-@app.route("/login")
+
+#  route to register
+@app.route("/register", methods = ['POST'])
 def login():
-    pass
+    user_info =  request.get_json()
+    username = user_info.get("username")
+    password = user_info.get("password")
+
+# route to login
+@app.route("/registerLogin")
+def login():
+    # gets the users login info
+    user_info =  request.get_json()
+    username = user_info.get("username")
+    password = user_info.get("password")
+    #  check if user actually exists
+    user_exists = User.query().filter(User.username == username and User.password == password )
+    #  and is it does or does not
+    if user_exists:
+        return make_response(jsonify({"status" : "user indeed exists"}), 200)
+    else:
+        new_user= User(username = username, password = password)
+        db.session.add(new_user)
+        db.session.commit()
+        return make_response(jsonify({"status" : "new user was created"}), 200)
 
 
 
+
+
+# default route
+@app.route("/")
+def default_route():
+    return make_response(jsonify({"default" : "route"}), 200)
 
 @app.route("/armDrone", methods = ['GET'])   
 def arm_drone():
