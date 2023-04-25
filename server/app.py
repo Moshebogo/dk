@@ -8,13 +8,6 @@ from models import app, db, User
 client = SSHClient()
 
 
-# #  route to register
-# @app.route("/register", methods = ['POST'])
-# def login():
-#     user_info =  request.get_json()
-#     username = user_info.get("username")
-#     password = user_info.get("password")
-
 # route to login
 @app.route("/registerLogin", methods = ['POST'])
 def login():
@@ -26,15 +19,20 @@ def login():
     user_exists = User.query.filter(User.username == username and User.password == password ).first()
     #  and is it does or does not
     if user_exists:
+        # sets the cookie as the users id
+        browser_session['user_id'] = user_exists.id
         return make_response(jsonify({"status" : "user indeed exists"}), 200)
     else:
-        new_user= User(username = username, password = password)
+        new_user = User(username = username, password = password)
         db.session.add(new_user)
         db.session.commit()
+        the_new_user = User.query.filter(new_user.username == username and new_user.password == password ).first()
+        browser_session['user_id'] = the_new_user.id
+
     return make_response(jsonify({"status" :f"new user: {user_info}"}), 200)
 
 
-
+app.secret_key = "DEFRGETHYJKHHGFDasdfghfd"
 
 
 # default route
