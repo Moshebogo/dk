@@ -1,17 +1,8 @@
 from paramiko import SSHClient, AutoAddPolicy
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, jsonify, make_response, request, session as browser_session
-from flask_cors import CORS
 from time import sleep
 from models import app, db, User
-
-#  instance of flask 
-app = Flask(__name__)
-
-
-CORS(app)
-
-
 
 # instance of paramiko
 client = SSHClient()
@@ -29,18 +20,18 @@ client = SSHClient()
 def login():
     # gets the users login info
     user_info =  request.get_json()
-    # username = user_info.get("username")
-    # password = user_info.get("password")
-    # #  check if user actually exists
-    # user_exists = User.query().filter(User.username == username and User.password == password )
-    # #  and is it does or does not
-    # if user_exists:
-    #     return make_response(jsonify({"status" : "user indeed exists"}), 200)
-    # else:
-    #     new_user= User(username = username, password = password)
-    #     db.session.add(new_user)
-    #     db.session.commit()
-    return make_response(jsonify({"status" : user_info}), 200)
+    username = user_info.get("username")
+    password = user_info.get("password")
+    #  check if user actually exists
+    user_exists = User.query.filter(User.username == username and User.password == password ).first()
+    #  and is it does or does not
+    if user_exists:
+        return make_response(jsonify({"status" : "user indeed exists"}), 200)
+    else:
+        new_user= User(username = username, password = password)
+        db.session.add(new_user)
+        db.session.commit()
+    return make_response(jsonify({"status" :f"new user: {user_info}"}), 200)
 
 
 
