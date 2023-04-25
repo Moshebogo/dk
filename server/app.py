@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, jsonify, make_response, request, session as browser_session
 from flask_cors import CORS
 from time import sleep
-from models import db, User
+from models import app, db, User
 
 #  instance of flask 
 app = Flask(__name__)
@@ -17,15 +17,15 @@ CORS(app)
 client = SSHClient()
 
 
-#  route to register
-@app.route("/register", methods = ['POST'])
-def login():
-    user_info =  request.get_json()
-    username = user_info.get("username")
-    password = user_info.get("password")
+# #  route to register
+# @app.route("/register", methods = ['POST'])
+# def login():
+#     user_info =  request.get_json()
+#     username = user_info.get("username")
+#     password = user_info.get("password")
 
 # route to login
-@app.route("/registerLogin")
+@app.route("/registerLogin", methods = ['POST'])
 def login():
     # gets the users login info
     user_info =  request.get_json()

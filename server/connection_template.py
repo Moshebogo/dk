@@ -17,7 +17,7 @@ def connectMyCopter():
     # print(connection_string)
     # vehicle = connect(connection_string)
 
-    vehicle = connect('127.0.0.1:14550', wait_ready=True, heartbeat_timeout=10)
+    vehicle = connect('172.19.144.1:5766', wait_ready=True, heartbeat_timeout=10)
 
     return vehicle
 
