@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, jsonify, make_response, request, session as browser_session
 from time import sleep
 from models import app, db, User
+import os
 
 # instance of paramiko
 client = SSHClient()
@@ -32,7 +33,7 @@ def login():
     return make_response(jsonify({"status" :f"new user: {user_info}"}), 200)
 
 
-app.secret_key = "DEFRGETHYJKHHGFDasdfghfd"
+app.secret_key = os.environ.get("SECRET_KEY")
 
 
 # default route
