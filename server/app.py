@@ -29,8 +29,7 @@ def login():
         db.session.commit()
         the_new_user = User.query.filter(new_user.username == username and new_user.password == password ).first()
         browser_session['user_id'] = the_new_user.id
-
-    return make_response(jsonify({"status" :f"new user: {user_info}"}), 200)
+        return make_response(jsonify({"status" :f"new user: {user_info}"}), 200)
 
 
 app.secret_key = os.environ.get("SECRET_KEY")
