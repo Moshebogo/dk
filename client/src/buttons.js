@@ -31,11 +31,15 @@ function mavproxy(e) {
   .catch(error => console.log('error: ', error))
   mavPCounter = 0
   }
+}
 
+function handleClick(e) {
+  console.log(e)
 }
 
   return (
     <div id='mainButtons'>
+    <div style={{ cursor:'pointer', border:"2px solid red", width: "50%", textAlign: "center"}} onClick={ (e) => handleClick(e)}>TEST DIV</div>
      <button onClick={ (e) => armDrone(e)} id='armDrone'>ARM DRONE</button>
      <button onClick={ (e) => mavproxy(e)} id='mavproxy'>MAV PROXY</button>
     </div>
