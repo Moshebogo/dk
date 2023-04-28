@@ -3,6 +3,8 @@
 
 export default function Buttons() {
 
+
+// route for arming with arm.py 
 let armDCounter = 0
 function armDrone(e){
   if (armDCounter === 0 ) {
@@ -18,6 +20,8 @@ function armDrone(e){
   armDCounter = 0
   }
 }
+
+// route for arming with mavproxy.py
 let mavPCounter = 0
 function mavproxy(e) {
   if (mavPCounter === 0){
@@ -33,15 +37,11 @@ function mavproxy(e) {
   }
 }
 
-function handleClick(e) {
-  console.log(e)
-}
 
   return (
     <div id='mainButtons'>
-    <div style={{ cursor:'pointer', border:"2px solid red", width: "50%", textAlign: "center"}} onClick={ (e) => handleClick(e)}>TEST DIV</div>
-     <button onClick={ (e) => armDrone(e)} id='armDrone'>ARM DRONE</button>
-     <button onClick={ (e) => mavproxy(e)} id='mavproxy'>MAV PROXY</button>
+      <button onClick={ (e) => armDrone(e)} id='armDrone'>ARM DRONE</button>
+      <button onClick={ (e) => mavproxy(e)} id='mavproxy'>MAV PROXY</button>
     </div>
     )
 }

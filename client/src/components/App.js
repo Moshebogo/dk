@@ -12,9 +12,9 @@ export default  function App() {
   return (
     <div>
       <Header />
+      <Register />
       <Buttons />
       <MavproxyForm />
-      <Register />
     </div>
   )
 }
