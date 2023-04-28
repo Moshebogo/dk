@@ -8,6 +8,19 @@ import os
 # instance of paramiko
 client = SSHClient()
 
+# the secret key
+app.secret_key = os.environ.get("SECRET_KEY")
+
+#  the excluded endpoints
+excluded_endpoints = ["registerLogin"]
+
+
+@app.before_request
+def before():
+    if request.endpoint not in excluded_endpoints:
+        return make_response(jsonify({"status" : "access forbidden"}), 401)
+    else: 
+        pass
 
 # route to login
 @app.route("/registerLogin", methods = ['POST'])
@@ -32,7 +45,6 @@ def login():
         return make_response(jsonify({"status" :f"new user: {user_info}"}), 200)
 
 
-app.secret_key = os.environ.get("SECRET_KEY")
 
 
 # default route
@@ -40,6 +52,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 def default_route():
     return make_response(jsonify({"default" : "route"}), 200)
 
+# route to arm the drone by running the "arm.py" file on the raspi
 @app.route("/armDrone", methods = ['GET'])   
 def arm_drone():
     # some set-up stuff to enable a ssh connection
@@ -64,7 +77,7 @@ def arm_drone():
 
 
 
-
+#  route to arm the drone by running mavproxy.py on the raspi
 @app.route("/mavproxy", methods = ['GET', 'POST'])
 def mavproxy():
     # some set-up stuff to enable a ssh connection
