@@ -6,7 +6,7 @@ export default function Buttons() {
 
 // route for arming with arm.py 
 let armDCounter = 0
-function armDrone(e){
+function armDrone(e) {
   if (armDCounter === 0 ) {
     alert("Warning! Arming the drone will cause the propellers to spin at high speed! Please ensure the area is clear and click again! ")
     armDCounter ++
