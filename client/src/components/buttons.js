@@ -1,6 +1,5 @@
 
 
-const a = 11
 export default function Buttons() {
 
 
@@ -36,7 +35,6 @@ function mavproxy(e) {
   mavPCounter = 0
   }
 }
-
 
   return (
     <div id='mainButtons'>
