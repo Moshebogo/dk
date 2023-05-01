@@ -3,7 +3,11 @@ import { Outlet, Link } from "react-router-dom"
 export default function Header() {
 
     return (
-      <div id="allHeader">
+      <div id="entireHeader">
+
+      <Link to="/">
+        <button>Home</button>
+      </Link>
 
       <Link  to="/register">
          <button>Log-In / Register</button>
@@ -17,7 +21,7 @@ export default function Header() {
         <button>Map</button>
       </Link>
 
-      <Link to="/routes">
+      <Link to="/savedroutes">
         <button>Saved Routes</button>
       </Link>
 

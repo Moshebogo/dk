@@ -5,7 +5,9 @@ import Buttons from './buttons';
 import MavproxyForm from './MavproxyForm';
 import Register from './Register';
 import Header from './Header';
-
+import Home from './Home';
+import Map from './Map';
+import SavedRoutes from './SavedRoutes';
 
 export default  function App() {
 
@@ -14,8 +16,11 @@ export default  function App() {
     <BrowserRouter>
       <Header />
       <Routes>
+           <Route path="/"             element={<Home />}/>
            <Route path="/register"     element={<Register />}/>   
-           <Route path="/buttons"      element={<Buttons  />}/> 
+           <Route path="/buttons"      element={<Buttons />}/> 
+           <Route path="/map"          element={<Map/>}/>
+           <Route path="/savedroutes"  element={<SavedRoutes />}/>
            <Route path="/mavproxyform" element={<MavproxyForm />}/>   
       </Routes>
     </BrowserRouter>   
