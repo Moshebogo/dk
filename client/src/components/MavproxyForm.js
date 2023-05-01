@@ -42,12 +42,11 @@ const finalCommands = {
 let submitCounter = 0
 function handleSubmit(e) {
     e.preventDefault()
-    console.log(e)
     if (submitCounter === 0 ) {
         alert("Warning! Arming the drone will cause the propellers to spin at high speed! Please ensure the area is clear and click again! ")
         submitCounter ++
     } else if (submitCounter === 1) {
-        fetch("http://localhost:5000/mavproxy_2", {
+        fetch("/mavproxy_2", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -65,7 +64,7 @@ function handleSubmit(e) {
         <div>
   
             <h2 id="discription">
-    This Form simplfies the proccess of flying your personal drone.
+    This menu simplifies the proccess of flying your personal drone.
     Simply enter the IP Address of your drone and select a list of commands from the dropdown. Happy Flying!
             </h2>
 

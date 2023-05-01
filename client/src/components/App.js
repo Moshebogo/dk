@@ -11,13 +11,14 @@ import SavedRoutes from './SavedRoutes';
 
 export default  function App() {
 
+const [stateUser, setUser] = useState(false)
 
   return (
     <BrowserRouter>
-      <Header />
+      <Header stateUser={stateUser}/>
       <Routes>
            <Route path="/"             element={<Home />}/>
-           <Route path="/register"     element={<Register />}/>   
+           <Route path="/register"     element={<Register stateUser={stateUser} setUser={setUser} />}/>   
            <Route path="/buttons"      element={<Buttons />}/> 
            <Route path="/map"          element={<Map/>}/>
            <Route path="/savedroutes"  element={<SavedRoutes />}/>

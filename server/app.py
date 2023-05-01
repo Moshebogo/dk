@@ -12,15 +12,18 @@ client = SSHClient()
 app.secret_key = os.environ.get("SECRET_KEY")
 
 #  the excluded endpoints
-excluded_endpoints = ["registerLogin"]
+excluded_endpoints = ['login', 'logout']
 
 
 @app.before_request
 def before():
-    if request.endpoint not in excluded_endpoints:
-        return make_response(jsonify({"status" : "access forbidden"}), 401)
-    else: 
+    if request.endpoint in excluded_endpoints: 
         pass
+    elif request.endpoint not in excluded_endpoints:
+        if "user_id" in browser_session:
+            pass
+        else:
+            return make_response(jsonify({"status" : "access forbidden"}), 401)
 
 # route to login
 @app.route("/registerLogin", methods = ['POST'])
@@ -44,6 +47,16 @@ def login():
         browser_session['user_id'] = the_new_user.id
         return make_response(jsonify({"status" :f"new user: {user_info}"}), 200)
 
+# TODO delete the cookie
+@app.route("/logOut", methods=['DELETE'])
+def logout():
+    if "user_id" in browser_session:
+        response = make_response("cookie removed")
+        response.set_cookie("user_id", max_age=0)
+        return response
+    else: 
+        return {"status" : "user not found"}, 404
+     
 
 
 

@@ -1,8 +1,6 @@
 #mainButtons {
   height: 200px;
-  width: 800px;
-  margin: auto;
-  padding: auto;
+  margin: 30px 0;
   display: grid;
   grid-template-columns: 1fr;
 }
@@ -54,19 +52,37 @@
   height: 50px;
   text-align: center;
   border-radius: 15px;
-  width:50%;
   font-size: 150%;
 
 }
 
 #discription {
   padding:auto;
-  margin:20px auto;
+  margin: 40px auto;
   text-align: center;
   width: 50%;
- 
+}
+
+#register {
+  margin: 35px;
 }
 
 label {
   font-size: large;
+}
+
+#entireHeader {
+  height: 40px;
+}
+
+.headerButtons {
+  height: 100%;
+  margin: 2px 10px;
+}
+
+#buttonBlock {
+  height: 40px;
+  margin-right: 0;
+  margin-left: auto;
+  
 }

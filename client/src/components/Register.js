@@ -1,6 +1,7 @@
 import  {useState}  from "react"
+import Home from "./Home"
 
-export default function Register() {
+export default function Register({ setUser, stateUser }) {
 
 const [stateUsername, setUsername] = useState("")
 const [statePassword, setPassword] = useState("")
@@ -12,35 +13,38 @@ const formData = {
 
 function submitForm(e) {
    e.preventDefault()
-
-
-//    TODO
+   setUser(prev => !prev) 
     fetch("/registerLogin", {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
     })
-    .then(resp => resp.json())
-    .then(data => console.log(data))
+      .then(resp => resp.json())
+      .then(data => {document.querySelector("#form").reset()})
+}
 
-    
-
-//    document.querySelector("#form").reset()
+function handleClick(e) {
+   fetch("/logOut",{
+    method: 'DELETE'
+   })
+   .then(resp => resp.json())
+   .then(data => console.log(data))
 }
 
 
-
-    return (
-    <div>
+    return (!stateUser ? 
+    <div id="register">
         <form id="form" onSubmit={ (e) => submitForm(e)}>
             <label>Username: </label>
             <input value={stateUsername} onChange={ (e) => setUsername(e.target.value)} type="text"></input>
             <label>Password: </label>
-            <input value={statePassword} onChange={ (e) =>  setPassword(e.target.value)} type="text"></input>
+            <input value={statePassword} onChange={ (e) =>  setPassword(e.target.value)} type="password"></input>
             <input type="submit"></input>
         </form>
+    </div> 
+    : 
+    <div>
+        <button onClick={ (e) => handleClick(e)}>Log Out</button>
     </div>
     )
 }
