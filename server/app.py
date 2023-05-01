@@ -162,4 +162,25 @@ def mavproxy_3():
     stdout.close()
     stderr.close()
     client.close()
+    # anything other than a 0 is a problem
     return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
+
+
+
+#  route for all users
+@app.route("/users", methods = ['GET', 'POST'] )
+def get_all_users():
+    # GET for all users
+    if request.method == 'GET':
+        all_users = User.query.all()
+        users_dict = [user.to_dict() for user in all_users]
+        return make_response(jsonify(users_dict), 200)
+    # POST for all users
+    elif request.method == 'POST':
+        new_info = request.get_json()
+        new_user = User()
+        for key, value in new_info.items():
+            setattr(new_user, key, value)
+        db.session.add(new_user)
+        db.sesion.commit()
+        return make_response(jsonify(new_user.to_dict()), 201)    
