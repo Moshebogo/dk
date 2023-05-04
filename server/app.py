@@ -5,6 +5,8 @@ from time import sleep
 from models import app, db, User
 import os
 
+x = 1
+
 # instance of paramiko
 client = SSHClient()
 
@@ -15,15 +17,15 @@ app.secret_key = os.environ.get("SECRET_KEY")
 excluded_endpoints = ['login', 'logout']
 
 
-@app.before_request
-def before():
-    if request.endpoint in excluded_endpoints: 
-        pass
-    elif request.endpoint not in excluded_endpoints:
-        if "user_id" in browser_session:
-            pass
-        else:
-            return make_response(jsonify({"status" : "access forbidden"}), 401)
+# @app.before_request
+# def before():
+#     if request.endpoint in excluded_endpoints: 
+#         pass
+#     elif request.endpoint not in excluded_endpoints:
+#         if "user_id" in browser_session:
+#             pass
+#         else:
+#             return make_response(jsonify({"status" : "access forbidden"}), 401)
 
 # route to login
 @app.route("/registerLogin", methods = ['POST'])
@@ -72,7 +74,7 @@ def arm_drone():
     client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
     client.set_missing_host_key_policy(AutoAddPolicy())
     # the actual connection the the raspi
-    client.connect('192.168.50.245', username= 'pi', password= 'moshe')
+    client.connect('192.168.146.245', username= 'pi', password= 'moshe')
     # the commands to happen on the raspi
     stdin, stdout, stderr = client.exec_command('hostname')
     print(f'Host-Name: {stdout.read().decode("utf8")}')
@@ -97,16 +99,16 @@ def mavproxy():
     client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
     client.set_missing_host_key_policy(AutoAddPolicy())
     # the actual connection the the raspi
-    client.connect('192.168.50.245', username= 'pi', password= 'moshe')
+    client.connect('192.168.146.245', username= 'pi', password= 'moshe')
     # the commands to happen on the raspi
     stdin, stdout, stderr = client.exec_command('hostname')
     print(f'Host-Name: {stdout.read().decode("utf8")}')
     stdin, stdout, stderr = client.exec_command('python ./.local/bin/mavproxy.py;')
 
     stdin.write("arm throttle\n;")
-    sleep(3)
+    sleep(2)
     stdin.write("mode guided")
-    sleep(3)
+    sleep(1)
     stdin.write("takeoff 1")
     sleep(1)
     
