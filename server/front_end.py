@@ -21,7 +21,7 @@ print( str(vehicle.system_status.state) )
 def arm_and_takeoff(targetHeight):
     print("vehicle mode: ", vehicle.mode, "vehicle system status-state: ", vehicle.system_status.state)
 
-    vehicle.mode = VehicleMode("GUIDED")
+    vehicle.mode = VehicleMode("LOITER")
 
     print("Is vehicle armable? ", vehicle.is_armable)
     while vehicle.armed==False:
@@ -33,10 +33,10 @@ def arm_and_takeoff(targetHeight):
     print("vehicle is now armed")
 
     vehicle.simple_takeoff(targetHeight)
-    time.sleep(5)
+    time.sleep(2)
     return None           
 
-arm_and_takeoff()
+arm_and_takeoff(2)
 
 ########################################################################
 
@@ -124,23 +124,27 @@ def move_down(Vz):
     vehicle.send_mavlink(move_down_msg)
     vehicle.flush()
     
-# If I know how many commands are being passed through 
+# this only works If I know how many commands are being passed through 
 def execute_commands(arg1 = 'print("N\A")', arg2 = 'print("N\A")', arg3 = 'print("N\A")'):
     # execute first command
     exec(arg1)
-    time.sleep(3)
+    print(arg1)
+    time.sleep(2)
     # executesecond command
     exec(arg2)
-    time.sleep(3)
+    print(arg2)
+    time.sleep(2)
     # execute third command
     exec(arg3)
-    time.sleep(3)
+    print(arg3)
+    time.sleep(2)
 
 
 # I wonder if this will work
 def second_execute_commands(*commands):
     for command in commands:
-        exec(command())
+        exec(command)
+        print(command)
         time.sleep(2)
 
 

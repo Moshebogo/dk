@@ -47,10 +47,10 @@ def arm_and_takeoff(targetHeight):
     #     if current_altitude >= .95*targetHeight:
     #         break
     #     time.sleep(1)
-    time.sleep(5)
+    time.sleep(2)
     return None           
 
-arm_and_takeoff()
+arm_and_takeoff(2)
 
 ########################################################################
 
@@ -86,7 +86,7 @@ set_velocity(0, -2, 0)
 time.sleep(4)
 # move the drone back
 set_velocity(-2, 0, 0)
-time.sleep(4)
+time.sleep(2)
 
 vehicle.mode = VehicleMode("LAND")
 
