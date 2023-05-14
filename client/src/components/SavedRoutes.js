@@ -1,5 +1,9 @@
+import Register from "./Register"
+
 export default function SavedRoutes() {
     return (
-        <h1>Routes Component</h1>
+        <div>
+            <Register />
+        </div>
     )
 }

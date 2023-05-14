@@ -1,7 +1,11 @@
 import  {useState}  from "react"
-import Home from "./Home"
 
 export default function Register({ setUser, stateUser }) {
+
+const [stateInfo, SetInfo] = useState({
+    username: "",
+    password: ""
+})
 
 const [stateUsername, setUsername] = useState("")
 const [statePassword, setPassword] = useState("")

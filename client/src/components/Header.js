@@ -12,9 +12,9 @@ export default function Header({ stateUser}) {
 
         <div id="buttonBlock">
         
-          <Link  to="/register">
+          {/* <Link  to="/register">
             <button className="headerButtons">{!stateUser ? "Log-In / Register" : "Log Out"}</button>
-          </Link>
+          </Link> */}
 
           <Link to="/buttons">
             <button className="headerButtons">Quick Flight</button>
