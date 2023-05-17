@@ -19,6 +19,7 @@ const [stateThirdInput, setThirdInput] = useState("")
 
 // dictionary for the "finalCommands" dictionary
 const commands = {
+    "Takeoff: In Meters": "takeoff",
     "Fly Right: In Meters": "move_right",
     "Fly Left: In Meters": "move_left",
     "Fly Front: In Meters": "move_front",
@@ -83,6 +84,7 @@ function handleSubmit(e) {
                 <select id="firstSelect"
                         value={stateFirstSelect}
                         onChange={ (e) => setFirstSelect(e.target.value)}>
+                    <option>Takeoff: In Meters</option>    
                     <option>Fly Right: In Meters</option>
                     <option>Fly Left: In Meters</option>
                     <option>Fly Front: In Meters</option>
@@ -106,6 +108,7 @@ function handleSubmit(e) {
                 <select id="secondSelect"
                         value={stateSecondSelect}
                         onChange={ (e) => setSecondSelect(e.target.value)}>
+                    <option>Takeoff: In Meters</option>     
                     <option>Fly Right: In Meters</option>
                     <option>Fly Left: In Meters</option>
                     <option>Fly Front: In Meters</option>
@@ -128,6 +131,7 @@ function handleSubmit(e) {
                 <select id="thirdSelect"
                         value={stateThirdSelect}
                         onChange={ (e) => setThirdSelect(e.target.value)}>
+                    <option>Takeoff: In Meters</option>     
                     <option>Fly Right: In Meters</option>
                     <option>Fly Left: In Meters</option>
                     <option>Fly Front: In Meters</option>

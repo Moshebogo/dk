@@ -40,6 +40,11 @@ arm_and_takeoff(2)
 
 ########################################################################
 
+
+def takeoff(height):
+    vehicle.simple_takeoff(height)
+    time.sleep(2)
+
 def move_front(Vx):
     move_front_msg = vehicle.message_factory.set_position_target_local_ned_encode(
     0,
@@ -127,7 +132,7 @@ def move_down(Vz):
 # this only works If I know how many commands are being passed through 
 def execute_commands(arg1 = 'print("N\A")', arg2 = 'print("N\A")', arg3 = 'print("N\A")'):
     # execute first command
-    exec(arg1)
+    exec(   )
     print(arg1)
     time.sleep(2)
     # executesecond command
