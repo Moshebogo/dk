@@ -1,9 +1,11 @@
 import Register from "./Register"
 
-export default function SavedRoutes() {
+export default function SavedRoutes({ stateUser, setUser  }) {
+
+    console.log(document.cookie)
     return (
         <div>
-            <Register />
+            <Register stateUser={stateUser} setUser={setUser} />
         </div>
     )
 }

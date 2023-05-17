@@ -4,28 +4,13 @@ from flask import Flask, jsonify, make_response, request, session as browser_ses
 from time import sleep
 from models import app, db, User
 import os
-
-x = 5
+import json
 
 # instance of paramiko
 client = SSHClient()
 
 # the secret key
 app.secret_key = os.environ.get("SECRET_KEY")
-
-#  the excluded endpoints
-excluded_endpoints = ['login', 'logout']
-
-
-# @app.before_request
-# def before():
-#     if request.endpoint in excluded_endpoints: 
-#         pass
-#     elif request.endpoint not in excluded_endpoints:
-#         if "user_id" in browser_session:
-#             pass
-#         else:
-#             return make_response(jsonify({"status" : "access forbidden"}), 401)
 
 # route to login
 @app.route("/registerLogin", methods = ['POST'])
@@ -35,27 +20,31 @@ def login():
     username = user_info.get("username")
     password = user_info.get("password")
     #  check if user actually exists
-    user_exists = User.query.filter(User.username == username and User.password == password ).first()
+    user_exists = User.query.filter((User.username == username) & (User.password == password )).first()
     #  and is it does or does not
     if user_exists:
+        print("User: ", user_exists.to_dict())
         # sets the cookie as the users id
-        browser_session['user_id'] = user_exists.id
-        return make_response(jsonify({"status" : "user indeed exists"}), 200)
+        response = make_response({"status" : "user already exists"})
+        response.set_cookie("user", user_exists.id) 
+        return response, 200
     else:
         new_user = User(username = username, password = password)
         db.session.add(new_user)
-        db.session.commit()
-        the_new_user = User.query.filter(new_user.username == username and new_user.password == password ).first()
-        browser_session['user_id'] = the_new_user.id
-        return make_response(jsonify({"status" :f"new user: {user_info}"}), 200)
-
+        db.session.commit()    
+        the_new_user = User.query.filter(User.username == username and User.password == password ).first()
+        response = make_response({"status", f"new user: {the_new_user}"})
+        response.set_cookie("user", bytes(str(the_new_user.id), 'utf-8'))
+        return response, 200
+  
 # TODO delete the cookie
 @app.route("/logOut", methods=['DELETE'])
 def logout():
     if "user_id" in browser_session:
-        response = make_response("cookie removed")
-        response.set_cookie("user_id", max_age=0)
-        return response
+        response = make_response({"status" : " cookie removed"})
+        response.delete_cookie("user_id", "")
+        print("cookie: ", browser_session["user_id"])
+        return {"status" : "cookie removed"}, 200
     else: 
         return {"status" : "user not found"}, 404
      
