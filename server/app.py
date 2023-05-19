@@ -24,8 +24,8 @@ def login():
     if user_exists:
         print("User: ", user_exists.to_dict())
         # sets the cookie as the id of the user
-        response = make_response("setting cookie")
-        response.set_cookie("user_id", str(user_exists.id)) 
+        
+
         return user_exists.to_dict(), 200
     else:
         new_user = User(username = username, password = password)
@@ -40,8 +40,8 @@ def login():
 @app.route("/logOut", methods=['DELETE'])
 def logout():
     if "user_id" in browser_session:
-        browser_session["user_id"] = None
-        return {"status" : "cookie deleted"}, 200
+        browser_session.pop('user_id', default=None)
+        return {"status" : "cookie deleted"}
     else:
         return {"status" : "user not found"}, 404  
 
@@ -80,7 +80,7 @@ def arm_drone():
 
 #  route to arm the drone by running mavproxy.py on the raspi
 @app.route("/mavproxy", methods = ['GET', 'POST'])
-def mavproxy():
+def mavproxy():   
     # some set-up stuff to enable a ssh connection
     client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
     client.set_missing_host_key_policy(AutoAddPolicy())

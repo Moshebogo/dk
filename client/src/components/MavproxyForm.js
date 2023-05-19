@@ -73,7 +73,7 @@ function handleSubmit(e) {
 }
 
     return (
-        <div>
+        <div style={{'display': 'flex', 'flex-direction' : 'column'}} id="main-div">
   
             <h2 id="discription">
     This menu simplifies the proccess of flying your personal drone.
