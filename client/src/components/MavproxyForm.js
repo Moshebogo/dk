@@ -33,9 +33,9 @@ const commands = {
 // dictionary for the POST
 const finalCommands = {
         "IP": stateIP,
-        "first_command": `${commands[stateFirstSelect]}` + `(${stateFirstInput})`,
-        "second_command": ``,
-        "third_command": commands[stateThirdSelect]
+        "first_command":  commands[stateFirstSelect]   + `(${stateFirstInput})`,
+        "second_command": commands[stateSecondSelect]  + `(${stateSecondInput})`,
+        "third_command":  commands[stateThirdSelect]   + `(${stateThirdInput})`
 }    
 
 
@@ -43,6 +43,7 @@ const finalCommands = {
 let submitCounter = 0
 function handleSubmit(e) {
     e.preventDefault()
+    console.log("finalCommands: ", finalCommands)
     if (submitCounter === 0 ) {
         alert("Warning! Arming the drone will cause the propellers to spin at high speed! Please ensure the area is clear and click again! ")
         submitCounter ++
@@ -54,11 +55,21 @@ function handleSubmit(e) {
         },
         body: JSON.stringify(finalCommands)
     })
-    // reset the form
-    document.querySelector("#form").reset()
-    submitCounter = 0
+    .then(resp => resp.json())
+    .then(data => {
+        console.log(data)
+        // reset all the state fields to reset the form
+        setIP("")
+        setFirstSelect("")
+        setFirstInput("")
+        setSecondSelect("")
+        setSecondInput("")
+        setThirdSelect("")
+        setThirdInput("")
+        // reset the counter so the alert can happen again
+        submitCounter = 0
+    })
     }
-   
 }
 
     return (

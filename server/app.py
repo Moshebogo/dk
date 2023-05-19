@@ -4,14 +4,13 @@ from flask import Flask, jsonify, make_response, request, session as browser_ses
 from time import sleep
 from models import app, db, User
 import os
-import json
 
 # instance of paramiko
 client = SSHClient()
 
 # the secret key
 app.secret_key = os.environ.get("SECRET_KEY")
-
+ 
 # route to login
 @app.route("/registerLogin", methods = ['POST'])
 def login():
@@ -24,30 +23,28 @@ def login():
     #  and is it does or does not
     if user_exists:
         print("User: ", user_exists.to_dict())
-        # sets the cookie as the users id
-        response = make_response({"status" : "user already exists"})
-        response.set_cookie("user", user_exists.id) 
-        return response, 200
+        # sets the cookie as the id of the user
+        response = make_response("setting cookie")
+        response.set_cookie("user_id", str(user_exists.id)) 
+        return user_exists.to_dict(), 200
     else:
         new_user = User(username = username, password = password)
         db.session.add(new_user)
         db.session.commit()    
-        the_new_user = User.query.filter(User.username == username and User.password == password ).first()
-        response = make_response({"status", f"new user: {the_new_user}"})
-        response.set_cookie("user", bytes(str(the_new_user.id), 'utf-8'))
-        return response, 200
+        the_new_user = User.query.filter((User.username == username) & (User.password == password)).first()
+        browser_session['user_id'] = the_new_user.id
+        return new_user.to_dict(), 200
   
+   
 # TODO delete the cookie
 @app.route("/logOut", methods=['DELETE'])
 def logout():
     if "user_id" in browser_session:
-        response = make_response({"status" : " cookie removed"})
-        response.delete_cookie("user_id", "")
-        print("cookie: ", browser_session["user_id"])
-        return {"status" : "cookie removed"}, 200
-    else: 
-        return {"status" : "user not found"}, 404
-     
+        browser_session["user_id"] = None
+        return {"status" : "cookie deleted"}, 200
+    else:
+        return {"status" : "user not found"}, 404  
+
 
 
 
@@ -60,10 +57,10 @@ def default_route():
 @app.route("/armDrone", methods = ['GET'])   
 def arm_drone():
     # some set-up stuff to enable a ssh connection
-    client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
+    client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")   
     client.set_missing_host_key_policy(AutoAddPolicy())
     # the actual connection the the raspi
-    client.connect('192.168.146.245', username= 'pi', password= 'moshe')
+    client.connect('192.168.63.245', username= 'pi', password= 'moshe')
     # the commands to happen on the raspi
     stdin, stdout, stderr = client.exec_command('hostname')
     print(f'Host-Name: {stdout.read().decode("utf8")}')
@@ -88,7 +85,7 @@ def mavproxy():
     client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
     client.set_missing_host_key_policy(AutoAddPolicy())
     # the actual connection the the raspi
-    client.connect('192.168.146.245', username= 'pi', password= 'moshe')
+    client.connect('192.168.63.245', username= 'pi', password= 'moshe')
     # the commands to happen on the raspi
     stdin, stdout, stderr = client.exec_command('hostname')
     print(f'Host-Name: {stdout.read().decode("utf8")}')
@@ -100,8 +97,7 @@ def mavproxy():
     sleep(1)
     stdin.write("takeoff 1")
     sleep(1)
-    
-    
+        
     # some prints so we can know whats happening
     print(f'STDOUT: {stdout.read().decode("utf8")}')
     print(f'STDERR: {stderr.read().decode("utf8")}')
@@ -113,35 +109,37 @@ def mavproxy():
     client.close()
     return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
 
-
+   
 
 @app.route("/mavproxy_2", methods = ['GET', 'POST'])
 def mavproxy_2():
     body = request.get_json()
-    # some set-up stuff to enable a ssh connection
-    client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
-    client.set_missing_host_key_policy(AutoAddPolicy())
-    # the actual connection the the raspi
-    client.connect(f'{body["IP"]}', username= 'pi', password= 'moshe')
-    # the commands to happen on the raspi
-    stdin, stdout, stderr = client.exec_command('hostname')
-    print(f'Host-Name: {stdout.read().decode("utf8")}')
-    stdin, stdout, stderr = client.exec_command('python ./.local/bin/mavproxy.py;')
+    # # some set-up stuff to enable a ssh connection
+    # client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
+    # client.set_missing_host_key_policy(AutoAddPolicy())
+    # # the actual connection the the raspi
+    # client.connect(f'{body["IP"]}', username= 'pi', password= 'moshe')
+    # # the commands to happen on the raspi
+    # stdin, stdout, stderr = client.exec_command('hostname')
+    # print(f'Host-Name: {stdout.read().decode("utf8")}')
+    # stdin, stdout, stderr = client.exec_command('python ./.local/bin/mavproxy.py;')
 
-    stdin.write("arm throttle\n;")
-    sleep(2)
+    # stdin.write("arm throttle\n;")
+    # sleep(2)
 
 
-    # some prints so we can know whats happening
-    print(f'STDOUT: {stdout.read().decode("utf8")}')
-    print(f'STDERR: {stderr.read().decode("utf8")}')
-    print(f'RETURN CODE: {stdout.channel.recv_exit_status()}')
-    # closing all files and the ssh shell so they doesn't hang open
-    stdin.close()
-    stdout.close()
-    stderr.close()
-    client.close()
-    return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
+    # # some prints so we can know whats happening
+    # print(f'STDOUT: {stdout.read().decode("utf8")}')
+    # print(f'STDERR: {stderr.read().decode("utf8")}')
+    # print(f'RETURN CODE: {stdout.channel.recv_exit_status()}')
+    # # closing all files and the ssh shell so they doesn't hang open
+    # stdin.close()
+    # stdout.close()
+    # stderr.close()
+    # client.close()
+    # return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
+    return make_response(jsonify({"Body": body}), 200)
+
 
 
 @app.route("/mavproxy_3", methods = ['GET'])

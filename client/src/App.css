@@ -86,3 +86,7 @@ label {
   margin-left: auto;
   
 }
+
+form label, form input {
+  font-family: 'Times New Roman', Times, serif;
+}
