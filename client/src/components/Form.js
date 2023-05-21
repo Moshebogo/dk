@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function Form() {
+export default function Form({element }) {
 
     const [stateSelect, setStateSelect] = useState("")
     const [stateInput, setStateInput] = useState("")
@@ -8,7 +8,7 @@ export default function Form() {
     
     return (
         <div>
-            <label>First Command After Takeoff: </label>
+            <label>Command: {element} After Takeoff: </label>
             <select id="firstSelect"
                     value={stateSelect}
                     onChange={ (e) => setStateSelect(e.target.value)}>
