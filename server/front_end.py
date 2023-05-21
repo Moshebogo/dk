@@ -15,10 +15,10 @@ vehicle = connect('/dev/ttyS0', baud=57600, wait_ready=True)
 print( str(vehicle.system_status.state) )
 
 
-#####################   arming the drone   ###########################
+############################  arming the drone  #################################
 
 
-def arm_and_takeoff(targetHeight):
+def arm():
     print("vehicle mode: ", vehicle.mode, "vehicle system status-state: ", vehicle.system_status.state)
 
     vehicle.mode = VehicleMode("LOITER")
@@ -32,13 +32,12 @@ def arm_and_takeoff(targetHeight):
         time.sleep(1)
     print("vehicle is now armed")
 
-    vehicle.simple_takeoff(targetHeight)
     time.sleep(2)
     return None           
 
-arm_and_takeoff(2)
+arm()
 
-########################################################################
+######################### all possible drone functions ########################
 
 
 def takeoff(height):
@@ -148,9 +147,10 @@ def execute_commands(arg1 = 'print("N\A")', arg2 = 'print("N\A")', arg3 = 'print
 # I wonder if this will work
 def second_execute_commands(*commands):
     for command in commands:
-        exec(command)
-        print(command)
-        time.sleep(2)
+        if command[0] != 'IP':
+            exec(command)
+            print(command)
+            time.sleep(2)
 
 
 execute_commands(sys.arg[1], sys.arg[2], sys.arg[3])

@@ -114,11 +114,12 @@ def mavproxy():
 @app.route("/mavproxy_2", methods = ['GET', 'POST'])
 def mavproxy_2():
     body = request.get_json()
+    print(body)     
     # # some set-up stuff to enable a ssh connection
     # client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
     # client.set_missing_host_key_policy(AutoAddPolicy())
     # # the actual connection the the raspi
-    # client.connect(f'{body["IP"]}', username= 'pi', password= 'moshe')
+    # client.connect(body[0]['IP'], username= 'pi', password= 'moshe')
     # # the commands to happen on the raspi
     # stdin, stdout, stderr = client.exec_command('hostname')
     # print(f'Host-Name: {stdout.read().decode("utf8")}')

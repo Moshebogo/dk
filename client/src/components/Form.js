@@ -1,17 +1,14 @@
 import { useState } from "react"
 
-export default function Form({element }) {
+export default function Form({ dictionary, index, handleFormChange }) {
 
-    const [stateSelect, setStateSelect] = useState("")
-    const [stateInput, setStateInput] = useState("")
-
-    
     return (
         <div>
-            <label>Command: {element} After Takeoff: </label>
+            <label> Command # {index+1}: </label>
             <select id="firstSelect"
-                    value={stateSelect}
-                    onChange={ (e) => setStateSelect(e.target.value)}>
+                    name="input"
+                    value={dictionary.input}
+                    onChange={ (e) => handleFormChange(e, index)}>
                 <option>Select Command</option>    
                 <option>Takeoff: In Meters</option>    
                 <option>Fly Right: In Meters</option>
@@ -24,8 +21,9 @@ export default function Form({element }) {
                 <option>Take Picture: 1 Is Yes. 2 Is No</option>
             </select>   
             <input placeholder="Example: 10"
-                value={stateInput}
-                onChange={ (e) => setStateInput(e.target.value)}
+                    name="select"
+                    value={dictionary.select}
+                    onChange={ (e) => handleFormChange(e, index)}
                 type="number">
             </input>
       </div>
