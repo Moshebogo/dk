@@ -59,9 +59,27 @@ def take_picture(*param):
     print("take_picture function")
     # TODO mavlink message to ake a picture
 
-def set_yaw(param):
-    print("set_yaw function")   
-    # TODO actually implement the set yaw     
+def set_yaw(heading):
+    print("set_yaw function") 
+    # based on the user input, this decides if the drone should yaw cw or ccw
+    if heading == 0:
+        direction = 1
+    elif heading > 0:
+        direction = 1
+    elif heading < 0:
+        direction = -1
+    # create the CONDITION_YAW command using command_long_encode()
+    msg = vehicle.message_factory.command_long_encode(
+        0, 0,       # target system, target component
+        mavutil.mavlink.MAV_CMD_CONDITION_YAW, #command
+        0,          #confirmation
+        heading,    # param 1, yaw in degrees
+        0,          # param 2, yaw speed deg/s
+        direction,  # param 3, direction -1 ccw, 1 cw
+        1,          # param 4, relative offset 1, absolute angle 0
+        0, 0, 0)    # param 5 ~ 7 not used
+    # send command to vehicle
+    vehicle.send_mavlink(msg)    
 
 def move_front(Vx):
     print("move_front function")
@@ -76,7 +94,7 @@ def move_front(Vx):
     0, 0
     )
     vehicle.send_mavlink(move_front_msg)
-    vehicle.flush()
+    vehicle.flush()    
 
 def move_back(Vx):
     print("move_back function")
@@ -166,3 +184,12 @@ second_execute_commands(after_ast)
 vehicle.mode = VehicleMode("LAND")
 
 print("the script is over")
+
+
+################################### for testing #################################
+
+
+vehicle.cond
+
+
+

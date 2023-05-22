@@ -18,7 +18,7 @@ export default function Form({ dictionary, index, handleFormChange }) {
                 <option>Fly Up: In Meters</option>
                 <option>Fly Down: In Meters</option>
                 <option>Fly Back: In Meters</option>
-                <option>Yaw: In Relative Degrees</option>
+                <option>Yaw: In Relative Degrees. Positive = CW, Negative = CCW </option>
                 <option>Take Picture: Leave Input Field Blank</option>
                 <option>Land: Leave Input Field Blank</option>
             </select>   
