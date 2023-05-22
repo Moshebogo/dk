@@ -11,16 +11,17 @@ export default function Test({ handleClick }) {
 
 // dictionary for the "finalCommands" dictionary
 const commands = {
-    "Takeoff: In Meters": "takeoff",
+    "Arm Drone: Leave Input Field Blank": "arm_drone",
+    "Takeoff: In Meters": "takeoff_drone",
     "Fly Right: In Meters": "move_right",
     "Fly Left: In Meters": "move_left",
     "Fly Front: In Meters": "move_front",
     "Fly Up: In Meters": "move_up",
     "Fly Down: In Meters": "move_down",
     "Fly Back: In Meters": "fly_back",
-    "Take Picture: 1 Is Yes. 2 Is No": "module load message message COMMAND_LONG 0 0 203 0 0 0 0 0 1 0 0",
+    "Take Picture: Leave Input Field Blank": "take_picture",
     "Yaw: In Relative Degrees": "setyaw", 
-    "Land: 1 Is Yes. 2 Is No": "land"
+    "Land: Leave Input Field Blank": "land_drone"
     }
 
  const finalCommands = []  
@@ -79,22 +80,24 @@ function handleSubmit() {
     return (
         // basic styling to make it easier to work with
        <div style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto'}}>
-       <button onClick={ (e) => addCommand(e)}>ADD COMMAND</button>
-       <label>Enter the IP addres of the drone: </label>
-       <input type="text"
-              placeholder="ie: 192.168.63.245"
-              value={stateIP}
-              onChange={ (e) => setIP(e.target.value)}></input>
+       <button style={{'backgroundColor': 'green'}} onClick={ (e) => addCommand(e)}>ADD COMMAND</button>
+       <div style={{'margin': '1%'}}>
+            <label>Enter the IP addres of the drone: </label>
+            <input type="text"
+                    placeholder="ie: 192.168.63.245"
+                    value={stateIP}
+                    onChange={ (e) => setIP(e.target.value)}></input>
+        </div>            
               {/* creates a controlled form, so every command can get it's own form */}
             {stateCommands.map((dictionary, index) => {
                 return (
-                    <div>
+                    <div style={{'display':'grid', 'margin': 'auto', 'width': '50%', 'textAlign': 'center'}}>
                         <Form key={index} handleFormChange={handleFormChange} dictionary={dictionary} index={index}   />
-                        <button onClick={ (e) => deleteCommand(index)}>DELETE COMMAND</button>
+                        <button style={{'backgroundColor': 'red'}} onClick={ (e) => deleteCommand(index)}>DELETE COMMAND</button>
                     </div>
                 )})
             }
-            <button onClick={(e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
+            <button style={{'margin': '2%'}} onClick={(e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
             <div>
               <button onClick={ (e) => handleClick(e)}>Log Out</button>
             </div>  

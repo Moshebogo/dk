@@ -35,7 +35,7 @@ return (
             <input value={stateUsername} onChange={ (e) => setUsername(e.target.value)} type="text" name="name"></input>
             <label>Password: </label>
             <input value={statePassword} onChange={ (e) => setPassword(e.target.value)} type="password"></input>
-            <input type="submit"></input>
+            <input style={{'backgroundColor': 'green'}}  type="submit"></input>
         </form>
     </div> 
     )

@@ -9,7 +9,8 @@ export default function Form({ dictionary, index, handleFormChange }) {
                     name="input"
                     value={dictionary.input}
                     onChange={ (e) => handleFormChange(e, index)}>
-                <option>Select Command</option>    
+                <option>Select Command</option>   
+                <option>Arm Drone: Leave Input Field Blank</option> 
                 <option>Takeoff: In Meters</option>    
                 <option>Fly Right: In Meters</option>
                 <option>Fly Left: In Meters</option>
@@ -18,8 +19,8 @@ export default function Form({ dictionary, index, handleFormChange }) {
                 <option>Fly Down: In Meters</option>
                 <option>Fly Back: In Meters</option>
                 <option>Yaw: In Relative Degrees</option>
-                <option>Take Picture: 1 Is Yes. 2 Is No</option>
-                <option>Land: 1 Is Yes. 2 Is No</option>
+                <option>Take Picture: Leave Input Field Blank</option>
+                <option>Land: Leave Input Field Blank</option>
             </select>   
             <input placeholder="Example: 10"
                     name="select"

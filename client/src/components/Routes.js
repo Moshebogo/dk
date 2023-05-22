@@ -31,8 +31,7 @@ function handleClick(e) {
             ) : (
             <Test handleClick={handleClick} checkCookie={checkCookie}/>
             )
-                
-            }
+        }
         </div>
     )
 }

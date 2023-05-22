@@ -18,7 +18,7 @@ print( str(vehicle.system_status.state) )
 ############################  arming the drone  #################################
 
 
-def arm():
+def arm_drone():
     print("vehicle mode: ", vehicle.mode, "vehicle system status-state: ", vehicle.system_status.state)
 
     vehicle.mode = VehicleMode("LOITER")
@@ -32,30 +32,29 @@ def arm():
         time.sleep(1)
     print("vehicle is now armed")
 
-    time.sleep(2)
+    time.sleep(1)
     return None           
 
-arm()
-
-######################### all possible drone functions ########################
 
 
-def takeoff(height):
+######################### all other possible drone functions ########################
+
+
+
+
+
+def takeoff_drone(height):
     vehicle.simple_takeoff(height)
     time.sleep(2)
 
-def land(param):
-    if param == '1': 
-        vehicle.mode = VehicleMode("LAND")
-        time.sleep(1) 
-    elif param == '2':
-        pass   
+def land_drone():
+    vehicle.mode = VehicleMode("LAND")
+    time.sleep(1)
 
-def take_pucture(param):
-    if param == '1':
-        pass
-    elif param == '2':
-        pass
+def take_picture():
+    print("take_picture function")
+    # TODO mavlink message to ake a picture
+    pass
 
 
 
@@ -160,17 +159,17 @@ def execute_commands(arg1 = 'print("N\A")', arg2 = 'print("N\A")', arg3 = 'print
 
 
 # I wonder if this will work
-def second_execute_commands(*commands):
-    for command in commands:
-        if command[0] != 'IP':
-            exec(command)
-            print(command)
-            time.sleep(2)
+def second_execute_commands(body):
+    print("body => ", body)
+    for dictionary in body:
+        #  commented out until the prints actually print as expected
+        #  exec(dictionary['command'])
+        print("each dictionary => ", dictionary)
+        print("each actual command => ", dictionary['command'])
 
+second_execute_commands(sys.argv[1])
 
-execute_commands(sys.arg[1], sys.arg[2], sys.arg[3])
-
-
+# safety measure in case no final land command is passed in
 vehicle.mode = VehicleMode("LAND")
 
 print("the script is over")
