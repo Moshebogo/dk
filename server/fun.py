@@ -3,3 +3,12 @@ def func(*param):
 
 
 func()    
+
+
+
+
+
+def test():
+    print("test")
+
+    
