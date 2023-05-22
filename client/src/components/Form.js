@@ -19,6 +19,7 @@ export default function Form({ dictionary, index, handleFormChange }) {
                 <option>Fly Back: In Meters</option>
                 <option>Yaw: In Relative Degrees</option>
                 <option>Take Picture: 1 Is Yes. 2 Is No</option>
+                <option>Land: 1 Is Yes. 2 Is No</option>
             </select>   
             <input placeholder="Example: 10"
                     name="select"

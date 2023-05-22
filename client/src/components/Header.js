@@ -25,7 +25,7 @@ export default function Header({ stateUser}) {
           </Link>
 
           <Link to="/savedroutes">
-            <button className="headerButtons">Saved Routes</button>
+            <button className="headerButtons">Routes</button>
           </Link>
 
           <Link to="/mavproxyform">

@@ -44,6 +44,21 @@ def takeoff(height):
     vehicle.simple_takeoff(height)
     time.sleep(2)
 
+def land(param):
+    if param == '1': 
+        vehicle.mode = VehicleMode("LAND")
+        time.sleep(1) 
+    elif param == '2':
+        pass   
+
+def take_pucture(param):
+    if param == '1':
+        pass
+    elif param == '2':
+        pass
+
+
+
 def move_front(Vx):
     move_front_msg = vehicle.message_factory.set_position_target_local_ned_encode(
     0,

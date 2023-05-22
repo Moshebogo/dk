@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Form from "./Form"
 
-export default function Test() {
+export default function Test({ handleClick }) {
 
     const form = {'input': '', 'select': ''}
     const [stateIP, setIP] = useState("")
@@ -19,7 +19,8 @@ const commands = {
     "Fly Down: In Meters": "move_down",
     "Fly Back: In Meters": "fly_back",
     "Take Picture: 1 Is Yes. 2 Is No": "module load message message COMMAND_LONG 0 0 203 0 0 0 0 0 1 0 0",
-    "Yaw: In Relative Degrees": "setyaw" 
+    "Yaw: In Relative Degrees": "setyaw", 
+    "Land: 1 Is Yes. 2 Is No": "land"
     }
 
  const finalCommands = []  
@@ -66,6 +67,7 @@ function handleSubmit() {
     .then(resp => resp.json())
     .then(data => {
         console.log(data)
+        setIP("")
         // reset the counter so the alert can happen again
         submitCounter = 1
     })
@@ -75,6 +77,7 @@ function handleSubmit() {
 
 
     return (
+        // basic styling to make it easier to work with
        <div style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto'}}>
        <button onClick={ (e) => addCommand(e)}>ADD COMMAND</button>
        <label>Enter the IP addres of the drone: </label>
@@ -82,15 +85,19 @@ function handleSubmit() {
               placeholder="ie: 192.168.63.245"
               value={stateIP}
               onChange={ (e) => setIP(e.target.value)}></input>
+              {/* creates a controlled form, so every command can get it's own form */}
             {stateCommands.map((dictionary, index) => {
                 return (
                     <div>
                         <Form key={index} handleFormChange={handleFormChange} dictionary={dictionary} index={index}   />
                         <button onClick={ (e) => deleteCommand(index)}>DELETE COMMAND</button>
                     </div>
-                )
-            })}
-            <button onClick={(e) =>handleSubmit(e)}>SENDS COMMANDS TO RASPI</button>
+                )})
+            }
+            <button onClick={(e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
+            <div>
+              <button onClick={ (e) => handleClick(e)}>Log Out</button>
+            </div>  
        </div>
     )
 }   

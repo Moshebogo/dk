@@ -35,8 +35,17 @@ def login():
         browser_session['user_id'] = the_new_user.id
         return new_user.to_dict(), 200
   
+#checks for the cookie
+@app.route("/checkCookie")
+def check_cookie():
+    if browser_session['user_id'] == True:
+        return {1:1}, 200
+    else:
+        return {0:0}, 404
+
+
    
-# TODO delete the cookie
+# deletes the cookie
 @app.route("/logOut", methods=['DELETE'])
 def logout():
     if "user_id" in browser_session:
@@ -114,16 +123,18 @@ def mavproxy():
 @app.route("/mavproxy_2", methods = ['GET', 'POST'])
 def mavproxy_2():
     body = request.get_json()
-    print(body)     
+    print(body)    
     # # some set-up stuff to enable a ssh connection
     # client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
     # client.set_missing_host_key_policy(AutoAddPolicy())
     # # the actual connection the the raspi
     # client.connect(body[0]['IP'], username= 'pi', password= 'moshe')
+    # body.pop(0)
     # # the commands to happen on the raspi
     # stdin, stdout, stderr = client.exec_command('hostname')
     # print(f'Host-Name: {stdout.read().decode("utf8")}')
     # stdin, stdout, stderr = client.exec_command('python ./.local/bin/mavproxy.py;')
+    # stdin, stdout, stderr = client.exec_command(f'cd learning ; python front_end.py -- {body}')
 
     # stdin.write("arm throttle\n;")
     # sleep(2)
