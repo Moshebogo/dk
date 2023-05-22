@@ -18,9 +18,9 @@ const commands = {
     "Fly Front: In Meters": "move_front",
     "Fly Up: In Meters": "move_up",
     "Fly Down: In Meters": "move_down",
-    "Fly Back: In Meters": "fly_back",
+    "Fly Back: In Meters": "move_back",
     "Take Picture: Leave Input Field Blank": "take_picture",
-    "Yaw: In Relative Degrees": "setyaw", 
+    "Yaw: In Relative Degrees": "set_yaw", 
     "Land: Leave Input Field Blank": "land_drone"
     }
 
