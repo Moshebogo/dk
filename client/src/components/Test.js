@@ -3,6 +3,8 @@ import Form from "./Form"
 
 export default function Test({ handleClick }) {
 
+
+    // the basic setup for the controlled form
     const form = {'input': '', 'select': ''}
     const [stateIP, setIP] = useState("")
     const [stateCommands, setCommands] = useState([
@@ -19,14 +21,16 @@ const commands = {
     "Fly Up: In Meters": "move_up",
     "Fly Down: In Meters": "move_down",
     "Fly Back: In Meters": "move_back",
+    "Hover In One Place: In Seconds": "loiter_time",
     "Take Picture: Leave Input Field Blank": "take_picture",
-    "Yaw: In Relative Degrees": "set_yaw", 
+    "Yaw: In Relative Degrees. Positive = CW, Negative = CCW": "set_yaw", 
     "Land: Leave Input Field Blank": "land_drone"
     }
 
+ // starts blank, it will get filled in the "createFinalDictionary" function
  const finalCommands = []  
-    
-
+     
+ // this combines the selected command with the numbered input into one string, and adds all the the "finalCommands" array
  function createFinalDictionary() {
     finalCommands.push({'IP': stateIP}          )
      stateCommands.map((object, index) => {
@@ -35,16 +39,19 @@ const commands = {
         setCommands([form])
 }
 
+// makes the form a controlled form, with "onChange"
 function handleFormChange(e, index) {
     const data = [...stateCommands]
     data[index][e.target.name] = e.target.value
     setCommands(data)
 }
 
+// adds a form field for a new command
 function addCommand(e) {
     setCommands(prev => [...stateCommands, form])
 }
 
+// delets a command form field
 function deleteCommand(index){
    setCommands(prev => stateCommands.filter(command => stateCommands.indexOf(command) !== index))
 }
@@ -63,15 +70,14 @@ function handleSubmit() {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(finalCommands)
-    })
-    .then(resp => resp.json())
-    .then(data => {
-        console.log(data)
-        setIP("")
-        // reset the counter so the alert can happen again
-        submitCounter = 1
-    })
+        body: JSON.stringify(finalCommands)}
+        ).then(resp => resp.json())
+         .then(data => {
+                console.log(data)
+                setIP("")
+                // reset the counter so the alert can happen again
+                submitCounter = 1
+         })
     }
 }
 
@@ -88,7 +94,7 @@ function handleSubmit() {
                     value={stateIP}
                     onChange={ (e) => setIP(e.target.value)}></input>
         </div>            
-              {/* creates a controlled form, so every command can get it's own form */}
+              {/* creates a controlled form, so every command can get it's own form and state */}
             {stateCommands.map((dictionary, index) => {
                 return (
                     <div style={{'display':'grid', 'margin': 'auto', 'width': '50%', 'textAlign': 'center'}}>

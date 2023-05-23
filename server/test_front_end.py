@@ -48,7 +48,22 @@ def arm_drone(*param):
 def takeoff_drone(height):
     print("takeoff_drone function")
     vehicle.simple_takeoff(height)
-    time.sleep(2)    
+    # verify the drone has reached the desired alt before calling the next function
+    while True:
+        print("Altitude: ", vehicle.location.global_relative_frame.alt)
+        #Break and return from function just below target altitude.
+        if vehicle.location.global_relative_frame.alt >= height * 0.95:
+            print("Desired Altitude Reached!")
+            break
+    vehicle.mode = VehicleMode("LOITER")
+    print("Vehicle mode is currently set to: ", vehicle.mode)
+    time.sleep(1)
+
+def loiter_time(time):
+    print("loiter_time function")
+    vehicle.mode = VehicleMode("LOITER")
+    print("Vehicle mode is currently set to: ", vehicle.mode)
+    time.sleep(time)            
 
 def land_drone(*param):
     print("land_drone function")
