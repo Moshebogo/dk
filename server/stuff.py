@@ -7,3 +7,5 @@ def stuff(stuff):
     print(stuff)
 
 
+def stuff2(stuff):
+    print(stuff)
