@@ -26,3 +26,15 @@ class User(db.Model):
             'username': self.username,
             'password': self.password
         }
+    
+class Commands(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    command = db.Column(db.String, nullable = False)
+    user = db.Column(db.Integer, nullable = False)   
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'command': self.command,
+            'user':self.user
+        }

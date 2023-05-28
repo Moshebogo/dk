@@ -1,10 +1,8 @@
 from paramiko import SSHClient, AutoAddPolicy
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, jsonify, make_response, request, session as browser_session
+from flask import jsonify, make_response, request, session as browser_session
 from time import sleep
-from models import app, db, User
+from models import app, db, User, Commands
 import os
-import time
 
 # instance of paramiko
 client = SSHClient()
@@ -58,7 +56,7 @@ def logout():
 def save_route():
     body = request.get_json()
     print(body)
-    return {"test":"success"}, 200
+    return {"route": Commands.to_dict()}, 200
 
 
 
@@ -226,3 +224,49 @@ def get_all_users():
         db.session.add(new_user)
         db.sesion.commit()
         return make_response(jsonify(new_user.to_dict()), 201)    
+    
+#route for all commands
+@app.route("/commands", methods = ['GET', 'POST'])
+def all_commands():
+    # GET for all commands
+    if request.method == 'GET':
+        commands = Commands.query.all()
+        commands_to_dict = [cmd.to_dict() for cmd in commands]
+        return {"status, all commands":commands_to_dict.to_dict()}, 200
+    # POST for all commands
+    elif request.method == 'POST':
+        body = request.get_json()
+        new_command = Commands()
+        for key, value in body.items():
+            setattr(new_command, key, value)
+        db.session.add(new_command)
+        db.session.commit()
+        return {"status, new command": new_command.to_dict()}, 201    
+            
+
+
+
+
+# route for coomand by ID
+@app.route("/commands/<id>", methods = ['GET', 'PATCH', 'DELETE'])
+def command_by_id(id):
+    command_exists = Commands.query.get(id)
+    if not command_exists:
+        return {"status":"command not found"}, 404
+    elif command_exists:
+        # GET for each command
+        if request.method == 'GET': 
+            return {"commnd found":command_exists.to_dict()}, 200
+        # PATCH for each command  
+        if request.method == 'PATCH':
+            body = request.get_json()
+            for key, value in body.items():
+                setattr(command_exists, key, value)
+            db.session.add(command_exists)
+            db.session.commit()
+            return {"status, updated correctly": command_exists.to_dict()}, 201
+        # DELETE for each command
+        if request.method == 'DELETE':
+            Commands.query.delete(id)
+            db.session.commit()
+            return {"status":"deleted"}, 200
