@@ -67,9 +67,7 @@ function handleSubmit() {
         console.log(    )
         fetch("/mavproxy_2", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(finalCommands)}
         ).then(resp => resp.json())
          .then(data => {
@@ -79,6 +77,17 @@ function handleSubmit() {
                 submitCounter = 1
          })
     }
+}
+
+// function to save the route commands to the database
+function saveRoute() {
+    fetch("/save_route", {
+        method: "POST",
+        headers: {"Content-Type": 'application/json' },
+        body : JSON.stringify(stateCommands)
+    })
+    .then(resp => resp.json())
+    .then(data => console.log(data))
 }
 
 
@@ -104,7 +113,7 @@ function handleSubmit() {
                 )})
             }
             <button style={{'margin': '2%'}} onClick={(e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
-            <button style={{'margin': '2%'}}>Save Route</button>
+            <button style={{'margin': '2%'}} onClick={ (e) => saveRoute(e) }>Save Route</button>
             <div>
               <button onClick={ (e) => handleClick(e)}>Log Out</button>
             </div>  

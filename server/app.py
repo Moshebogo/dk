@@ -42,18 +42,23 @@ def check_cookie():
         return {1:1}, 200
     else:
         return {0:0}, 404
-
-
    
 # deletes the cookie
 @app.route("/logOut", methods=['DELETE'])
 def logout():
     if "user_id" in browser_session:
         browser_session.pop('user_id', default=None)
-        return {"status" : "cookie deleted"}
+        return {"status" : "cookie deleted"}, 200
     else:
         return {"status" : "user not found"}, 404  
 
+
+# save the flight commands to the database
+@app.route("/save_route", methods = ['GET', 'POST'])
+def save_route():
+    body = request.get_json()
+    print(body)
+    return {"test":"success"}, 200
 
 
 
