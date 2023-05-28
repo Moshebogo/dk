@@ -79,7 +79,7 @@ function handleSubmit() {
 }
 
 // function to save the route commands to the database
-function saveRoute() {
+function saveRoute(e) {
     fetch("/save_route", {
         method: "POST",
         headers: {"Content-Type": 'application/json' },
@@ -97,6 +97,11 @@ function loadRoute(e){
                     setCommands(data.route)
                     console.log(stateCommands)
                      })
+}
+
+function clearCommands(e) {
+   setCommands([form])
+   setIP("")
 }
 
 
@@ -125,6 +130,7 @@ function loadRoute(e){
             <button style={{'margin': '2%'}} onClick={ (e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
             <button style={{'margin': '2%'}} onClick={ (e) => saveRoute(e) }>Save Route</button>
             <button style={{'margin': '2%'}} onClick={ (e) => loadRoute(e)}>Load Saved Route</button>
+            <button style={{'margin': '2%'}} onClick={ (e) => clearCommands(e)}>Clear Commands</button>
             <div>
               <button onClick={ (e) => handleLogOut(e)}>Log Out</button>
             </div>  
