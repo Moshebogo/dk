@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Form from "./Form"
 
-export default function RouteContainer({ handleClick }) {
+export default function RouteContainer({ handleLogOut }) {
 
 
     // the basic setup for the controlled form
@@ -64,7 +64,6 @@ function handleSubmit() {
         submitCounter ++
     } else if (submitCounter === 1) {
         createFinalDictionary()
-        console.log(    )
         fetch("/mavproxy_2", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -87,8 +86,19 @@ function saveRoute() {
         body : JSON.stringify(stateCommands)
     })
     .then(resp => resp.json())
-    .then(data => console.log(data))
+    .then(data => {console.log(data)})
 }
+
+// function to query the database and load a save route
+function loadRoute(e){
+    fetch("/loadRoute")
+    .then(resp => resp.json())
+    .then(data => {console.log(data.route)
+                    setCommands(data.route)
+                    console.log(stateCommands)
+                     })
+}
+
 
 
 
@@ -112,10 +122,11 @@ function saveRoute() {
                     </div>
                 )})
             }
-            <button style={{'margin': '2%'}} onClick={(e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
+            <button style={{'margin': '2%'}} onClick={ (e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
             <button style={{'margin': '2%'}} onClick={ (e) => saveRoute(e) }>Save Route</button>
+            <button style={{'margin': '2%'}} onClick={ (e) => loadRoute(e)}>Load Saved Route</button>
             <div>
-              <button onClick={ (e) => handleClick(e)}>Log Out</button>
+              <button onClick={ (e) => handleLogOut(e)}>Log Out</button>
             </div>  
        </div>
     )

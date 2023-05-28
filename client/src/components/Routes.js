@@ -15,7 +15,7 @@ function checkCookie(){
 }
 
 // DELETE the cookie and Log Out
-function handleClick(e) {
+function handleLogOut(e) {
     fetch("/logOut", {
         method: "DELETE" })
     .then(resp => resp.json())
@@ -30,7 +30,7 @@ function handleClick(e) {
                 <Register checkCookie={checkCookie} stateUser={stateUser} setUser={setUser} />
             </div> 
             ) : (
-            <Test handleClick={handleClick} checkCookie={checkCookie}/>
+            <Test handleLogOut={handleLogOut} checkCookie={checkCookie}/>
             )
         }
         </div>

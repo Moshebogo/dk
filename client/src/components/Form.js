@@ -27,7 +27,7 @@ export default function Form({ dictionary, index, handleFormChange }) {
                     name="select"
                     value={dictionary.select}
                     onChange={ (e) => handleFormChange(e, index)}
-                type="number">
+                    type="number">
             </input>
       </div>
     )

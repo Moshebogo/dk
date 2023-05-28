@@ -2,6 +2,7 @@ from paramiko import SSHClient, AutoAddPolicy
 from flask import jsonify, make_response, request, session as browser_session
 from time import sleep
 from models import app, db, User, Commands
+import ast
 import os
 
 # instance of paramiko
@@ -55,16 +56,25 @@ def logout():
 @app.route("/save_route", methods = ['GET', 'POST'])
 def save_route():
     body = request.get_json()
-    print(body)
-    return {"route": Commands.to_dict()}, 200
+    print("body =>", body)
+    user_commands = Commands()
+    user_commands.command = f'{body}'
+    user_commands.user = browser_session['user_id']
+    db.session.add(user_commands)
+    db.session.commit()    
+    return {"route": user_commands.to_dict()}, 200
 
-
+# route to load the save route
+@app.route("/loadRoute")
+def load_route():  
+    route = Commands.query.filter(Commands.user == browser_session['user_id']).first()
+    return {"route": ast.literal_eval(route.command) }, 201
 
 # default route
 @app.route("/")
 def default_route():
     return make_response(jsonify({"default" : "route"}), 200)
-
+ 
 # route to arm the drone by running the "arm.py" file on the raspi
 @app.route("/armDrone", methods = ['GET'])   
 def arm_drone():
@@ -229,10 +239,10 @@ def get_all_users():
 @app.route("/commands", methods = ['GET', 'POST'])
 def all_commands():
     # GET for all commands
-    if request.method == 'GET':
+    if request.method == 'GET':   
         commands = Commands.query.all()
         commands_to_dict = [cmd.to_dict() for cmd in commands]
-        return {"status, all commands":commands_to_dict.to_dict()}, 200
+        return {"status, all commands":commands_to_dict}, 200
     # POST for all commands
     elif request.method == 'POST':
         body = request.get_json()
@@ -243,10 +253,6 @@ def all_commands():
         db.session.commit()
         return {"status, new command": new_command.to_dict()}, 201    
             
-
-
-
-
 # route for coomand by ID
 @app.route("/commands/<id>", methods = ['GET', 'PATCH', 'DELETE'])
 def command_by_id(id):
