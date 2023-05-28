@@ -1,3 +1,7 @@
+* {
+  font-family: 'Times New Roman', Times, serif;
+}
+
 #mainButtons {
   height: 200px;
   margin: 30px 0;

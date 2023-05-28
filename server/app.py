@@ -21,12 +21,11 @@ def login():
     password = user_info.get("password")
     #  check if user actually exists
     user_exists = User.query.filter((User.username == username) & (User.password == password )).first()
-    #  and is it does or does not
+    #  and if it does or does not
     if user_exists:
         print("User: ", user_exists.to_dict())
         # sets the cookie as the id of the user
-        
-
+        browser_session['user_id'] = user_exists.id  
         return user_exists.to_dict(), 200
     else:
         new_user = User(username = username, password = password)
@@ -145,29 +144,6 @@ def mavproxy_2():
     stderr.close()
     client.close()
     return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
-
- 
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @app.route("/mavproxy_3", methods = ['GET', 'POST'])

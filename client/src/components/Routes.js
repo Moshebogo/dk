@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import Register from "./Register"
-import Test from "./Test";
+import Test from "./RouteContainer";
 export default function Routes() {
 
 
-    const [stateUser, setUser] = useState(false)
+const [stateUser, setUser] = useState(false)
 
 // for when the user correctly logs in 
-  function checkCookie(){
-      fetch("/checkCookie")
-      .then(resp => resp.json())
-      .then(data => setUser(prev => !prev))
+function checkCookie(){
+    fetch("/checkCookie")
+    .then(resp => resp.json())
+    .then(data => {setUser(prev => !prev)
+                   console.log(data)})
 }
 
-  // DELETE the cookie and Log Out
+// DELETE the cookie and Log Out
 function handleClick(e) {
     fetch("/logOut", {
         method: "DELETE" })

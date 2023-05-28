@@ -1,6 +1,6 @@
 
 
-export default function Buttons() {
+export default function TestConnection() {
 
 
 // route for arming with arm.py 

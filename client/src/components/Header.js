@@ -16,8 +16,8 @@ export default function Header({ stateUser}) {
             <button className="headerButtons">{!stateUser ? "Log-In / Register" : "Log Out"}</button>
           </Link> */}
 
-          <Link to="/buttons">
-            <button className="headerButtons">Quick Flight</button>
+          <Link to="/testConnection">
+            <button className="headerButtons">Test Connection</button>
           </Link>
           
           <Link to="/map">

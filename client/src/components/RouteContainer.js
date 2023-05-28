@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Form from "./Form"
 
-export default function Test({ handleClick }) {
+export default function RouteContainer({ handleClick }) {
 
 
     // the basic setup for the controlled form
@@ -85,7 +85,7 @@ function handleSubmit() {
 
     return (
         // basic styling to make it easier to work with
-       <div style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto'}}>
+       <div style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}}>
        <button style={{'backgroundColor': 'green'}} onClick={ (e) => addCommand(e)}>ADD COMMAND</button>
        <div style={{'margin': '1%'}}>
             <label>Enter the IP addres of the drone: </label>
@@ -104,6 +104,7 @@ function handleSubmit() {
                 )})
             }
             <button style={{'margin': '2%'}} onClick={(e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
+            <button style={{'margin': '2%'}}>Save Route</button>
             <div>
               <button onClick={ (e) => handleClick(e)}>Log Out</button>
             </div>  

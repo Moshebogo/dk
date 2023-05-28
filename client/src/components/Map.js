@@ -1,9 +1,9 @@
 import { useState } from "react"
 import Form from "./Form"
-import Test from "./Test"
 
 export default function Map() {
-return <Test />
+return (<h1>Map Component</h1>)
+}
 
 //     const [state, setState] = useState([1, 2, 3])
 
@@ -48,9 +48,3 @@ return <Test />
 //     })}
 //          <input type="submit" value="Send Commands To Raspberrypi"></input>
 //         </div>
-//     )
-
-
-
-    
-}
