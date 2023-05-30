@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Form from "./Form"
+import RouteDetails from "./RouteDetails"
 
 export default function RouteContainer({ handleLogOut }) {
 
@@ -90,13 +91,23 @@ function saveRoute(e) {
 }
 
 // function to query the database and load a save route
-function loadRoute(e){
+function loadRoute(){
+    return (
+        
+            <RouteDetails />
+    
+    )
+
+}
+
+function loadRoute2(e){
     fetch("/loadRoute")
     .then(resp => resp.json())
-    .then(data => {console.log(data.route)
-                    setCommands(data.route)
-                    console.log(stateCommands)
-                     })
+    .then(data => {
+        console.log(data.route)
+        setCommands(data.route)
+        console.log(stateCommands)
+     })
 }
 
 function clearCommands(e) {
@@ -121,8 +132,8 @@ function clearCommands(e) {
               {/* creates a controlled form, so every command can get it's own form and state */}
             {stateCommands.map((dictionary, index) => {
                 return (
-                    <div style={{'display':'grid', 'margin': 'auto', 'width': '50%', 'textAlign': 'center'}}>
-                        <Form key={index} handleFormChange={handleFormChange} dictionary={dictionary} index={index}   />
+                    <div key={index} style={{'display':'grid', 'margin': 'auto', 'width': '50%', 'textAlign': 'center'}}>
+                        <Form  handleFormChange={handleFormChange} dictionary={dictionary} index={index}   />
                         <button style={{'backgroundColor': 'red'}} onClick={ (e) => deleteCommand(index)}>DELETE COMMAND</button>
                     </div>
                 )})
@@ -136,4 +147,4 @@ function clearCommands(e) {
             </div>  
        </div>
     )
-}   
+}  
