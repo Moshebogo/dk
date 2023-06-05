@@ -4,13 +4,10 @@ import RouteDetails from "./RouteDetails"
 
 export default function RouteContainer({ handleLogOut }) {
 
-
     // the basic setup for the controlled form
     const form = {'input': '', 'select': ''}
     const [stateIP, setIP] = useState("")
-    const [stateCommands, setCommands] = useState([
-        form
-    ]) 
+    const [stateCommands, setCommands] = useState( [ form ] ) 
 
 // dictionary for the "finalCommands" dictionary
 const commands = {
@@ -37,7 +34,7 @@ const commands = {
      stateCommands.map((object, index) => {
          finalCommands.push({'command': commands[object.input] + '(' + object.select + ')'})
         })
-        setCommands([form])
+        setCommands( [ form ] )
 }
 
 // makes the form a controlled form, with "onChange"
@@ -75,7 +72,7 @@ function handleSubmit() {
                 setIP("")
                 // reset the counter so the alert can happen again
                 submitCounter = 1
-         })
+         }) 
     }
 }
 
@@ -92,13 +89,13 @@ function saveRoute(e) {
 
 // function to query the database and load a save route
 function loadRoute(){
-    return (
-        
-            <RouteDetails />
-    
-    )
-
+    return (<routeDetails />)
 }
+// function to vew flight details from database
+function viewStats(e) {
+    <RouteDetails />
+}
+
 
 function loadRoute2(e){
     fetch("/loadRoute")
@@ -114,9 +111,6 @@ function clearCommands(e) {
    setCommands([form])
    setIP("")
 }
-
-
-
 
     return (
         // basic styling to make it easier to work with
@@ -142,6 +136,7 @@ function clearCommands(e) {
             <button style={{'margin': '2%'}} onClick={ (e) => saveRoute(e) }>Save Route</button>
             <button style={{'margin': '2%'}} onClick={ (e) => loadRoute(e)}>Load Saved Route</button>
             <button style={{'margin': '2%'}} onClick={ (e) => clearCommands(e)}>Clear Commands</button>
+            <button style={{'margin': '2%'}} onClick={ (e) => viewStats(e)}>View FLight Stats </button>
             <div>
               <button onClick={ (e) => handleLogOut(e)}>Log Out</button>
             </div>  

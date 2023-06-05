@@ -156,6 +156,7 @@ def mavproxy_2():
     stdout.close()
     stderr.close()
     client.close()
+    the_user = User.query.get()
     return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
 
 
@@ -253,7 +254,7 @@ def all_commands():
         db.session.commit()
         return {"status, new command": new_command.to_dict()}, 201    
             
-# route for coomand by ID
+# route for command by ID
 @app.route("/commands/<id>", methods = ['GET', 'PATCH', 'DELETE'])
 def command_by_id(id):
     command_exists = Commands.query.get(id)

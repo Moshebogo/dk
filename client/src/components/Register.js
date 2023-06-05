@@ -1,5 +1,4 @@
 import  {useState}  from "react"
-import LoggedIn from "./LoggedIn"
 // import GoogleMaps from "./GoogleMaps"
 
 export default function Register({ setUser, stateUser,checkCookie }) {
@@ -21,6 +20,7 @@ function submitForm(e) {
     })
       .then(resp => resp.json())
       .then(data =>    {
+        console.log(data)
         setPassword("")
         setUsername("") 
         checkCookie()     

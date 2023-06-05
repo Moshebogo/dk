@@ -21,15 +21,23 @@ class User(db.Model):
     password = db.Column(db.String, nullable = False)
     # the flight stats for each user
     flights  = db.Column(db.Integer)
+    attempted_flights = db.Column(db.Integer)
     crashes  = db.Column(db.Integer)
     total_commands = db.Column(db.String)
     meters_horizontal = db.Column(db.Integer)
 
+    
     def to_dict(self):
         return {
             'id': self.id,
             'username': self.username,
-            'password': self.password
+            'password': self.password,
+            'flights': self.flights,
+            'attempted_flights': self.attempted_flights,
+            'crashes': self.crashes,
+            'total_commands': self.total_commands,
+            'meters_horizontal': self.meters_horizontal,
+            'saved_route': Commands.query.filter(Commands.user == self.id).first().to_dict()
         }
     
 class Commands(db.Model):
