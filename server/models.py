@@ -19,6 +19,11 @@ class User(db.Model):
     id       = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String, nullable = False)
     password = db.Column(db.String, nullable = False)
+    # the flight stats for each user
+    flights  = db.Column(db.Integer)
+    crashes  = db.Column(db.Integer)
+    total_commands = db.Column(db.String)
+    meters_horizontal = db.Column(db.Integer)
 
     def to_dict(self):
         return {
