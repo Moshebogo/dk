@@ -4,7 +4,7 @@ import RouteContainer from "./RouteContainer";
 import LoggedIn from "./LoggedIn";
 
 
-export default function Routes() {
+export default function Routes({ userData, setUserData }) {
 
 
 const [stateUser, setUser] = useState(false)
@@ -13,11 +13,12 @@ const [stateUser, setUser] = useState(false)
 function checkCookie(){
     fetch("/checkCookie")
     .then(resp => {
-        resp.json()
         resp.ok ? setUser(true) : setUser(false)
+        return resp.json()
     })
     .then(data => {
-        console.log(data) 
+        console.log(data)
+        console.log(userData)
      })
 }
 
@@ -34,14 +35,15 @@ useEffect( () => {
     checkCookie()   
 }, [])
 
+
     return (
         <div>
             { !stateUser ? (
             <div>
-                <Register checkCookie={checkCookie} stateUser={stateUser} setUser={setUser} />
+                <Register setUserData={setUserData} checkCookie={checkCookie} stateUser={stateUser} setUser={setUser} />
             </div> 
             ) : (<>
-               <LoggedIn />
+               <LoggedIn checkCookie={checkCookie}  userData={userData}/>
                <RouteContainer handleLogOut={handleLogOut} checkCookie={checkCookie}/>
                </>
             )

@@ -11,16 +11,18 @@ import SavedRoutes from './Routes';
 export default  function App() {
 
 const [stateUser, setUser] = useState(false)
+const [userData, setUserData] = useState("")
+
 
   return (
     <BrowserRouter>
       <Header stateUser={stateUser}/>
         <Routes>
-            <Route path="/"             element={<Home />}/>
-            <Route path="/testConnection"      element={<TestConnection />}/> 
-            <Route path="/map"          element={<Map/>}/>
-            <Route path="/savedroutes"  element={<SavedRoutes stateUser={stateUser} setUser={setUser} />}/>
-            <Route path="/mavproxyform" element={<MavproxyForm />}/>   
+            <Route path="/"                element={<Home />}/>
+            <Route path="/testConnection"  element={<TestConnection />}/> 
+            <Route path="/map"             element={<Map/>}/>
+            <Route path="/savedroutes"     element={<SavedRoutes stateUser={stateUser} setUser={setUser} userData={userData} setUserData={setUserData} />}/>
+            <Route path="/mavproxyform"    element={<MavproxyForm />}/>   
         </Routes>
     </BrowserRouter>   
   )

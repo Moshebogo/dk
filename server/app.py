@@ -38,10 +38,11 @@ def login():
 @app.route("/checkCookie")
 def check_cookie():
     if browser_session['user_id'] == True:
-        return {1:1}, 200
+        active_user = User.query.get(browser_session['user_id'])
+        return active_user.to_dict(), 200
     else:
         return {0:0}, 404
-   
+
 # deletes the cookie
 @app.route("/logOut", methods=['DELETE'])
 def logout():
@@ -156,7 +157,6 @@ def mavproxy_2():
     stdout.close()
     stderr.close()
     client.close()
-    the_user = User.query.get()
     return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
 
 
