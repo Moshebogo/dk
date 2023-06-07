@@ -30,8 +30,9 @@ def login():
         new_user = User(username = username, password = password)
         db.session.add(new_user)
         db.session.commit()    
-        the_new_user = User.query.filter((User.username == username) & (User.password == password)).first()
-        browser_session['user_id'] = the_new_user.id
+        print(new_user.to_dict())
+        # the_new_user = User.query.filter((User.username == username) & (User.password == password)).first()
+        browser_session['user_id'] = new_user.id
         return new_user.to_dict(), 200
   
 #checks for the cookie
@@ -41,7 +42,8 @@ def check_cookie():
         active_user = User.query.get(browser_session['user_id'])
         return active_user.to_dict(), 200
     else:
-        return {0:0}, 404
+        active_user = User.query.get(browser_session['user_id'])
+        return active_user.to_dict(), 200       
 
 # deletes the cookie
 @app.route("/logOut", methods=['DELETE'])
@@ -69,8 +71,8 @@ def save_route():
 @app.route("/loadRoute")
 def load_route():  
     route = Commands.query.filter(Commands.user == browser_session['user_id']).first()
-    return {"route": ast.literal_eval(route.command) }, 201
-
+    return {"route": ast.literal_eval((route.command)) }, 201
+               
 # default route
 @app.route("/")
 def default_route():
@@ -207,7 +209,7 @@ def mavproxy_3():
         # 'body' is the list, 'dictionary' is the each {'command' : 'arbitrary_function(argument)'} 
         for dictionary in body:
             print("each dictionary =>", dictionary)
-            # exec(dictionary['command'])
+            exec(dictionary['command'])
 
 
     print(body)
@@ -236,6 +238,28 @@ def get_all_users():
         db.sesion.commit()
         return make_response(jsonify(new_user.to_dict()), 201)    
     
+# route for USER by ID
+@app.route("/users/<id>", methods = ['GET', 'PATCH', 'DELETE'])
+def get_user_by_id(id):
+    user_exists = User.query.get(id)
+    if not user_exists:
+        return {"status": "user not found"}, 404
+    elif user_exists:
+        if request.method == 'GET':
+            return user_exists.to_dict(), 200
+        if request.method == 'PATCH':
+            body = request.get_json()
+            for key, value in body.items():
+                setattr(user_exists, key, value)
+            db.session.add(user_exists)
+            db.session.commit()
+            return user_exists.to_dict(), 201    
+        if request.method == 'DELETE':
+            db.session.delete(user_exists)
+            db.session.commit()
+            return {"status" : "user deleted"}, 200
+            
+  
 #route for all commands
 @app.route("/commands", methods = ['GET', 'POST'])
 def all_commands():
@@ -274,6 +298,6 @@ def command_by_id(id):
             return {"status, updated correctly": command_exists.to_dict()}, 201
         # DELETE for each command
         if request.method == 'DELETE':
-            Commands.query.delete(id)
+            db.session.delete(command_exists)
             db.session.commit()
-            return {"status":"deleted"}, 200
+            return {"status":"command deleted"}, 200

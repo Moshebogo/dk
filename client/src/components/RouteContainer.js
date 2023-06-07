@@ -88,7 +88,7 @@ function saveRoute(e) {
 }
 
 // function to query the database and load a save route
-function loadRoute(){
+function loadRoute2(){
     return (<routeDetails />)
 }
 // function to vew flight details from database
@@ -97,7 +97,7 @@ function viewStats(e) {
 }
 
 
-function loadRoute2(e){
+function loadRoute(e){
     fetch("/loadRoute")
     .then(resp => resp.json())
     .then(data => {

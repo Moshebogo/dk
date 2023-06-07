@@ -19,9 +19,8 @@ function submitForm(e) {
         })
     })
       .then(resp => resp.json())
-      .then(data =>    {
-        console.log(data)
-        setUserData(data)
+      .then(returnedData =>    {
+        console.log(returnedData)
         setPassword("")
         setUsername("") 
         checkCookie()     

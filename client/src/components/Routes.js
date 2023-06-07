@@ -16,9 +16,8 @@ function checkCookie(){
         resp.ok ? setUser(true) : setUser(false)
         return resp.json()
     })
-    .then(data => {
-        console.log(data)
-        console.log(userData)
+    .then(returnedData => {
+        setUserData(returnedData)
      })
 }
 
@@ -43,7 +42,7 @@ useEffect( () => {
                 <Register setUserData={setUserData} checkCookie={checkCookie} stateUser={stateUser} setUser={setUser} />
             </div> 
             ) : (<>
-               <LoggedIn checkCookie={checkCookie}  userData={userData}/>
+               <LoggedIn userData={userData}/>
                <RouteContainer handleLogOut={handleLogOut} checkCookie={checkCookie}/>
                </>
             )
