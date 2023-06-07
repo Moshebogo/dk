@@ -70,8 +70,8 @@ def save_route():
 # route to load the save route
 @app.route("/loadRoute")
 def load_route():  
-    route = Commands.query.filter(Commands.user == browser_session['user_id']).first()
-    return {"route": ast.literal_eval((route.command)) }, 201
+    all_routes = Commands.query.filter(Commands.user == browser_session['user_id']).all()
+    return {"route": ast.literal_eval(all_routes[-1].command) }, 201
                
 # default route
 @app.route("/")
