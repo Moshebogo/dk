@@ -20,11 +20,12 @@ class User(db.Model):
     username = db.Column(db.String, nullable = False)
     password = db.Column(db.String, nullable = False)
     # the flight stats for each user
-    flights  = db.Column(db.Integer)
-    attempted_flights = db.Column(db.Integer)
-    crashes  = db.Column(db.Integer)
-    total_commands = db.Column(db.String)
-    meters_horizontal = db.Column(db.Integer)
+    flights           = db.Column(db.Integer, default = 0)
+    attempted_flights = db.Column(db.Integer, default = 0)
+    crashes           = db.Column(db.Integer, default = 0)
+    total_commands    = db.Column(db.Integer, default = 0)
+    meters_horizontal = db.Column(db.Integer, default = 0)
+    meters_vertical   = db.Column(db.Integer, default = 0)
 
     
     def to_dict(self):
