@@ -43,9 +43,13 @@ def arm_drone():
 
 
 
-def takeoff_drone(height):
-    vehicle.simple_takeoff(height)
-    time.sleep(2)
+def takeoff_drone(altitude):
+    vehicle.simple_takeoff(altitude)
+    while True:
+        print("Altitude: ", vehicle.location.global_relative_frame.alt)
+        if vehicle.location.global_relative_frame.alt >= altitude *0.95:
+            print("Target Alitutde Reached!")
+            break   
 
 def land_drone():
     vehicle.mode = VehicleMode("LAND")

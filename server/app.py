@@ -20,12 +20,13 @@ def login():
     password = user_info.get("password")
     #  check if user actually exists
     user_exists = User.query.filter((User.username == username) & (User.password == password )).first()
-    #  and if it does or does not
+    #  and if it does exist
     if user_exists:
         print("User: ", user_exists.to_dict())
         # sets the cookie as the id of the user
         browser_session['user_id'] = user_exists.id  
         return user_exists.to_dict(), 200
+    #  or does not exist
     else:
         new_user = User(username = username, password = password)
         db.session.add(new_user)
@@ -218,6 +219,47 @@ def mavproxy_3():
 
     print("the script is over") 
     return {'body': body}, 200  
+
+# route for the flight with the google map coordinates
+@app.route("/map", methods = ['GET', 'POST'])
+def map():
+    body = request.get_json()
+    print(body)
+    del body['ip']
+    print()
+    print()
+    print(body['takeOffAltitude'])
+ 
+
+
+
+    # # some set-up stuff to enable a ssh connection
+    # client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
+    # client.set_missing_host_key_policy(AutoAddPolicy())
+    # # the actual connection the the raspi
+    # client.connect({body['ip']}, username= 'pi', password= 'moshe')
+    # del body['ip']
+    # print(body)
+    # # the commands to happen on the raspi
+    # stdin, stdout, stderr = client.exec_command('hostname')
+    # print(f'Host-Name: {stdout.read().decode("utf8")}')
+    # stdin, stdout, stderr = client.exec_command(f'cd learning ; python map_frot_end "{body}"')
+    # # some prints so we can know whats happening
+    # print(f'STDOUT: {stdout.read().decode("utf8")}')
+    # print(f'STDERR: {stderr.read().decode("utf8")}')
+    # print(f'RETURN CODE: {stdout.channel.recv_exit_status()}')
+    # # closing all files and the ssh shell so they doesn't hang open
+    # stdin.close()
+    # stdout.close()
+    # stderr.close()
+    # client.close()
+    # return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
+
+
+    return body, 201
+
+
+
 
 
 #  route for all users
