@@ -1,7 +1,6 @@
 import  {useState}  from "react"
-// import GoogleMaps from "./GoogleMaps"
 
-export default function Register({ setUser, stateUser, checkCookie, setUserData }) {
+export default function Register({ checkCookie }) {
 
 // state for the user's info    
 const [stateUsername, setUsername] = useState("")

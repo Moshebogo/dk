@@ -1,6 +1,5 @@
 import { useState } from "react"
 import Form from "./Form"
-import RouteDetails from "./RouteDetails"
 
 export default function RouteContainer({ handleLogOut }) {
 
@@ -93,7 +92,7 @@ function loadRoute2(){
 }
 // function to vew flight details from database
 function viewStats(e) {
-    <RouteDetails />
+    // <RouteDetails />
 }
 
 
