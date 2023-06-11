@@ -1,50 +1,53 @@
-import { useState } from "react"
-import Form from "./Form"
+import {v4 as uuid} from 'uuid' 
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api"
+import { useState } from 'react'
 
 export default function Map() {
-return (<h1>Map Component</h1>)
+
+const [marker, setMarker] = useState({lat: 40.6972090096975, lng: -74.15704266533703})
+
+const container = {
+    width: '100%',
+    height: '70vh'
 }
 
-//     const [state, setState] = useState([1, 2, 3])
+const {isLoaded} = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
+})
+  
+const {options} = {
+    disableDefaultUI: true,
 
-//     const commands = {
-//         "Takeoff: In Meters": "takeoff",
-//         "Fly Right: In Meters": "move_right",
-//         "Fly Left: In Meters": "move_left",
-//         "Fly Front: In Meters": "move_front",
-//         "Fly Up: In Meters": "move_up",
-//         "Fly Down: In Meters": "move_down",
-//         "Fly Back: In Meters": "fly_back",
-//         "Take Picture: 1 Is Yes. 2 Is No": "module load message message COMMAND_LONG 0 0 203 0 0 0 0 0 1 0 0",
-//         "Yaw: In Relative Degrees": "setyaw" 
-//         }    
+}
 
-//     function handleClick(e) {
-//         setState(prev => [...state, state.length + 1])
-//     }
+function createMarker(e) {
+    setMarker({lat:e.latLng.lat() , lng:e.latLng.lng()})
+    console.log(marker)
+}
 
 
-//     function handleSubmit(e) {
-//         const formData = {
-                     
-//         }
+return (isLoaded ?
+    //    <div>
+        <GoogleMap
+            mapContainerStyle={container}
+            center={{lat: 40.7347, lng: -74.3152}}
+            zoom={11}
+            options={options}
+            position={{lat: 40.7347, lng: -74.3152}}
+            onClick={ (e) => createMarker(e)}    
+            >
 
+            <Marker 
+            key={uuid()}
+            position={marker}
+            icon={{
+                 url: 'https://c8.alamy.com/comp/R1PYCB/drone-vector-icon-isolated-on-transparent-background-drone-transparency-logo-concept-R1PYCB.jpg',
+                 scaledSize: new window.google.maps.Size(25, 25)
+                 }}
+            />
 
-//         fetch("/mavproxy_2", {
-//             method: 'POST',
-//             headers: {'Content-Type' : 'application/JSON'},
-//             body: JSON.stringify(formData)
-//         })
-//     }
-
-    
-//     return (
-//         <div>
-//             <h1>Map Component</h1>
-//             <button onClick={ (e) => handleClick(e)}>Add Task</button>
-//             {state.map(element => {
-//        return <Form key={element} element={element} stateElement={element} setElement={element}/> 
-    
-//     })}
-//          <input type="submit" value="Send Commands To Raspberrypi"></input>
-//         </div>
+            </GoogleMap>
+        // {/* </div>   */}
+        :
+        <h1>API key not loaded yet</h1> )
+}
