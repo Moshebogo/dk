@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 export default function Map() {
 
-const [markers, setMarker] = useState([])
+const [markers, setMarker] = useState( [{lat: 40.7347, lng: -74.3152}] )
 const [altitude, setAltitude] = useState(2)
 const [IpAddress, setIpAddress] = useState(1)
 
@@ -23,7 +23,7 @@ const {options} = {
 
 // function to add a new marker 
 function addMarker(e) {
-    setMarker(prev => [...markers,  {lat:e.latLng.lat() , lng:e.latLng.lng()}])
+    setMarker(prev => [...markers,  {lat:e.latLng.lat() , lng:e.latLng.lng()}] )
 }
 
 // function to delete a marker  

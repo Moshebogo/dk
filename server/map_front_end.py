@@ -48,9 +48,14 @@ def takeoff(altitude):
             del body['takeOffAltitude']
             break
 
-def go_to_coordinates(dictionary):
-    pass        
-    time.sleep(2)
+def go_to_coordinates(lat, lng):
+    print(lat, lng)   
+    target_location = LocationGlobalRelative(lat, lng)    
+    vehicle.simple_goto(target_location) 
+    current_location = vehicle.location.global_relative_frame
+    print("current_location: ", current_location)
+    while True:
+        remaining_distance = get_location_metres()
        
 
 
@@ -58,9 +63,9 @@ body = sys.argv[1]
 
 takeoff(body['takeOffAltitude'])    
 
-for dictionary in body:
+for dictionary in body['markers']:
     print("going to ", dictionary)
-    go_to_coordinates(dictionary)
+    go_to_coordinates(dictionary['lat'], dictionary['lng'])
 
 # safety measure in case no final land command is passed in
 vehicle.mode = VehicleMode("LAND")

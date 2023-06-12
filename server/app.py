@@ -224,15 +224,7 @@ def mavproxy_3():
 @app.route("/map", methods = ['GET', 'POST'])
 def map():
     body = request.get_json()
-    print(body)
     del body['ip']
-    print()
-    print()
-    print(body['takeOffAltitude'])
- 
-
-
-
     # # some set-up stuff to enable a ssh connection
     # client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
     # client.set_missing_host_key_policy(AutoAddPolicy())
@@ -243,7 +235,7 @@ def map():
     # # the commands to happen on the raspi
     # stdin, stdout, stderr = client.exec_command('hostname')
     # print(f'Host-Name: {stdout.read().decode("utf8")}')
-    # stdin, stdout, stderr = client.exec_command(f'cd learning ; python map_frot_end "{body}"')
+    # stdin, stdout, stderr = client.exec_command(f'cd learning ; python map_front_end "{body}"')
     # # some prints so we can know whats happening
     # print(f'STDOUT: {stdout.read().decode("utf8")}')
     # print(f'STDERR: {stderr.read().decode("utf8")}')
@@ -254,8 +246,6 @@ def map():
     # stderr.close()
     # client.close()
     # return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
-
-
     return body, 201
 
 
