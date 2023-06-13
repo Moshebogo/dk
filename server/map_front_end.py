@@ -56,6 +56,7 @@ def go_to_coordinates(lat, lng):
     print("current_location: ", current_location)
     while True:
         remaining_distance = get_location_metres()
+        LocationGlobal
        
 
 
