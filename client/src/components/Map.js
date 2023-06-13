@@ -74,7 +74,7 @@ return (isLoaded ?
                             onClick={ (e) => removeMarker(index)}    
                             />  
                 })}
-
+ 
                 </GoogleMap>
                 {/* input for the altitude and IP Address */}
                 <form onSubmit={ (e) => handleMapSubmit(e)} style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>
