@@ -51,7 +51,7 @@ function handleMapSubmit(e) {
     //  setIpAddress("")
     //  setMarker([])
 }
-     
+      
 return (isLoaded ?
        <div>
             <GoogleMap
