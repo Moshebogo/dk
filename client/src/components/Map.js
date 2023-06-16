@@ -21,7 +21,7 @@ const {options} = {
     disableDefaultUI: true,
 
 }
-
+ 
 // function to add a new marker 
 function addMarker(e) {
     setMarker(prev => [...markers,  {lat:e.latLng.lat() , lng:e.latLng.lng()}] )
