@@ -109,7 +109,6 @@ def move_front(Vx):
     0, 0
     )
     vehicle.send_mavlink(move_front_msg)
-    vehicle.flush()    
 
 def move_back(Vx):
     print("move_back function")
@@ -124,7 +123,6 @@ def move_back(Vx):
     0, 0
     )
     vehicle.send_mavlink(move_back_msg)
-    vehicle.flush()
 
 def move_right(Vy):
     print("move_right function")
@@ -139,7 +137,6 @@ def move_right(Vy):
     0, 0
     )
     vehicle.send_mavlink(move_right_msg)
-    vehicle.flush()
 
 def move_left(Vy):
     print("move_left function")
@@ -154,7 +151,6 @@ def move_left(Vy):
     0, 0
     )
     vehicle.send_mavlink(move_left_msg)
-    vehicle.flush()
 
 def move_up(Vz):
     print("move_up function")
@@ -169,7 +165,6 @@ def move_up(Vz):
     0, 0
     )
     vehicle.send_mavlink(move_up_msg)
-    vehicle.flush()
 
 def move_down(Vz):
     print("move_down function")
@@ -184,7 +179,6 @@ def move_down(Vz):
     0, 0
     )
     vehicle.send_mavlink(move_down_msg)
-    vehicle.flush()
 
 # Yes, this actually does work
 def second_execute_commands(body):

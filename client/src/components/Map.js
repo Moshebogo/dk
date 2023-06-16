@@ -7,6 +7,7 @@ export default function Map() {
 const [markers, setMarker] = useState( [{lat: 40.7347, lng: -74.3152}] )
 const [altitude, setAltitude] = useState(2)
 const [IpAddress, setIpAddress] = useState(1)
+const [homeLocation, setHomeLocation] = useState("")
 
 // boiler-plate stuff for google maps
 const container = {
@@ -54,6 +55,12 @@ function handleMapSubmit(e) {
       
 return (isLoaded ?
        <div>
+       <div style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>
+        <label>Enter your current address: </label>
+        <input type="text"
+               value={homeLocation}
+               onChange={ (e) => setHomeLocation(e.target.value)}></input>
+        </div>
             <GoogleMap
                 mapContainerStyle={container}
                 center={{lat: 40.7347, lng: -74.3152}}

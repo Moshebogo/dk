@@ -55,7 +55,7 @@ def go_to_coordinates(lat, lng):
     current_location = vehicle.location.global_relative_frame
     print("current_location: ", current_location)
     while True:
-        remaining_distance = get_location_metres()
+        remaining_distance = 
         LocationGlobal
        
 
