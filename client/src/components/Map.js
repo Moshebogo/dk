@@ -35,7 +35,6 @@ function removeMarker(index) {
 // function to handle the map-form submit
 function handleMapSubmit(e) {
     e.preventDefault()
-    // array_for_post = markers
     fetch("/map", {
         method: 'POST',
         headers: {'Content-Type' : 'application/JSON'},
@@ -70,7 +69,7 @@ return (isLoaded ?
                 onClick={ (e) => addMarker(e)}    
                 >
 
-                {markers.map((marker, index) => {
+                {markers.map( (marker, index) => {
                 return <Marker 
                             key={index}
                             position={{lat: marker.lat, lng: marker.lng}}
