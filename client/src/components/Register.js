@@ -1,6 +1,6 @@
 import  {useState}  from "react"
 
-export default function Register({ checkCookie }) {
+export default function Register({ checkCookie, setCreatedUsername }) {
 
 // state for the user's info    
 const [stateUsername, setUsername] = useState("")
@@ -20,6 +20,7 @@ function submitForm(e) {
       .then(resp => resp.json())
       .then(returnedData =>    {
         console.log(returnedData)
+        setCreatedUsername(returnedData.username)
         setPassword("")
         setUsername("") 
         checkCookie()     

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Form from "./Form"
 
-export default function RouteContainer({ handleLogOut }) {
+export default function RouteContainer({ handleLogOut, createdUsername }) {
 
     // the basic setup for the controlled form
     const form = {'input': '', 'select': ''}
@@ -114,6 +114,7 @@ function clearCommands(e) {
     return (
         // basic styling to make it easier to work with
        <div style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}}>
+       <h1>Welcome {createdUsername}!</h1>
        <button style={{'backgroundColor': 'green'}} onClick={ (e) => addCommand(e)}>ADD COMMAND</button>
        <div style={{'margin': '1%'}}>
             <label>Enter the IP addres of the drone: </label>

@@ -8,6 +8,8 @@ export default function Routes({ userData, setUserData }) {
 
 
 const [stateUser, setUser] = useState(false)
+const [createdUsername, setCreatedUsername] = useState("")
+
 
 // for when the user correctly logs in 
 function checkCookie(){
@@ -39,11 +41,11 @@ useEffect( () => {
         <div>
             { !stateUser ? (
             <div>
-                <Register setUserData={setUserData} checkCookie={checkCookie} stateUser={stateUser} setUser={setUser} />
+                <Register setCreatedUsername={setCreatedUsername} setUserData={setUserData} checkCookie={checkCookie} stateUser={stateUser} setUser={setUser} />
             </div> 
             ) : (<>
                <LoggedIn userData={userData}/>
-               <RouteContainer handleLogOut={handleLogOut} checkCookie={checkCookie}/>
+               <RouteContainer createdUsername={createdUsername} handleLogOut={handleLogOut} checkCookie={checkCookie}/>
                </>
             )
         }
