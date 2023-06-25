@@ -2,6 +2,7 @@
   "dependencies": {
     "@react-google-maps/api": "^2.18.1",
     "dotenv": "^16.1.4",
-    "react-cookie": "^4.1.1"
+    "react-cookie": "^4.1.1",
+    "react-geocode": "^0.2.3"
   }
 }
