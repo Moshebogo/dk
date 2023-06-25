@@ -43,12 +43,14 @@ class User(db.Model):
     
 class Commands(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    command = db.Column(db.String, nullable = False)
+    selected_commands = db.Column(db.String)
+    marker_commands = db.Column(db.String)
     user = db.Column(db.Integer, nullable = False)   
 
     def to_dict(self):
         return {
             'id': self.id,
-            'command': self.command,
+            'selected_commands': self.selected_commands,
+            'marker_commands': self.marker_commands,
             'user':self.user
         }

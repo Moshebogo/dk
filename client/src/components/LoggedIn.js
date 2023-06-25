@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 export default function LoggedIn({ userData }) {
   
-  console.log(userData)
+  // console.log(userData)
 
     return (
         <div style={{ 'position': 'absolute', 'left': '5%', 'top': '30%', 'margin': 'auto' }}>

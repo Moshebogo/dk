@@ -77,7 +77,7 @@ function handleSubmit() {
 
 // function to save the route commands to the database
 function saveRoute(e) {
-    fetch("/save_route", {
+    fetch("/save_route_to_selected_commands", {
         method: "POST",
         headers: {"Content-Type": 'application/json' },
         body : JSON.stringify(stateCommands)
@@ -97,7 +97,7 @@ function viewStats(e) {
 
 
 function loadRoute(e){
-    fetch("/loadRoute")
+    fetch("/load_route_from_selected_commands")
     .then(resp => resp.json())
     .then(data => {
         console.log(data.route)

@@ -12,6 +12,18 @@ client = SSHClient()
 # the secret key    
 app.secret_key = os.environ.get("SECRET_KEY")
       
+
+
+
+
+
+
+
+
+
+
+
+
 # route to login
 @app.route("/registerLogin", methods = ['POST'])
 def register_login():
@@ -19,38 +31,61 @@ def register_login():
     user_info =  request.get_json()
     username = user_info.get("username")
     password = user_info.get("password")
-    print(password)
-    #  check if user actually exists
-    user_exists = User.query.filter((User.username == username) & User.password == bcrypt.checkpw(password.encode('utf-8'), password)).first()
-    print(user_exists)
-    #  and if it does exist
-    if user_exists:
-    # if user_exists:    
-        print("User: ", user_exists.to_dict())
-        # sets the cookie as the id of the user
+    # encode the password 
+    encoded_password = password.encode('utf-8')
+    #  check if user actually exists  
+    user_exists = User.query.filter((User.username == username)).first()
+    #  checks if the username and password match
+    if user_exists and (bcrypt.checkpw(encoded_password, user_exists.password)):
+        # if user_exists:    
+        print("User already exists: ", user_exists.to_dict())
+        # sets a cookie as the id of the existing user
         browser_session['user_id'] = user_exists.id  
         return user_exists.to_dict(), 200
-    #  or does not exist
-    else:   
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-              
-        new_user = User(username = username, password = hashed_password)
+    #  checks if username is already taken, 
+    #  this will only run if the usernae was entered and  the password was incorrect
+    elif user_exists:
+        return {}, 404
+    # this will create a new user
+    else:                 
+        new_user = User(username = username, password = bcrypt.hashpw(encoded_password, bcrypt.gensalt()))
         db.session.add(new_user)
         db.session.commit()    
-        # the_new_user = User.query.filter((User.username == username) & (User.password == password)).first()
+        # sets a cookie as the id of the new user
+        new_user_after_being_commited = User.query.filter(User.username == username and password == bcrypt.checkpw(encoded_password, new_user.password)).first()
         browser_session['user_id'] = new_user.id
-        print(new_user.to_dict())
-        return new_user.to_dict(), 200
+        print("New user: ", new_user.to_dict())
+        return new_user.to_dict(), 201
   
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #checks for the cookie
 @app.route("/checkCookie")
 def check_cookie():
-    if browser_session['user_id'] == True:
+    if 'user_id' in browser_session:
         active_user = User.query.get(browser_session['user_id'])
         return active_user.to_dict(), 200
     else:
-        active_user = User.query.get(browser_session['user_id'])
-        return active_user.to_dict(), 200       
+        # print(browser_session['user_id'])
+        return {'status' : 'no user currently logged in'}, 404     
 
 # deletes the cookie
 @app.route("/logOut", methods=['DELETE'])
@@ -61,26 +96,33 @@ def logout():
     else:
         return { "status" : "user not found" }, 404  
 
-
 # save the flight commands to the database
-@app.route("/save_route", methods = ['GET', 'POST'])
+@app.route("/save_route_to_selected_commands", methods = ['GET', 'POST'])
 def save_route():
     body = request.get_json()
     print("body =>", body)
     user_commands = Commands()
-    user_commands.command = f'{body}'
+    user_commands.selected_commands = f'{body}'
     user_commands.user = browser_session['user_id']
     db.session.add(user_commands)
     db.session.commit()    
     return { "route" : user_commands.to_dict() }, 200
 
+# save the flight markers to the database
+@app.route("/save_route_to_marker_commands", methods = ['POST'])
+def save_route_to_marker_commands():
+    body = request.get_json()
+    active_user = User.query.get(browser_session['user_id'])
+    print(active_user)
+    return {'body' : body}, 200
+
 # route to load the save route
-@app.route("/loadRoute")
+@app.route("/load_route_from_selected_commands")
 def load_route():  
     all_routes = Commands.query.filter(Commands.user == browser_session['user_id']).all()
-    return {"route": ast.literal_eval(all_routes[-1].command) }, 201
+    return {"route": ast.literal_eval(all_routes[-1].selected_commands) }, 201
                
-# default route
+# default route    
 @app.route("/")
 def default_route():
     return make_response(jsonify({"default" : "route"}), 200)

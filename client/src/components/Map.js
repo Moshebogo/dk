@@ -9,8 +9,8 @@ const [mapCenter, setMapCenter] = useState({
     lat: 40.7347,
     lng: -74.3152
 })    
-
-const [markers, setMarker] = useState( [{lat: 40.7347, lng: -74.3152}] )
+// {lat: 40.7347, lng: -74.3152}
+const [markers, setMarker] = useState( [] )
 const [altitude, setAltitude] = useState(2)
 const [IpAddress, setIpAddress] = useState(1)
 const [homeLocation, setHomeLocation] = useState("")
@@ -56,11 +56,6 @@ Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API)
 Geocode.setLanguage("en")
 Geocode.setLocationType("ROOFTOP")
 
-// function to set the center of the map
-function actuallySetCenterOfMap() {
-    
-}
-
 // sets the center of the map to the entered address 
 function handlekeyDown(e) {
     if (e.key == "Enter") {
@@ -95,6 +90,22 @@ function addMarker(e) {
 // function to delete a marker  
 function removeMarker(index) {
     setMarker(prev => markers.filter( (marker) => markers.indexOf(marker) !== index) )
+}
+
+// function to save route of markers
+function saveMarkerRoute(e) {
+    fetch("/save_route_to_marker_commands", {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/JSON'},
+        body: JSON.stringify(markers)
+    })
+    .then(resp => resp.json())
+    .then(returedMarkerRoute => console.log(returedMarkerRoute))
+}
+
+// function to clear all markers
+function clearMarkerRoute(e) {
+    setMarker( [] )
 }
 
 // function to handle the map-form submit
@@ -169,6 +180,8 @@ return (isLoaded ?
                     </input>
                     <input type="submit" value="Send Commands!"></input>
                 </form>
+                <button onClick={ (e) => saveMarkerRoute(e)}>Save Route</button>
+                <button onClick={ (e) => clearMarkerRoute(e)}>Clear All Markers</button>
           </div>  
         :
         <h1>API key not loaded yet</h1> )

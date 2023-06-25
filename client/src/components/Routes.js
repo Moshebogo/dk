@@ -19,6 +19,7 @@ function checkCookie(){
         return resp.json()
     })
     .then(returnedData => {
+        console.log(returnedData)
         setUserData(returnedData)
      })
 }
@@ -28,8 +29,7 @@ function handleLogOut(e) {
     fetch("/logOut", {
         method: "DELETE" })
     .then(resp => resp.json())
-    .then(data => {console.log(data)
-                    setUser(prev => !prev)}) 
+    .then(data =>  setUser(prev => !prev)) 
 }
 
 useEffect( () => {
