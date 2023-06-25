@@ -110,7 +110,7 @@ function clearCommands(e) {
    setCommands([form])
    setIP("")
 }
-
+ 
     return (
         // basic styling to make it easier to work with
        <div style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}}>

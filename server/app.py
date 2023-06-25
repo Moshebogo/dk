@@ -2,38 +2,44 @@ from paramiko import SSHClient, AutoAddPolicy
 from flask import jsonify, make_response, request, session as browser_session
 from time import sleep
 from models import app, db, User, Commands
+import bcrypt
 import ast
 import os
 
 # instance of paramiko
 client = SSHClient()
 
-# the secret key
+# the secret key    
 app.secret_key = os.environ.get("SECRET_KEY")
  
 # route to login
 @app.route("/registerLogin", methods = ['POST'])
-def login():
+def register_login():
     # gets the users login info
     user_info =  request.get_json()
     username = user_info.get("username")
     password = user_info.get("password")
+    print(password)
     #  check if user actually exists
-    user_exists = User.query.filter((User.username == username) & (User.password == password )).first()
+    user_exists = User.query.filter((User.username == username) & User.password == bcrypt.checkpw(password.encode('utf-8'), password)).first()
+    print(user_exists)
     #  and if it does exist
     if user_exists:
+    # if user_exists:    
         print("User: ", user_exists.to_dict())
         # sets the cookie as the id of the user
         browser_session['user_id'] = user_exists.id  
         return user_exists.to_dict(), 200
     #  or does not exist
-    else:
-        new_user = User(username = username, password = password)
+    else:   
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+              
+        new_user = User(username = username, password = hashed_password)
         db.session.add(new_user)
         db.session.commit()    
-        print(new_user.to_dict())
         # the_new_user = User.query.filter((User.username == username) & (User.password == password)).first()
         browser_session['user_id'] = new_user.id
+        print(new_user.to_dict())
         return new_user.to_dict(), 200
   
 #checks for the cookie
@@ -49,11 +55,11 @@ def check_cookie():
 # deletes the cookie
 @app.route("/logOut", methods=['DELETE'])
 def logout():
-    if "user_id" in browser_session:
+    if "user_id" in browser_session:    
         browser_session.pop('user_id', default=None)
-        return {"status" : "cookie deleted"}, 200
+        return { "status" : "cookie deleted" }, 200
     else:
-        return {"status" : "user not found"}, 404  
+        return { "status" : "user not found" }, 404  
 
 
 # save the flight commands to the database
@@ -66,7 +72,7 @@ def save_route():
     user_commands.user = browser_session['user_id']
     db.session.add(user_commands)
     db.session.commit()    
-    return {"route": user_commands.to_dict()}, 200
+    return { "route" : user_commands.to_dict() }, 200
 
 # route to load the save route
 @app.route("/loadRoute")
@@ -218,7 +224,7 @@ def mavproxy_3():
     second_execute_commands(body)
 
     print("the script is over") 
-    return {'body': body}, 200  
+    return { 'body' : body }, 200  
 
 # route for the flight with the google map coordinates
 @app.route("/map", methods = ['GET', 'POST'])
