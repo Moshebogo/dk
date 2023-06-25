@@ -1,10 +1,9 @@
 import {v4 as uuid} from 'uuid' 
 import { GoogleMap, useJsApiLoader, Marker, MarkerClusterer } from "@react-google-maps/api"
 import Geocode from "react-geocode";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Map() {
- 
 
 const [mapCenter, setMapCenter] = useState({
     lat: 40.7347,
@@ -16,6 +15,42 @@ const [altitude, setAltitude] = useState(2)
 const [IpAddress, setIpAddress] = useState(1)
 const [homeLocation, setHomeLocation] = useState("")
 
+// this function will find the location of the device and will handle accordingly if the device allows it, 
+// it will also handle errors, the neccasary callback functions are all declared inside the master function, 
+// they are all invoked by a simple onClick event.
+function findDeviceLocation() {
+    function success(pos) {
+        setMapCenter({
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+        })
+    }
+    function errors(err) {
+        console.log(`ERROR(${err.code}): ${err.message}`)
+    }
+    const geoOptions = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximunAge: 0
+    }
+    if (navigator.geolocation) {
+        navigator.permissions
+        .query({name : 'geolocation'})
+        .then( result => {
+            switch (result.state) {
+                case 'granted':                   
+                case 'prompt':
+                  navigator.geolocation.getCurrentPosition(success, errors, geoOptions)
+                    break;
+                case 'denied':
+                    console.log('Find Current Location: Permission Denied')
+                    break;
+            }
+        })
+    }
+}    
+
+
 // Boiler-plate stuff for Geocode 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API)
 Geocode.setLanguage("en")
@@ -26,22 +61,18 @@ function actuallySetCenterOfMap() {
     
 }
 
+// sets the center of the map to the entered address 
 function handlekeyDown(e) {
     if (e.key == "Enter") {
-        // setMapCenter(e.target.value)
-        // console.log(mapCenter)
         Geocode.fromAddress(e.target.value).then(
             resp => {
-                console.log(resp)
                 setMapCenter({
                     lat: resp.results[0].geometry.location.lat,
                     lng: resp.results[0].geometry.location.lng
                 })
             }
         )
-    }
-        
-    
+    }    
 }
 
 // Boiler-plate stuff for google maps
@@ -90,12 +121,13 @@ function handleMapSubmit(e) {
 return (isLoaded ?
        <div>
        <div style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>
-        <label>Enter your current address: </label>
+        <label style={{'textAlign' : 'center'}}>Look up address Manually: </label>
         <input type="text"
                value={homeLocation}
                onChange={ (e) => setHomeLocation(e.target.value)}
                onKeyDown={ (e) => handlekeyDown(e)} 
                ></input>
+               <button onClick={ (e) => findDeviceLocation(e)}>Or Just Find My Location</button>
         </div>
             <GoogleMap
                 mapContainerStyle={container}
@@ -121,14 +153,14 @@ return (isLoaded ?
                 </GoogleMap>
                 {/* input for the altitude and IP Address */}
                 <form onSubmit={ (e) => handleMapSubmit(e)} style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>
-                    <label>IP Address: </label>
+                    <label style={{'textAlign' : 'center'}}>IP Address: </label>
                     <input 
                         type="text"
                         placeholder='ie: xxx-xxx-x-xxx'
                         value={IpAddress}
                         onChange={ (e) => setIpAddress(e.target.value)}>
                     </input>
-                    <label>Desired Takeoff Altitude: </label>
+                    <label style={{'textAlign' : 'center'}}>Desired Takeoff Altitude: </label>
                     <input 
                         type="number"
                         placeholder='ie: 10'
