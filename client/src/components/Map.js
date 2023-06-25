@@ -46,12 +46,12 @@ function findDeviceLocation() {
                     console.log('Find Current Location: Permission Denied')
                     break;
             }
-        })
+            })        
     }
 }    
 
 
-// Boiler-plate stuff for Geocode 
+// Boiler-plate stuff for GeoCode 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API)
 Geocode.setLanguage("en")
 Geocode.setLocationType("ROOFTOP")
@@ -67,6 +67,9 @@ function handlekeyDown(e) {
                 })
             }
         )
+        // resets the input form, regardless if it found the address
+        .then(data => setHomeLocation(""))
+        .catch(error => console.log(error), setHomeLocation(""))
     }    
 }
 
@@ -92,7 +95,7 @@ function removeMarker(index) {
     setMarker(prev => markers.filter( (marker) => markers.indexOf(marker) !== index) )
 }
 
-// function to save route of markers
+// function to save route of MARKERS
 function saveMarkerRoute(e) {
     fetch("/save_route_to_marker_commands", {
         method: 'POST',
@@ -102,6 +105,15 @@ function saveMarkerRoute(e) {
     .then(resp => resp.json())
     .then(returedMarkerRoute => console.log(returedMarkerRoute))
 }
+
+// function to load route of MARKERS
+function loadMarkerRoute(e) {
+   fetch("/load_route_from_marker_commands")
+   .then(resp => resp.json())
+   .then(returedMarkers => setMarker( returedMarkers.route ))
+//    .then(returedMarkers => console.log(returedMarkers.route))
+}
+
 
 // function to clear all markers
 function clearMarkerRoute(e) {
@@ -181,6 +193,7 @@ return (isLoaded ?
                     <input type="submit" value="Send Commands!"></input>
                 </form>
                 <button onClick={ (e) => saveMarkerRoute(e)}>Save Route</button>
+                <button onClick={ (e) => loadMarkerRoute(e)}>Load Route</button>
                 <button onClick={ (e) => clearMarkerRoute(e)}>Clear All Markers</button>
           </div>  
         :

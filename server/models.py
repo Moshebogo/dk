@@ -42,10 +42,10 @@ class User(db.Model):
         }
     
 class Commands(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
+    id                = db.Column(db.Integer, primary_key = True)
+    user              = db.Column(db.Integer, nullable = False)   
     selected_commands = db.Column(db.String)
-    marker_commands = db.Column(db.String)
-    user = db.Column(db.Integer, nullable = False)   
+    marker_commands   = db.Column(db.String)    
 
     def to_dict(self):
         return {

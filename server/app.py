@@ -12,18 +12,6 @@ client = SSHClient()
 # the secret key    
 app.secret_key = os.environ.get("SECRET_KEY")
       
-
-
-
-
-
-
-
-
-
-
-
-
 # route to login
 @app.route("/registerLogin", methods = ['POST'])
 def register_login():
@@ -57,25 +45,6 @@ def register_login():
         print("New user: ", new_user.to_dict())
         return new_user.to_dict(), 201
   
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #checks for the cookie
 @app.route("/checkCookie")
@@ -84,8 +53,8 @@ def check_cookie():
         active_user = User.query.get(browser_session['user_id'])
         return active_user.to_dict(), 200
     else:
-        # print(browser_session['user_id'])
         return {'status' : 'no user currently logged in'}, 404     
+
 
 # deletes the cookie
 @app.route("/logOut", methods=['DELETE'])
@@ -96,7 +65,8 @@ def logout():
     else:
         return { "status" : "user not found" }, 404  
 
-# save the flight commands to the database
+
+# save the flight ""COMMANDS"" to the database
 @app.route("/save_route_to_selected_commands", methods = ['GET', 'POST'])
 def save_route():
     body = request.get_json()
@@ -108,25 +78,40 @@ def save_route():
     db.session.commit()    
     return { "route" : user_commands.to_dict() }, 200
 
-# save the flight markers to the database
+
+# route to load the ""COMMANDS"" save route
+@app.route("/load_route_from_selected_commands")
+def load_route_from_selected_commands_func():  
+    all_routes = Commands.query.filter(Commands.user == browser_session['user_id']).all()
+    # This line return the last route, so the user can just save a new route, and 
+    # the most recent route will always be loaded.
+    return {"route": ast.literal_eval(all_routes[-1].selected_commands) }, 201
+
+
+# save the flight ""MARKERS"" to the database
 @app.route("/save_route_to_marker_commands", methods = ['POST'])
 def save_route_to_marker_commands():
     body = request.get_json()
     active_user = User.query.get(browser_session['user_id'])
-    print(active_user)
+    new_marker_route = Commands(user = active_user.id, marker_commands = f'{body}') 
+    db.session.add(new_marker_route)
+    db.session.commit()
     return {'body' : body}, 200
 
-# route to load the save route
-@app.route("/load_route_from_selected_commands")
-def load_route():  
-    all_routes = Commands.query.filter(Commands.user == browser_session['user_id']).all()
-    return {"route": ast.literal_eval(all_routes[-1].selected_commands) }, 201
+# route to load the ""MARKERS"" save route
+@app.route("/load_route_from_marker_commands")
+def load_route_from_marker_commands_func():
+    already_exisitng_route = Commands.query.filter(Commands.user == browser_session['user_id']).all()
+    return {"route" : ast.literal_eval(already_exisitng_route[-1].marker_commands) }, 200
+
                
+
 # default route    
 @app.route("/")
 def default_route():
     return make_response(jsonify({"default" : "route"}), 200)
  
+
 # route to arm the drone by running the "arm.py" file on the raspi
 @app.route("/armDrone", methods = ['GET'])   
 def arm_drone():

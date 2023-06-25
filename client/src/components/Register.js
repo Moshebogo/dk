@@ -1,6 +1,6 @@
 import  {useState}  from "react"
 
-export default function Register({ checkCookie, setCreatedUsername }) {
+export default function Register({ checkCookie }) {
 
 // used to create a h3 if the password is incorrect
 const [userError, setUserError] = useState(false)    
@@ -27,7 +27,6 @@ function submitForm(e) {
     }) 
     .then(returnedData => {   
           console.log(returnedData)
-          setCreatedUsername(returnedData.username)
           setPassword("")
           setUsername("") 
           checkCookie()     

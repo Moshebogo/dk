@@ -20,6 +20,7 @@ function checkCookie(){
     })
     .then(returnedData => {
         console.log(returnedData)
+        setCreatedUsername(returnedData.username)
         setUserData(returnedData)
      })
 }
@@ -41,7 +42,7 @@ useEffect( () => {
         <div>
             { !stateUser ? (
             <div>
-                <Register setCreatedUsername={setCreatedUsername} setUserData={setUserData} checkCookie={checkCookie} stateUser={stateUser} setUser={setUser} />
+                <Register setUserData={setUserData} checkCookie={checkCookie} stateUser={stateUser} setUser={setUser} />
             </div> 
             ) : (<>
                <LoggedIn userData={userData}/>
