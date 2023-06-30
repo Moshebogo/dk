@@ -106,6 +106,7 @@ function saveMarkerRoute(e) {
     .then(returedMarkerRoute => console.log(returedMarkerRoute))
 }
 
+//  TODO load all routes so the user can save multiple and select anyone
 // function to load route of MARKERS
 function loadMarkerRoute(e) {
    fetch("/load_route_from_marker_commands")

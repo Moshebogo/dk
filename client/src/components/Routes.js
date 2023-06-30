@@ -33,6 +33,8 @@ function handleLogOut(e) {
     .then(data =>  setUser(prev => !prev)) 
 }
 
+// This is so that if the page gets reloaded, it will log in the user from the set cookie,
+// with out this the cookie can only affect the front end right when the user logs in.
 useEffect( () => {
     checkCookie()   
 }, [])

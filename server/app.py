@@ -45,13 +45,14 @@ def register_login():
         print("New user: ", new_user.to_dict())
         return new_user.to_dict(), 201
   
-
+                
 #checks for the cookie
 @app.route("/checkCookie")
 def check_cookie():
     if 'user_id' in browser_session:
         active_user = User.query.get(browser_session['user_id'])
         return active_user.to_dict(), 200
+        # return {"test" : "test"}, 200
     else:
         return {'status' : 'no user currently logged in'}, 404     
 
@@ -65,6 +66,16 @@ def logout():
     else:
         return { "status" : "user not found" }, 404  
 
+# deletes the account of the user loggin in
+@app.route("/delete_account")
+def delete_account():
+    active_user = User.query.get(browser_session['user_id'])
+    db.session.delete(active_user)
+    db.session.commit()
+    browser_session.pop('user_id', default = None)
+    return {'status': 'user deleted'}, 200
+   
+
 
 # save the flight ""COMMANDS"" to the database
 @app.route("/save_route_to_selected_commands", methods = ['GET', 'POST'])
@@ -77,8 +88,7 @@ def save_route():
     db.session.add(user_commands)
     db.session.commit()    
     return { "route" : user_commands.to_dict() }, 200
-
-
+# TODO load all routes so the user can save multiple and select anyone
 # route to load the ""COMMANDS"" save route
 @app.route("/load_route_from_selected_commands")
 def load_route_from_selected_commands_func():  
@@ -97,7 +107,7 @@ def save_route_to_marker_commands():
     db.session.add(new_marker_route)
     db.session.commit()
     return {'body' : body}, 200
-
+# TODO load all routes so the user can save multiple and select anyone
 # route to load the ""MARKERS"" save route
 @app.route("/load_route_from_marker_commands")
 def load_route_from_marker_commands_func():

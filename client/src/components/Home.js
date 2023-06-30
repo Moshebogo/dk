@@ -1,7 +1,9 @@
+import TestForMultipleRoutes from "./TestForMultipleRoutes"
+
 export default function Home() {
     return (
         <div>
-            <h1>Home Component</h1>
+            <TestForMultipleRoutes />
         </div>
     )
 }

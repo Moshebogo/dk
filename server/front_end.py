@@ -163,7 +163,7 @@ def execute_commands(arg1 = 'print("N\A")', arg2 = 'print("N\A")', arg3 = 'print
 
 
 # I wonder if this will work
-def second_execute_commands(body):
+def execute_all_commands(body):
     print("body => ", body)
     for dictionary in body:
         #  commented out until the prints actually print as expected
@@ -171,7 +171,7 @@ def second_execute_commands(body):
         print("each dictionary => ", dictionary)
         print("each actual command => ", dictionary['command'])
 
-second_execute_commands(sys.argv[1])
+execute_all_commands(sys.argv[1])
 
 # safety measure in case no final land command is passed in
 vehicle.mode = VehicleMode("LAND")

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Form from "./Form"
 
-export default function RouteContainer({ handleLogOut, createdUsername }) {
+export default function RouteContainer({ handleLogOut, createdUsername, checkCookie }) {
 
     // the basic setup for the controlled form
     const form = {'input': '', 'select': ''}
@@ -75,6 +75,19 @@ function handleSubmit() {
     }
 }
 
+// deletes the account of the user that is logged in
+function deleteAccount(e) {
+    fetch("/delete_account")
+    .then(resp => resp.json())
+    .then(returnedData => 
+        {
+        checkCookie()
+        console.log(returnedData)
+        }
+    )
+
+}
+
 // function to save the route commands to the database
 function saveRoute(e) {
     fetch("/save_route_to_selected_commands", {
@@ -95,7 +108,7 @@ function viewStats(e) {
     // <RouteDetails />
 }
 
-
+// TODO load all routes so the user can save multiple and select anyone
 function loadRoute(e){
     fetch("/load_route_from_selected_commands")
     .then(resp => resp.json())
@@ -106,6 +119,7 @@ function loadRoute(e){
      })
 }
 
+// clears the commands that the user choose
 function clearCommands(e) {
    setCommands([form])
    setIP("")
@@ -126,17 +140,18 @@ function clearCommands(e) {
               {/* creates a controlled form, so every command can get it's own form and state */}
             {stateCommands.map((dictionary, index) => {
                 return (
-                    <div key={index} style={{'display':'grid', 'margin': 'auto', 'width': '50%', 'textAlign': 'center'}}>
+                    <div key={index} style={{display:'grid', 'margin': 'auto', 'width': '50%', 'textAlign': 'center'}}>
                         <Form  handleFormChange={handleFormChange} dictionary={dictionary} index={index}   />
-                        <button style={{'backgroundColor': 'red'}} onClick={ (e) => deleteCommand(index)}>DELETE COMMAND</button>
+                        <button style={{backgroundColor: 'red'}} onClick={ (e) => deleteCommand(index)}>DELETE COMMAND</button>
                     </div>
                 )})
             }
-            <button style={{'margin': '2%'}} onClick={ (e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
-            <button style={{'margin': '2%'}} onClick={ (e) => saveRoute(e) }>Save Route</button>
-            <button style={{'margin': '2%'}} onClick={ (e) => loadRoute(e)}>Load Saved Route</button>
-            <button style={{'margin': '2%'}} onClick={ (e) => clearCommands(e)}>Clear Commands</button>
-            <button style={{'margin': '2%'}} onClick={ (e) => viewStats(e)}>View FLight Stats </button>
+            <button style={{margin: '2%'}} onClick={ (e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
+            <button style={{margin: '2%'}} onClick={ (e) => saveRoute(e) }>Save Route</button>
+            <button style={{margin: '2%'}} onClick={ (e) => loadRoute(e)}>Load Saved Route</button>
+            <button style={{margin: '2%'}} onClick={ (e) => clearCommands(e)}>Clear Commands</button>
+            <button style={{margin: '2%'}} onClick={ (e) => viewStats(e)}>View FLight Stats </button>
+            <button style={{margin: '2%', backgroundColor: 'red'}} onClick={ (e) => deleteAccount(e)}>Delete My Account</button>
             <div>
               <button onClick={ (e) => handleLogOut(e)}>Log Out</button>
             </div>  
