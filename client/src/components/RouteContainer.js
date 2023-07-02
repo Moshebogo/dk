@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { confirmAlert } from 'react-confirm-alert'
 import Form from "./Form"
 
 export default function RouteContainer({ handleLogOut, createdUsername, checkCookie }) {
@@ -77,14 +78,18 @@ function handleSubmit() {
 
 // deletes the account of the user that is logged in
 function deleteAccount(e) {
+    if (window.confirm(`    Are you sure you want to delete your account?
+    This action is permanent and can not be undone.`))
+    {
     fetch("/delete_account")
     .then(resp => resp.json())
     .then(returnedData => 
         {
         checkCookie()
-        console.log(returnedData)
+        // console.log(returnedData)
         }
     )
+    }
 
 }
 
@@ -127,7 +132,8 @@ function clearCommands(e) {
  
     return (
         // basic styling to make it easier to work with
-       <div style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}}>
+       <div className="generalFlex">
+       {/* style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}} */}
        <h1>Welcome {createdUsername}!</h1>
        <button style={{'backgroundColor': 'green'}} onClick={ (e) => addCommand(e)}>ADD COMMAND</button>
        <div style={{'margin': '1%'}}>

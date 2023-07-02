@@ -27,11 +27,14 @@ def register_login():
     if user_exists and (bcrypt.checkpw(encoded_password, user_exists.password)):
         # if user_exists:    
         print("User already exists: ", user_exists.to_dict())
+        # changes the user to an old one so the frony end will render 'Welcome Back'
+        user_exists.new_or_old_user = True
+        db.session.commit()
         # sets a cookie as the id of the existing user
         browser_session['user_id'] = user_exists.id  
         return user_exists.to_dict(), 200
     #  checks if username is already taken, 
-    #  this will only run if the usernae was entered and  the password was incorrect
+    #  this will only run if the usernae was entered but the password was incorrect
     elif user_exists:
         return {}, 404
     # this will create a new user

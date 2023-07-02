@@ -94,3 +94,11 @@ label {
 form label, form input {
   font-family: 'Times New Roman', Times, serif;
 }
+
+.generalFlex {
+ display: flex;
+ align-items: center;
+ flex-direction: column;
+ justify-content: center;
+ margin: 20px;
+}
