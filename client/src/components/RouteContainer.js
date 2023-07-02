@@ -2,12 +2,12 @@ import { useState } from "react"
 import { confirmAlert } from 'react-confirm-alert'
 import Form from "./Form"
 
-export default function RouteContainer({ handleLogOut, createdUsername, checkCookie }) {
+export default function RouteContainer({ handleLogOut, createdUsername, checkCookie, oldUser }) {
 
     // the basic setup for the controlled form
     const form = {'input': '', 'select': ''}
     const [stateIP, setIP] = useState("")
-    const [stateCommands, setCommands] = useState( [ form ] ) 
+    const [stateCommands, setCommands] = useState( [ form ] )
 
 // dictionary for the "finalCommands" dictionary
 const commands = {
@@ -124,17 +124,18 @@ function loadRoute(e){
      })
 }
 
-// clears the commands that the user choose
+// clears the commands and IPAdress that the user choose
 function clearCommands(e) {
    setCommands([form])
    setIP("")
 }
  
+
     return (
         // basic styling to make it easier to work with
        <div className="generalFlex">
        {/* style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}} */}
-       <h1>Welcome {createdUsername}!</h1>
+       <h1>Welcome {oldUser ? 'Back' : null} {createdUsername} !</h1>
        <button style={{'backgroundColor': 'green'}} onClick={ (e) => addCommand(e)}>ADD COMMAND</button>
        <div style={{'margin': '1%'}}>
             <label>Enter the IP addres of the drone: </label>

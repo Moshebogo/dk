@@ -9,6 +9,8 @@ export default function Routes({ userData, setUserData }) {
 
 const [stateUser, setUser] = useState(false)
 const [createdUsername, setCreatedUsername] = useState("")
+const [oldUser, setOldUser] = useState(false) 
+
 
 
 // for when the user correctly logs in 
@@ -19,8 +21,9 @@ function checkCookie(){
         return resp.json()
     })
     .then(returnedData => {
-        // console.log(returnedData)
+        console.log(returnedData)
         setCreatedUsername(returnedData.username)
+        setOldUser(returnedData.old_user)
         setUserData(returnedData)
      })
 }
@@ -48,7 +51,7 @@ useEffect( () => {
             </div> 
             ) : (<>
                <LoggedIn userData={userData}/>
-               <RouteContainer createdUsername={createdUsername} handleLogOut={handleLogOut} checkCookie={checkCookie}/>
+               <RouteContainer createdUsername={createdUsername} handleLogOut={handleLogOut} checkCookie={checkCookie} oldUser={oldUser}/>
                </>
             )
         }

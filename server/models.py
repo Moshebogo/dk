@@ -20,7 +20,7 @@ class User(db.Model):
     id       = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String, nullable = False)
     password = db.Column(db.String, nullable = False)
-    new_or_old_user = db.Column(db.Boolean, default=    False)
+    old_user = db.Column(db.Boolean, default=    False)
     # the flight stats for each user
     flights           = db.Column(db.Integer, default = 0)
     attempted_flights = db.Column(db.Integer, default = 0)
@@ -39,7 +39,7 @@ class User(db.Model):
             'crashes': self.crashes,
             'total_commands': self.total_commands,
             'meters_horizontal': self.meters_horizontal,
-            'new_or_old_user': self.new_or_old_user,
+            'old_user': self.old_user,
             # 'saved_route': Commands.query.filter(Commands.user == self.id).first().to_dict()
         }
     

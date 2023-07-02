@@ -28,7 +28,7 @@ def register_login():
         # if user_exists:    
         print("User already exists: ", user_exists.to_dict())
         # changes the user to an old one so the frony end will render 'Welcome Back'
-        user_exists.new_or_old_user = True
+        user_exists.old_user = True
         db.session.commit()
         # sets a cookie as the id of the existing user
         browser_session['user_id'] = user_exists.id  
