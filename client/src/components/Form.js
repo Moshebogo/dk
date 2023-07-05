@@ -1,9 +1,9 @@
 import { useState } from "react"
 
-export default function Form({ dictionary, index, handleFormChange }) {
+export default function Form({ dictionary, index, handleFormChange, deleteCommand }) {
 
     return (
-        <div>
+        <div className="Each-command-form">
             <label> Command # {index+1}: </label>
             <select id="firstSelect"
                     name="input"
@@ -29,6 +29,7 @@ export default function Form({ dictionary, index, handleFormChange }) {
                     onChange={ (e) => handleFormChange(e, index)}
                     type="number">
             </input>
+            <button id="delete-command-button" style={{backgroundColor: 'red'}} onClick={ (e) => deleteCommand(index)}>DELETE COMMAND</button>
       </div>
     )
 }

@@ -1,7 +1,6 @@
-import {v4 as uuid} from 'uuid' 
 import { GoogleMap, useJsApiLoader, Marker, MarkerClusterer } from "@react-google-maps/api"
 import Geocode from "react-geocode";
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export default function Map() {
 
@@ -67,7 +66,7 @@ function handlekeyDown(e) {
                 })
             }
         )
-        // resets the input form, regardless if it found the address
+        // resets the input form, regardless if it found the address or not
         .then(data => setHomeLocation(""))
         .catch(error => console.log(error), setHomeLocation(""))
     }    

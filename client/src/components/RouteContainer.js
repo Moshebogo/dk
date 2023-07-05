@@ -135,7 +135,7 @@ function clearCommands(e) {
         // basic styling to make it easier to work with
        <div className="generalFlex">
        {/* style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}} */}
-       <h1>Welcome {oldUser ? 'Back' : null} {createdUsername} !</h1>
+       <h1>Welcome {oldUser ? `Back ${createdUsername} !` : `${createdUsername} !` }</h1>
        <button style={{'backgroundColor': 'green'}} onClick={ (e) => addCommand(e)}>ADD COMMAND</button>
        <div style={{'margin': '1%'}}>
             <label>Enter the IP addres of the drone: </label>
@@ -148,8 +148,7 @@ function clearCommands(e) {
             {stateCommands.map((dictionary, index) => {
                 return (
                     <div key={index} style={{display:'grid', 'margin': 'auto', 'width': '50%', 'textAlign': 'center'}}>
-                        <Form  handleFormChange={handleFormChange} dictionary={dictionary} index={index}   />
-                        <button style={{backgroundColor: 'red'}} onClick={ (e) => deleteCommand(index)}>DELETE COMMAND</button>
+                        <Form deleteCommand={deleteCommand} handleFormChange={handleFormChange} dictionary={dictionary} index={index}   />
                     </div>
                 )})
             }
@@ -157,7 +156,7 @@ function clearCommands(e) {
             <button style={{margin: '2%'}} onClick={ (e) => saveRoute(e) }>Save Route</button>
             <button style={{margin: '2%'}} onClick={ (e) => loadRoute(e)}>Load Saved Route</button>
             <button style={{margin: '2%'}} onClick={ (e) => clearCommands(e)}>Clear Commands</button>
-            <button style={{margin: '2%'}} onClick={ (e) => viewStats(e)}>View FLight Stats </button>
+            <button style={{margin: '2%'}} onClick={ (e) => viewStats(e)}>View Flight Stats </button>
             <button style={{margin: '2%', backgroundColor: 'red'}} onClick={ (e) => deleteAccount(e)}>Delete My Account</button>
             <div>
               <button onClick={ (e) => handleLogOut(e)}>Log Out</button>
