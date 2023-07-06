@@ -3,7 +3,7 @@ import EachRouteFromDb from "./EachRouteFromDb"
 
 export default function TestForMultipleRoutes() {
 
-    const [routes, setRoutes] = useState([1, 2, 3, 4, 5, 6, 7])
+    const [routes, setRoutes] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     
     return (
         <div className="gallery_items">

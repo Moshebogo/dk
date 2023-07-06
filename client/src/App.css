@@ -139,14 +139,16 @@ label {
   overflow-x: scroll;
   position: relative;
   margin: 10% auto;
-  width: 50%;
+  width: 60%;
   height: 100%;
   border: 2px solid red;
  }
 
  .gallery_image {
-  margin: 10%;
-  width: 100%;
+  margin: 15px;
+  height: 8%;
+  width: 100px;
+  border: 2px solid blue;
  }
 
  .label_on_the_left {
