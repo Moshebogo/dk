@@ -2,18 +2,22 @@ import { GoogleMap, useJsApiLoader, Marker, MarkerClusterer } from "@react-googl
 import Geocode from "react-geocode";
 import { useState } from 'react'
 
-export default function Map() {
+export default function Map({ markers, setMarker }) {
 
 const [mapCenter, setMapCenter] = useState({
     lat: 40.7347,
     lng: -74.3152
 })    
 // {lat: 40.7347, lng: -74.3152}
-const [markers, setMarker] = useState( [] )
+// const [markers, setMarker] = useState( [] )
 const [altitude, setAltitude] = useState(2)
 const [IpAddress, setIpAddress] = useState(1)
 const [homeLocation, setHomeLocation] = useState("")
-
+// state for the red pin if an address is found
+const [redPin, setRedPin] = useState({
+    lat: 40.7347,
+    lng: -74.3152
+})
 // this function will find the location of the device and will handle accordingly if the device allows it, 
 // it will also handle errors, the neccasary callback functions are all declared inside the master function, 
 // they are all invoked by a simple onClick event.
@@ -23,6 +27,7 @@ function findDeviceLocation() {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude
         })
+
     }
     function errors(err) {
         console.log(`ERROR(${err.code}): ${err.message}`)
@@ -48,7 +53,6 @@ function findDeviceLocation() {
             })        
     }
 }    
-
 
 // Boiler-plate stuff for GeoCode 
 Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API)
@@ -106,19 +110,14 @@ function saveMarkerRoute(e) {
 }
 
 //  TODO load all routes so the user can save multiple and select anyone
+// 
+// 
 // function to load route of MARKERS
 function loadMarkerRoute(e) {
-//    fetch("/load_route_from_marker_commands")
-//    .then(resp => resp.json())
-//    .then(returedMarkers => setMarker( returedMarkers.route ))
-
-   fetch("/load_all_marker_routes")
+   fetch("/load_route_from_marker_commands")
    .then(resp => resp.json())
-   .then(data => console.log(data))
-
-//    .then(returedMarkers => console.log(returedMarkers.route))
+   .then(returedMarkers => setMarker( returedMarkers.route ))
 }
-
 
 // function to clear all markers
 function clearMarkerRoute(e) {
@@ -171,12 +170,20 @@ return (isLoaded ?
                             key={index}
                             position={{lat: marker.lat, lng: marker.lng}}
                             icon={{
-                                url: 'https://c8.alamy.com/comp/R1PYCB/drone-vector-icon-isolated-on-transparent-background-drone-transparency-logo-concept-R1PYCB.jpg',
-                                scaledSize: new window.google.maps.Size(20, 20)
-                                }}
+                                 url: 'https://c8.alamy.com/comp/R1PYCB/drone-vector-icon-isolated-on-transparent-background-drone-transparency-logo-concept-R1PYCB.jpg',
+                                 scaledSize: new window.google.maps.Size(20, 20)
+                                 }}
                             onClick={ (e) => removeMarker(index)}    
                             />  
                 })}
+                        {  redPin && <Marker 
+                           position={redPin}
+                           icon={{
+                                url: 'https://c8.alamy.com/comp/R1PYCB/drone-vector-icon-isolated-on-transparent-background-drone-transparency-logo-concept-R1PYCB.jpg',
+                                scaledSize: new window.google.maps.Size(20, 20)
+                                }}
+                                
+                        />}
  
                 </GoogleMap>
                 {/* input for the altitude and IP Address */}

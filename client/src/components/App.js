@@ -12,15 +12,17 @@ export default  function App() {
 
 const [stateUser, setUser] = useState(false)
 const [userData, setUserData] = useState("")
+// testing
+const [markers, setMarker] = useState( [] )
 
 
   return (
     <BrowserRouter>
       <Header stateUser={stateUser}/>
         <Routes>
-            <Route path="/"                element={<Home />}/>
+            <Route path="/"                element={<Home setMarker={setMarker} />}/>
             <Route path="/testConnection"  element={<TestConnection />}/> 
-            <Route path="/map"             element={<Map/>}/>
+            <Route path="/map"             element={<Map markers={markers} setMarker={setMarker} />}/>
             <Route path="/savedroutes"     element={<SavedRoutes stateUser={stateUser} setUser={setUser} userData={userData} setUserData={setUserData} />}/>
             <Route path="/mavproxyform"    element={<MavproxyForm />}/>   
         </Routes>

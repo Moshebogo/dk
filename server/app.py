@@ -117,24 +117,17 @@ def load_route_from_marker_commands_func():
     already_exisitng_route = Commands.query.filter(Commands.user == browser_session['user_id']).all()
     return {"route" : ast.literal_eval(already_exisitng_route[-1].marker_commands) }, 200
 
-# this is just a trial for the route that will return all arker routes
-#
-#################################################################
-#
-#
+
+# this will return all the routes that belong to the active user
 @app.route("/load_all_marker_routes")
 def load_all_marker_routes():
     all_marker_routes = Commands.query.filter(Commands.user == browser_session['user_id']).all()
-    temp = []
+    marker_routes_ready_for_json = []
     for route in all_marker_routes:
-        temp.append(ast.literal_eval(route.marker_commands)) 
-        print() 
-    return {"routes" : (temp)}, 200
-#
-# 
-#
-# ###################################################################
-               
+        marker_routes_ready_for_json.append(ast.literal_eval(route.marker_commands)) 
+    print(marker_routes_ready_for_json)
+    return {"routes" : marker_routes_ready_for_json}, 200
+            
 
 # default route    
 @app.route("/")

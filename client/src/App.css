@@ -135,12 +135,12 @@ label {
 
  .gallery_items {
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   overflow-x: scroll;
   position: relative;
-  margin: 10% auto;
-  width: 60%;
-  height: 100%;
+  margin: 5% auto;
+  /* width: 60%; */
   border: 2px solid red;
  }
 
