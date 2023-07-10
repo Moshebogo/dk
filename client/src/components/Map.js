@@ -8,8 +8,6 @@ const [mapCenter, setMapCenter] = useState({
     lat: 40.7347,
     lng: -74.3152
 })    
-// {lat: 40.7347, lng: -74.3152}
-// const [markers, setMarker] = useState( [] )
 const [altitude, setAltitude] = useState(2)
 const [IpAddress, setIpAddress] = useState(1)
 const [homeLocation, setHomeLocation] = useState("")
@@ -18,6 +16,13 @@ const [redPin, setRedPin] = useState({
     lat: 40.7347,
     lng: -74.3152
 })
+// state for the total route distance 
+const [actualDistance, setActualDistance] = useState(0)
+
+
+
+
+
 // this function will find the location of the device and will handle accordingly if the device allows it, 
 // it will also handle errors, the neccasary callback functions are all declared inside the master function, 
 // they are all invoked by a simple onClick event.
@@ -27,6 +32,11 @@ function findDeviceLocation() {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude
         })
+        setRedPin({
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+        })
+        console.log(redPin)
 
     }
     function errors(err) {
@@ -47,7 +57,7 @@ function findDeviceLocation() {
                   navigator.geolocation.getCurrentPosition(success, errors, geoOptions)
                     break;
                 case 'denied':
-                    console.log('Find Current Location: Permission Denied')
+                    console.log('Unable To Find Current Location: Permission Denied')
                     break;
             }
             })        
@@ -64,6 +74,11 @@ function handlekeyDown(e) {
     if (e.key == "Enter") {
         Geocode.fromAddress(e.target.value).then(
             resp => {
+                setRedPin({
+                    lat: resp.results[0].geometry.location.lat,
+                    lng: resp.results[0].geometry.location.lng
+                })
+                console.log(redPin)
                 setMapCenter({
                     lat: resp.results[0].geometry.location.lat,
                     lng: resp.results[0].geometry.location.lng
@@ -95,7 +110,7 @@ function addMarker(e) {
 
 // function to delete a marker  
 function removeMarker(index) {
-    setMarker(prev => markers.filter( (marker) => markers.indexOf(marker) !== index) )
+    setMarker(prev => markers.filter( (marker) => markers.indexOf(marker) !== index))      
 }
 
 // function to save route of MARKERS
@@ -116,7 +131,9 @@ function saveMarkerRoute(e) {
 function loadMarkerRoute(e) {
    fetch("/load_route_from_marker_commands")
    .then(resp => resp.json())
-   .then(returedMarkers => setMarker( returedMarkers.route ))
+   .then(returedMarkers => {
+    setMarker( returedMarkers.route )
+  })
 }
 
 // function to clear all markers
@@ -144,6 +161,7 @@ function handleMapSubmit(e) {
     //  setMarker([])
     )
 }
+
       
 return (isLoaded ?
        <div>
@@ -164,26 +182,25 @@ return (isLoaded ?
                 position={{lat: 40.7347, lng: -74.3152}}
                 onClick={ (e) => addMarker(e)}    
                 >
- 
                 {markers.map( (marker, index) => {
                 return <Marker 
                             key={index}
                             position={{lat: marker.lat, lng: marker.lng}}
                             icon={{
                                  url: 'https://c8.alamy.com/comp/R1PYCB/drone-vector-icon-isolated-on-transparent-background-drone-transparency-logo-concept-R1PYCB.jpg',
-                                 scaledSize: new window.google.maps.Size(20, 20)
+                                  scaledSize: new window.google.maps.Size(20, 20)
                                  }}
                             onClick={ (e) => removeMarker(index)}    
                             />  
-                })}
-                        {  redPin && <Marker 
-                           position={redPin}
+                })} 
+                        {/* <Marker 
+                           position={{lat: 40.7347, lng: -74.3152}}
                            icon={{
-                                url: 'https://c8.alamy.com/comp/R1PYCB/drone-vector-icon-isolated-on-transparent-background-drone-transparency-logo-concept-R1PYCB.jpg',
-                                scaledSize: new window.google.maps.Size(20, 20)
-                                }}
-                                
-                        />}
+                                 url: 'https://c8.alamy.com/comp/R1PYCB/drone-vector-icon-isolated-on-transparent-background-drone-transparency-logo-concept-R1PYCB.jpg',
+                                  scaledSize: new window.google.maps.Size(20, 20)
+                                 }}
+                        /> */}
+                        
  
                 </GoogleMap>
                 {/* input for the altitude and IP Address */}
@@ -207,7 +224,11 @@ return (isLoaded ?
                 <button onClick={ (e) => saveMarkerRoute(e)}>Save Route</button>
                 <button onClick={ (e) => loadMarkerRoute(e)}>Load Route</button>
                 <button onClick={ (e) => clearMarkerRoute(e)}>Clear All Markers</button>
+          <div>
+            <h3>{markers.length > 1 ? "Total Distance: " : "Create a route to view the Total Distance here."}</h3>
+          </div>
           </div>  
+          
         :
         <h1>API key not loaded yet</h1> )
 }

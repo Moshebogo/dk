@@ -31,6 +31,10 @@ export default function Header({ stateUser}) {
           <Link to="/mavproxyform">
             <button className="headerButtons">Mavproxy</button>
           </Link>
+
+          <Link to="/contact">
+            <button className="headerButtons">Contact Us</button>
+          </Link>
         </div>
 
       </div>
