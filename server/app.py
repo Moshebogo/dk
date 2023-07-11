@@ -100,11 +100,12 @@ def load_route_from_selected_commands_func():
     # the most recent route will always be loaded.
     return {"route": ast.literal_eval(all_routes[-1].selected_commands) }, 201
 
-
+     
 # save the flight ""MARKERS"" to the database
 @app.route("/save_route_to_marker_commands", methods = ['POST'])
 def save_route_to_marker_commands():
     body = request.get_json()
+    print(body)   
     active_user = User.query.get(browser_session['user_id'])
     new_marker_route = Commands(user = active_user.id, marker_commands = f'{body}') 
     db.session.add(new_marker_route)
