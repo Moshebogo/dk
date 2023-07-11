@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { confirmAlert } from 'react-confirm-alert'
-import Form from "./Form"
+import Form from "./Form.js"
 
 export default function RouteContainer({ handleLogOut, createdUsername, checkCookie, oldUser }) {
 

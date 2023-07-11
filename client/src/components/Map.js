@@ -1,10 +1,10 @@
 import { GoogleMap, useJsApiLoader, Marker, MarkerClusterer } from "@react-google-maps/api"
 import Geocode from "react-geocode";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Map({ markers, setMarker }) {
 
-const [mapCenter, setMapCenter] = useState({
+    const [mapCenter, setMapCenter] = useState({
     lat: 40.7347,
     lng: -74.3152
 })    
@@ -18,6 +18,26 @@ const [redPin, setRedPin] = useState({
 })
 // state for the total route distance 
 const [actualDistance, setActualDistance] = useState(0)
+
+
+useEffect( () => {
+    let total = 0
+    for (let i=0;i<=markers.length;i++) {
+        if (markers[i+1]!==undefined) {
+                let mk1 = markers[i]
+                let mk2 = markers[i+1]
+                const R = 3958.8;                                // Radius of the Earth in miles
+                let rlat1 = mk1.lat * (Math.PI/180);             // Convert degrees to radians
+                let rlat2 = mk2.lat * (Math.PI/180);             // Convert degrees to radians
+                let difflat = rlat2-rlat1;                       // Radian difference (latitudes)
+                let difflon = (mk2.lng-mk1.lng) * (Math.PI/180); // Radian difference (longitudes)
+
+                let d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+                total = total + (d * 5280)               
+        }
+    }
+   setActualDistance(total)
+}, [markers])
 
 
 
@@ -162,6 +182,23 @@ function handleMapSubmit(e) {
     )
 }
 
+// function calculateDistance(markers) {
+//     for (let i=0;i<=markers.length;i++) {
+//         if (markers[i+1]!==undefined) {
+//             function haversine_distance(mk1 = markers[i], mk2 = markers[i+1]) {
+//                 const R = 3958.8; // Radius of the Earth in miles
+//                 let rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians
+//                 let rlat2 = mk2.position.lat() * (Math.PI/180); // Convert degrees to radians
+//                 let difflat = rlat2-rlat1; // Radian difference (latitudes)
+//                 let difflon = (mk2.position.lng()-mk1.position.lng()) * (Math.PI/180); // Radian difference (longitudes)
+          
+//                 let d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+//                 console.log(d);
+//               }
+//               haversine_distance()
+//         }
+//     }
+// }
       
 return (isLoaded ?
        <div>
@@ -225,7 +262,7 @@ return (isLoaded ?
                 <button onClick={ (e) => loadMarkerRoute(e)}>Load Route</button>
                 <button onClick={ (e) => clearMarkerRoute(e)}>Clear All Markers</button>
           <div>
-            <h3>{markers.length > 1 ? "Total Distance: " : "Create a route to view the Total Distance here."}</h3>
+            <h3>{markers.length > 1 ? `Total Distance: ${actualDistance}` : "Create a route to view the Total Distance here."}</h3>
           </div>
           </div>  
           
