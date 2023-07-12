@@ -100,7 +100,7 @@ def load_route_from_selected_commands_func():
     # the most recent route will always be loaded.
     return {"route": ast.literal_eval(all_routes[-1].selected_commands) }, 201
 
-     
+ 
 # save the flight ""MARKERS"" to the database
 @app.route("/save_route_to_marker_commands", methods = ['POST'])
 def save_route_to_marker_commands():
@@ -123,10 +123,12 @@ def load_route_from_marker_commands_func():
 @app.route("/load_all_marker_routes")
 def load_all_marker_routes():
     all_marker_routes = Commands.query.filter(Commands.user == browser_session['user_id']).all()
+    print(list(all_marker_routes))
     marker_routes_ready_for_json = []
     for route in all_marker_routes:
         marker_routes_ready_for_json.append(ast.literal_eval(route.marker_commands)) 
     print(marker_routes_ready_for_json)
+    print()
     return {"routes" : marker_routes_ready_for_json}, 200
             
 
@@ -196,28 +198,50 @@ def mavproxy():
 @app.route("/mavproxy_2", methods = ['GET', 'POST'])
 def mavproxy_2():
     body = request.get_json()
-    print(body)
-    # some set-up stuff to enable a ssh connection
-    client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
-    client.set_missing_host_key_policy(AutoAddPolicy())
-    # the actual connection the the raspi
-    client.connect(f'{body[0]["IP"]}', username= 'pi', password= 'moshe')
     body.pop(0)
-    print(body)
-    # the commands to happen on the raspi
-    stdin, stdout, stderr = client.exec_command('hostname')
-    print(f'Host-Name: {stdout.read().decode("utf8")}')
-    stdin, stdout, stderr = client.exec_command(f'cd learning ; python front_end.py "{body}"')
-    # some prints so we can know whats happening
-    print(f'STDOUT: {stdout.read().decode("utf8")}')
-    print(f'STDERR: {stderr.read().decode("utf8")}')
-    print(f'RETURN CODE: {stdout.channel.recv_exit_status()}')
-    # closing all files and the ssh shell so they doesn't hang open
-    stdin.close()
-    stdout.close()
-    stderr.close()
-    client.close()
-    return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
+    
+    commands_for_db = {
+     'move_right': 'meters_horizontal',
+     'move_left': 'meters_horizontal',
+     'move_front':'meters_horizontal',
+     'move_up': 'meters_vertical',
+     'move_down': 'meters_vertical',
+     'move_back': 'meters_horizontal',
+
+    }
+    current_user = User.query.get(browser_session['user_id'])
+   
+    current_user.attempted_flights +=1
+    for command in body:
+        current_user.total_commands +=1
+        current_command = commands_for_db[command]
+        current_user.current_command =+1
+        print(command)
+
+    db.session.commit()    
+
+    # # some set-up stuff to enable a ssh connection
+    # client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
+    # client.set_missing_host_key_policy(AutoAddPolicy())
+    # # the actual connection the the raspi
+    # client.connect(f'{body[0]["IP"]}', username= 'pi', password= 'moshe')
+    # body.pop(0)
+    # print(body)
+    # # the commands to happen on the raspi
+    # stdin, stdout, stderr = client.exec_command('hostname')
+    # print(f'Host-Name: {stdout.read().decode("utf8")}')
+    # stdin, stdout, stderr = client.exec_command(f'cd learning ; python front_end.py "{body}"')
+    # # some prints so we can know whats happening
+    # print(f'STDOUT: {stdout.read().decode("utf8")}')
+    # print(f'STDERR: {stderr.read().decode("utf8")}')
+    # print(f'RETURN CODE: {stdout.channel.recv_exit_status()}')
+    # # closing all files and the ssh shell so they doesn't hang open
+    # stdin.close()
+    # stdout.close()
+    # stderr.close()
+    # client.close()
+    # return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
+    return body, 200
 
 
 @app.route("/mavproxy_3", methods = ['GET', 'POST'])

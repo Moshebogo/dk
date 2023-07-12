@@ -1,0 +1,301 @@
+[1mdiff --git a/client/src/components/Map.js b/client/src/components/Map.js[m
+[1mindex 15c2532..5780076 100644[m
+[1m--- a/client/src/components/Map.js[m
+[1m+++ b/client/src/components/Map.js[m
+[36m@@ -1,10 +1,10 @@[m
+[31m-import { GoogleMap, useJsApiLoader, Marker, MarkerClusterer } from "@react-google-maps/api"[m
+[32m+[m[32mimport { GoogleMap, useJsApiLoader, Marker, Polyline } from "@react-google-maps/api"[m
+ import Geocode from "react-geocode";[m
+ import { useEffect, useState } from 'react'[m
+ [m
+ export default function Map({ markers, setMarker }) {[m
+ [m
+[31m-    const [mapCenter, setMapCenter] = useState({[m
+[32m+[m[32mconst [mapCenter, setMapCenter] = useState({[m
+     lat: 40.7347,[m
+     lng: -74.3152[m
+ })    [m
+[36m@@ -12,35 +12,49 @@[m [mconst [altitude, setAltitude] = useState(2)[m
+ const [IpAddress, setIpAddress] = useState(1)[m
+ const [homeLocation, setHomeLocation] = useState("")[m
+ // state for the red pin if an address is found[m
+[32m+[m[32mconst [foundLocation, setFoundLocation] = useState(false)[m
+ const [redPin, setRedPin] = useState({[m
+[31m-    lat: 40.7347,[m
+[31m-    lng: -74.3152[m
+[32m+[m[32m    lat: '',[m
+[32m+[m[32m    lng: ''[m
+ })[m
+ // state for the total route distance [m
+ const [actualDistance, setActualDistance] = useState(0)[m
+[32m+[m[32m// state for the Polyline path[m
+[32m+[m[32mconst [polyLine, setPolyLine] = useState(false)[m
+ [m
+[31m-[m
+[32m+[m[32m// this will loop through all the markers with a sliding window and calculate the total distance, I don't actually understand the math, but it works.[m
+ useEffect( () => {[m
+[32m+[m
+     let total = 0[m
+[32m+[m
+     for (let i=0;i<=markers.length;i++) {[m
+         if (markers[i+1]!==undefined) {[m
+                 let mk1 = markers[i][m
+                 let mk2 = markers[i+1][m
+[31m-                const R = 3958.8;                                // Radius of the Earth in miles[m
+[31m-                let rlat1 = mk1.lat * (Math.PI/180);             // Convert degrees to radians[m
+[31m-                let rlat2 = mk2.lat * (Math.PI/180);             // Convert degrees to radians[m
+[31m-                let difflat = rlat2-rlat1;                       // Radian difference (latitudes)[m
+[32m+[m[32m                const R = 3958.8;   // Radius of the Earth in miles[m
+[32m+[m[32m                let rlat1 = mk1.lat * (Math.PI/180);   // Convert degrees to radians[m
+[32m+[m[32m                let rlat2 = mk2.lat * (Math.PI/180);   // Convert degrees to radians[m
+[32m+[m[32m                let difflat = rlat2-rlat1;             // Radian difference (latitudes)[m
+                 let difflon = (mk2.lng-mk1.lng) * (Math.PI/180); // Radian difference (longitudes)[m
+ [m
+                 let d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));[m
+                 total = total + (d * 5280)               [m
+         }[m
+     }[m
+[31m-   setActualDistance(total)[m
+[32m+[m[32m   setActualDistance(Math.trunc(total))[m
+[32m+[m[32m// [markers] ensures that whenever the markers change, it will recalculate the distance[m
+ }, [markers])[m
+ [m
+[31m-[m
+[31m-[m
+[32m+[m[32m/*[m[41m [m
+[32m+[m[32mthis is very weird logic. the truthyness of polyLine needs to be reset[m
+[32m+[m[32mevery time a marker is added or removed in order for the polylines[m
+[32m+[m[32mto correctly display. thats what this useEffect does.[m[41m [m
+[32m+[m[32m*/[m[41m [m
+[32m+[m[32museEffect( () => {[m
+[32m+[m[32m    setPolyLine(false)[m
+[32m+[m[32m    setPolyLine(true)[m
+[32m+[m[32m    console.log("markers changed, from the polyline useEffect")[m
+[32m+[m[32m}, [markers])[m
+ [m
+ [m
+ // this function will find the location of the device and will handle accordingly if the device allows it, [m
+[36m@@ -57,6 +71,7 @@[m [mfunction findDeviceLocation() {[m
+             lng: pos.coords.longitude[m
+         })[m
+         console.log(redPin)[m
+[32m+[m[32m        setFoundLocation(true)[m
+ [m
+     }[m
+     function errors(err) {[m
+[36m@@ -89,7 +104,7 @@[m [mGeocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API)[m
+ Geocode.setLanguage("en")[m
+ Geocode.setLocationType("ROOFTOP")[m
+ [m
+[31m-// sets the center of the map to the entered address [m
+[32m+[m[32m// sets the center of the map to the manually entered address[m[41m [m
+ function handlekeyDown(e) {[m
+     if (e.key == "Enter") {[m
+         Geocode.fromAddress(e.target.value).then([m
+[36m@@ -114,7 +129,8 @@[m [mfunction handlekeyDown(e) {[m
+ // Boiler-plate stuff for google maps[m
+ const container = {[m
+     width: '100%',[m
+[31m-    height: '70vh'[m
+[32m+[m[32m    height: '70vh',[m
+[32m+[m[32m    // border: 'solid black 3px'[m
+ }[m
+ const {isLoaded} = useJsApiLoader({[m
+     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,[m
+[36m@@ -126,6 +142,7 @@[m [mconst {options} = {[m
+ // function to add a new marker [m
+ function addMarker(e) {[m
+     setMarker(prev => [ ...markers,  {lat : e.latLng.lat() , lng : e.latLng.lng()}] )[m
+[32m+[m[32m    // setPolyLine(true)[m
+ }[m
+ [m
+ // function to delete a marker  [m
+[36m@@ -153,6 +170,7 @@[m [mfunction loadMarkerRoute(e) {[m
+    .then(resp => resp.json())[m
+    .then(returedMarkers => {[m
+     setMarker( returedMarkers.route )[m
+[32m+[m[32m    // setPolyLine(true)[m
+   })[m
+ }[m
+ [m
+[36m@@ -181,29 +199,12 @@[m [mfunction handleMapSubmit(e) {[m
+     //  setMarker([])[m
+     )[m
+ }[m
+[32m+[m[41m [m
+ [m
+[31m-// function calculateDistance(markers) {[m
+[31m-//     for (let i=0;i<=markers.length;i++) {[m
+[31m-//         if (markers[i+1]!==undefined) {[m
+[31m-//             function haversine_distance(mk1 = markers[i], mk2 = markers[i+1]) {[m
+[31m-//                 const R = 3958.8; // Radius of the Earth in miles[m
+[31m-//                 let rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians[m
+[31m-//                 let rlat2 = mk2.position.lat() * (Math.PI/180); // Convert degrees to radians[m
+[31m-//                 let difflat = rlat2-rlat1; // Radian difference (latitudes)[m
+[31m-//                 let difflon = (mk2.position.lng()-mk1.position.lng()) * (Math.PI/180); // Radian difference (longitudes)[m
+[31m-          [m
+[31m-//                 let d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));[m
+[31m-//                 console.log(d);[m
+[31m-//               }[m
+[31m-//               haversine_distance()[m
+[31m-//         }[m
+[31m-//     }[m
+[31m-// }[m
+[31m-      [m
+ return (isLoaded ?[m
+        <div>[m
+        <div style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>[m
+[31m-        <label style={{'textAlign' : 'center'}}>Look up address Manually: </label>[m
+[32m+[m[32m        <label style={{'textAlign' : 'center', marginTop: '5%'}}>Look up address Manually: </label>[m
+         <input type="text"[m
+                value={homeLocation}[m
+                onChange={ (e) => setHomeLocation(e.target.value)}[m
+[36m@@ -219,6 +220,14 @@[m [mreturn (isLoaded ?[m
+                 position={{lat: 40.7347, lng: -74.3152}}[m
+                 onClick={ (e) => addMarker(e)}    [m
+                 >[m
+[32m+[m[32m                { polyLine && <Polyline[m[41m [m
+[32m+[m[32m                                path={markers}[m[41m [m
+[32m+[m[32m                                // options={{[m
+[32m+[m[32m                                //     strokeColor: '#FF0000',[m
+[32m+[m[32m                                //     strokeOpacity: 1.0,[m
+[32m+[m[32m                                //     strokeWeight: 2,[m
+[32m+[m[32m                                //         }}[m
+[32m+[m[32m                /> }[m
+                 {markers.map( (marker, index) => {[m
+                 return <Marker [m
+                             key={index}[m
+[36m@@ -229,16 +238,16 @@[m [mreturn (isLoaded ?[m
+                                  }}[m
+                             onClick={ (e) => removeMarker(index)}    [m
+                             />  [m
+[31m-                })} [m
+[31m-                        {/* <Marker [m
+[32m+[m[32m                })}[m
+[32m+[m[32m                        {/* { foundLocation &&  (<Marker[m[41m [m
+                            position={{lat: 40.7347, lng: -74.3152}}[m
+                            icon={{[m
+                                  url: 'https://c8.alamy.com/comp/R1PYCB/drone-vector-icon-isolated-on-transparent-background-drone-transparency-logo-concept-R1PYCB.jpg',[m
+                                   scaledSize: new window.google.maps.Size(20, 20)[m
+                                  }}[m
+[31m-                        /> */}[m
+[32m+[m[32m                        />)} */}[m
+                         [m
+[31m- [m
+[32m+[m[41m  [m
+                 </GoogleMap>[m
+                 {/* input for the altitude and IP Address */}[m
+                 <form onSubmit={ (e) => handleMapSubmit(e)} style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>[m
+[36m@@ -262,7 +271,7 @@[m [mreturn (isLoaded ?[m
+                 <button onClick={ (e) => loadMarkerRoute(e)}>Load Route</button>[m
+                 <button onClick={ (e) => clearMarkerRoute(e)}>Clear All Markers</button>[m
+           <div>[m
+[31m-            <h3>{markers.length > 1 ? `Total Distance: ${actualDistance}` : "Create a route to view the Total Distance here."}</h3>[m
+[32m+[m[32m            <h3>{markers.length > 1 ? `Total Distance In Feet: ${actualDistance}` : "Create a route to view the Total Distance here."}</h3>[m
+           </div>[m
+           </div>  [m
+           [m
+[1mdiff --git a/server/__pycache__/app.cpython-39.pyc b/server/__pycache__/app.cpython-39.pyc[m
+[1mindex 640dcf1..c669be7 100644[m
+Binary files a/server/__pycache__/app.cpython-39.pyc and b/server/__pycache__/app.cpython-39.pyc differ
+[1mdiff --git a/server/app.py b/server/app.py[m
+[1mindex a553c31..d0ec1c2 100644[m
+[1m--- a/server/app.py[m
+[1m+++ b/server/app.py[m
+[36m@@ -100,7 +100,7 @@[m [mdef load_route_from_selected_commands_func():[m
+     # the most recent route will always be loaded.[m
+     return {"route": ast.literal_eval(all_routes[-1].selected_commands) }, 201[m
+ [m
+[31m-     [m
+[32m+[m[41m [m
+ # save the flight ""MARKERS"" to the database[m
+ @app.route("/save_route_to_marker_commands", methods = ['POST'])[m
+ def save_route_to_marker_commands():[m
+[36m@@ -123,10 +123,12 @@[m [mdef load_route_from_marker_commands_func():[m
+ @app.route("/load_all_marker_routes")[m
+ def load_all_marker_routes():[m
+     all_marker_routes = Commands.query.filter(Commands.user == browser_session['user_id']).all()[m
+[32m+[m[32m    print(list(all_marker_routes))[m
+     marker_routes_ready_for_json = [][m
+     for route in all_marker_routes:[m
+         marker_routes_ready_for_json.append(ast.literal_eval(route.marker_commands)) [m
+     print(marker_routes_ready_for_json)[m
+[32m+[m[32m    print()[m
+     return {"routes" : marker_routes_ready_for_json}, 200[m
+             [m
+ [m
+[36m@@ -196,28 +198,50 @@[m [mdef mavproxy():[m
+ @app.route("/mavproxy_2", methods = ['GET', 'POST'])[m
+ def mavproxy_2():[m
+     body = request.get_json()[m
+[31m-    print(body)[m
+[31m-    # some set-up stuff to enable a ssh connection[m
+[31m-    client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")[m
+[31m-    client.set_missing_host_key_policy(AutoAddPolicy())[m
+[31m-    # the actual connection the the raspi[m
+[31m-    client.connect(f'{body[0]["IP"]}', username= 'pi', password= 'moshe')[m
+     body.pop(0)[m
+[31m-    print(body)[m
+[31m-    # the commands to happen on the raspi[m
+[31m-    stdin, stdout, stderr = client.exec_command('hostname')[m
+[31m-    print(f'Host-Name: {stdout.read().decode("utf8")}')[m
+[31m-    stdin, stdout, stderr = client.exec_command(f'cd learning ; python front_end.py "{body}"')[m
+[31m-    # some prints so we can know whats happening[m
+[31m-    print(f'STDOUT: {stdout.read().decode("utf8")}')[m
+[31m-    print(f'STDERR: {stderr.read().decode("utf8")}')[m
+[31m-    print(f'RETURN CODE: {stdout.channel.recv_exit_status()}')[m
+[31m-    # closing all files and the ssh shell so they doesn't hang open[m
+[31m-    stdin.close()[m
+[31m-    stdout.close()[m
+[31m-    stderr.close()[m
+[31m-    client.close()[m
+[31m-    return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)[m
+[32m+[m[41m    [m
+[32m+[m[32m    commands_for_db = {[m
+[32m+[m[32m     'move_right': 'meters_horizontal',[m
+[32m+[m[32m     'move_left': 'meters_horizontal',[m
+[32m+[m[32m     'move_front':'meters_horizontal',[m
+[32m+[m[32m     'move_up': 'meters_vertical',[m
+[32m+[m[32m     'move_down': 'meters_vertical',[m
+[32m+[m[32m     'move_back': 'meters_horizontal',[m
+[32m+[m
+[32m+[m[32m    }[m
+[32m+[m[32m    current_user = User.query.get(browser_session['user_id'])[m
+[32m+[m[41m   [m
+[32m+[m[32m    current_user.attempted_flights +=1[m
+[32m+[m[32m    for command in body:[m
+[32m+[m[32m        current_user.total_commands +=1[m
+[32m+[m[32m        current_command = commands_for_db[command][m
+[32m+[m[32m        current_user.current_command =+1[m
+[32m+[m[32m        print(command)[m
+[32m+[m
+[32m+[m[32m    db.session.commit()[m[41m    [m
+[32m+[m
+[32m+[m[32m    # # some set-up stuff to enable a ssh connection[m
+[32m+[m[32m    # client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")[m
+[32m+[m[32m    # client.set_missing_host_key_policy(AutoAddPolicy())[m
+[32m+[m[32m    # # the actual connection the the raspi[m
+[32m+[m[32m    # client.connect(f'{body[0]["IP"]}', username= 'pi', password= 'moshe')[m
+[32m+[m[32m    # body.pop(0)[m
+[32m+[m[32m    # print(body)[m
+[32m+[m[32m    # # the commands to happen on the raspi[m
+[32m+[m[32m    # stdin, stdout, stderr = client.exec_command('hostname')[m
+[32m+[m[32m    # print(f'Host-Name: {stdout.read().decode("utf8")}')[m
+[32m+[m[32m    # stdin, stdout, stderr = client.exec_command(f'cd learning ; python front_end.py "{body}"')[m
+[32m+[m[32m    # # some prints so we can know whats happening[m
+[32m+[m[32m    # print(f'STDOUT: {stdout.read().decode("utf8")}')[m
+[32m+[m[32m    # print(f'STDERR: {stderr.read().decode("utf8")}')[m
+[32m+[m[32m    # print(f'RETURN CODE: {stdout.channel.recv_exit_status()}')[m
+[32m+[m[32m    # # closing all files and the ssh shell so they doesn't hang open[m
+[32m+[m[32m    # stdin.close()[m
+[32m+[m[32m    # stdout.close()[m
+[32m+[m[32m    # stderr.close()[m
+[32m+[m[32m    # client.close()[m
+[32m+[m[32m    # return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)[m
+[32m+[m[32m    return body, 200[m
+ [m
+ [m
+ @app.route("/mavproxy_3", methods = ['GET', 'POST'])[m
+[1mdiff --git a/server/instance/users.db b/server/instance/users.db[m
+[1mindex 6cf2c78..fbcdaad 100644[m
+Binary files a/server/instance/users.db and b/server/instance/users.db differ
