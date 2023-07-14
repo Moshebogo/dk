@@ -13,15 +13,19 @@ import Contact from './Contact';
 
 export default  function App() {
 
+const [darkMode, setDarkMode] = useState()  
 const [stateUser, setUser] = useState(false)
 const [userData, setUserData] = useState("")
 // testing
 const [markers, setMarker] = useState( [] )
 
 
+
+
   return (
+  <div id={ darkMode ? 'darkMode' : null}>
     <BrowserRouter>
-      <Header stateUser={stateUser}/>
+      <Header stateUser={stateUser} setDarkMode={setDarkMode} />
         <Routes>
             <Route path="/"                element={<Home setMarker={setMarker} />}/>
             <Route path="/testConnection"  element={<TestConnection />}/> 
@@ -30,7 +34,8 @@ const [markers, setMarker] = useState( [] )
             <Route path="/mavproxyform"    element={<MavproxyForm />}/>   
             <Route path="/contact"         element={<Contact />}/>
         </Routes>
-    </BrowserRouter>   
+    </BrowserRouter>
+  </div>   
   )
 }
 

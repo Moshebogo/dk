@@ -28,7 +28,7 @@ const commands = {
  // starts blank, it will get filled in the "createFinalDictionary" function
  const finalCommands = []  
      
- // this combines the selected command with the numbered input into one string, and adds all the the "finalCommands" array
+ // this combines the selected command with the numbered input into one string, and adds all to the "finalCommands" array
  function createFinalDictionary() {
     finalCommands.push({'IP': stateIP}          )
      stateCommands.map((object, index) => {
@@ -65,7 +65,7 @@ function handleSubmit() {
         fetch("/mavproxy_2", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(finalCommands)}
+        body: JSON.stringify(finalCommands, )}
         ).then(resp => resp.json())
          .then(data => {
                 console.log(data)

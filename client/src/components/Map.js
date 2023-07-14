@@ -24,9 +24,7 @@ const [polyLine, setPolyLine] = useState(false)
 
 // this will loop through all the markers with a sliding window and calculate the total distance, I don't actually understand the math, but it works.
 useEffect( () => {
-
     let total = 0
-
     for (let i=0;i<=markers.length;i++) {
         if (markers[i+1]!==undefined) {
                 let mk1 = markers[i]
@@ -42,7 +40,8 @@ useEffect( () => {
         }
     }
    setActualDistance(Math.trunc(total))
-// [markers] ensures that whenever the markers change, it will recalculate the distance
+// [markers] ensures that whenever the markers change,
+//  it will recalculate the distance
 }, [markers])
 
 /* 
@@ -53,7 +52,6 @@ to correctly display. thats what this useEffect does.
 useEffect( () => {
     setPolyLine(false)
     setPolyLine(true)
-    console.log("markers changed, from the polyline useEffect")
 }, [markers])
 
 
@@ -128,9 +126,11 @@ function handlekeyDown(e) {
 
 // Boiler-plate stuff for google maps
 const container = {
-    width: '100%',
+    display: 'flex',
+    margin: '1% auto',
+    width: '90%',
     height: '70vh',
-    // border: 'solid black 3px'
+    border: 'solid black 3px'
 }
 const {isLoaded} = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -158,7 +158,7 @@ function saveMarkerRoute(e) {
         body: JSON.stringify(markers)
     })
     .then(resp => resp.json())
-    .then(returedMarkerRoute => console.log(returedMarkerRoute))
+    // .then(returedMarkerRoute => console.log(returedMarkerRoute))
 }
 
 //  TODO load all routes so the user can save multiple and select anyone
@@ -189,7 +189,8 @@ function handleMapSubmit(e) {
             ip: IpAddress,
             takeOffAltitude: altitude,
             markers: markers
-         })
+         }
+         )
     })
     .then(resp => resp.json())
     .then(data => console.log(data)
@@ -276,5 +277,5 @@ return (isLoaded ?
           </div>  
           
         :
-        <h1>API key not loaded yet</h1> )
+        <h1 style={{display: 'flex', justifyContent: 'center'}}>API key not loaded yet</h1> )
 }

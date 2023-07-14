@@ -1,6 +1,11 @@
 import { Outlet, Link } from "react-router-dom"
 
-export default function Header({ stateUser}) {
+export default function Header({ stateUser, setDarkMode}) {
+
+// TODO finish the dark mode funcionality
+  function handleDarkMode(){
+     
+  }
 
     return (
 
@@ -13,28 +18,31 @@ export default function Header({ stateUser}) {
         <div id="buttonBlock">
         
           {/* <Link  to="/register">
-            <button className="headerButtons">{!stateUser ? "Log-In / Register" : "Log Out"}</button>
+            <h3 >{!stateUser ? "Log-In / Register" : "Log Out"}</h3>
           </Link> */}
 
           <Link to="/testConnection">
-            <button className="headerButtons">Test Connection</button>
+            <h3 >Test Connection</h3>
           </Link>
           
           <Link to="/map">
-            <button className="headerButtons">Map</button>
+            <h3 >Map</h3>
           </Link>
 
           <Link to="/savedroutes">
-            <button className="headerButtons">Routes</button>
+            <h3 >Routes</h3>
           </Link>
 
           <Link to="/mavproxyform">
-            <button className="headerButtons">Mavproxy</button>
+            <h3 >Mavproxy</h3>
           </Link>
 
           <Link to="/contact">
-            <button className="headerButtons">Contact Us</button>
+            <h3 >Contact Us</h3>
           </Link>
+
+          <h3 onClick={handleDarkMode}>Dark Mode</h3>
+        
         </div>
 
       </div>

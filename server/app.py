@@ -210,13 +210,24 @@ def mavproxy_2():
 
     }
     current_user = User.query.get(browser_session['user_id'])
-   
+
     current_user.attempted_flights +=1
-    for command in body:
+    for dictionary in body:
+        function = ''
+        input = ''
+        for command, function in dictionary.items():    
+            for letter in function:
+                # function += letter if not int(letter) else input += letter    
+                try:
+                    print(int(letter))   
+                except ValueError:
+                    print('didnt work')
+
+
         current_user.total_commands +=1
-        current_command = commands_for_db[command]
-        current_user.current_command =+1
-        print(command)
+        # current_command = commands_for_db[command]
+        # current_user.current_command =+1
+        # print(dictionary)
 
     db.session.commit()    
 
