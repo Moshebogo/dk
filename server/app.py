@@ -25,8 +25,8 @@ def register_login():
     user_exists = User.query.filter((User.username == username)).first()
     #  checks if the username and password match
     if user_exists and (bcrypt.checkpw(encoded_password, user_exists.password)):
-        # if user_exists:    
-        print("User already exists: ", user_exists.to_dict())
+        # if user_exists:        
+        print(user_exists.to_dict())
         # changes the user to an old one so the frony end will render 'Welcome Back'
         user_exists.old_user = True
         db.session.commit()
@@ -170,7 +170,7 @@ def mavproxy():
     client.load_host_keys("/home/eli_moshe/.ssh/known_hosts")
     client.set_missing_host_key_policy(AutoAddPolicy())
     # the actual connection the the raspi
-    client.connect('192.168.63.245', username= 'pi', password= 'moshe')
+    client.connect('192.168.63.245', username = 'pi', password= 'moshe')
     # the commands to happen on the raspi
     stdin, stdout, stderr = client.exec_command('hostname')
     print(f'Host-Name: {stdout.read().decode("utf8")}')
@@ -195,33 +195,72 @@ def mavproxy():
     return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
 
    
-@app.route("/mavproxy_2", methods = ['GET', 'POST'])
+@app.route("/mavproxy_2", methods = ['GET', 'POST', 'PATCH'])
 def mavproxy_2():
     body = request.get_json()
-    body.pop(0)
-    
+    print(body)
+    body.pop(0)   
+    # the dictionary for fields to update in the db
     commands_for_db = {
-     'move_right': 'meters_horizontal',
-     'move_left': 'meters_horizontal',
-     'move_front':'meters_horizontal',
-     'move_up': 'meters_vertical',
-     'move_down': 'meters_vertical',
-     'move_back': 'meters_horizontal',
-
+     'takeoff_drone()' : 'meters_vertical',  
+     'move_right()': 'meters_horizontal',
+     'move_left()': 'meters_horizontal',
+     'move_front()':'meters_horizontal',
+     'move_up()': 'meters_vertical',
+     'move_down()': 'meters_vertical',
+     'move_back()': 'meters_horizontal',
     }
+    # finds the current user
     current_user = User.query.get(browser_session['user_id'])
 
-    current_user.attempted_flights +=1
+    current_user.attempted_flights += 1
+
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    false_functions  = ['arm_drone()', 'undefined()', 'loiter_time()', 'set_yaw()', 'take_picture()','land_drone()']
     for dictionary in body:
-        function = ''
-        input = ''
-        for command, function in dictionary.items():    
-            for letter in function:
-                # function += letter if not int(letter) else input += letter    
-                try:
-                    print(int(letter))   
-                except ValueError:
-                    print('didnt work')
+
+        for command, function in dictionary.items():
+            if function in false_functions:
+                print(f'function "{function}" not in commands_for_db')
+            else:
+                actual_function = ''  
+                input = ''    
+                for letter in str(function):
+                    # print("letter: ", letter)
+                    if letter in numbers:
+                        input += letter
+                    else:   
+                        actual_function += letter 
+
+                print("actual_function: ", actual_function)
+                print("input: ", input) 
+
+                # i love this, i hope this works 
+                field = commands_for_db[actual_function]  
+                current_value = getattr(current_user, field)          
+                setattr(current_user, field, current_value + int(input))              
+                # this is where i want to update the db with the input of the user    
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         current_user.total_commands +=1

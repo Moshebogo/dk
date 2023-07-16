@@ -11,6 +11,7 @@ export default function LoggedIn({ userData }) {
           <h3>Crashes:           {userData.crashes           }</h3>
           <h3>Total Commands:    {userData.total_commands    }</h3>
           <h3>Meters Horizontal: {userData.meters_horizontal }</h3>
+          <h3>Meters Vertical:   {userData.meters_vertical}</h3>
         </div>
     )
 }

@@ -39,6 +39,7 @@ class User(db.Model):
             'crashes': self.crashes,
             'total_commands': self.total_commands,
             'meters_horizontal': self.meters_horizontal,
+            'meters_vertical': self.meters_vertical,
             'old_user': self.old_user,
             # 'saved_route': Commands.query.filter(Commands.user == self.id).first().to_dict()
         }

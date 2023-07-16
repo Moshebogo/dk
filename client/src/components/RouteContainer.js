@@ -68,6 +68,7 @@ function handleSubmit() {
         body: JSON.stringify(finalCommands, )}
         ).then(resp => resp.json())
          .then(data => {
+                checkCookie()
                 console.log(data)
                 setIP("")
                 // reset the counter so the alert can happen again
