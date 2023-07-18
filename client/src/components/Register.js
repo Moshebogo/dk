@@ -55,7 +55,7 @@ return (
                 <input className="password_input" value={statePassword} onChange={ (e) => setPassword(e.target.value)} type={showPassword}></input>
                 <FiEye className="reveal" onClick={changeShowPassword}/>
             </div>
-            <input style={{'backgroundColor': 'green'}}  type="submit" value="Register/Log In"></input>
+            <input style={{'backgroundColor': 'green', cursor: 'pointer'}}  type="submit" value="Register/Log In"></input>
         </form>
     </div> 
     )

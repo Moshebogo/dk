@@ -212,13 +212,10 @@ def mavproxy_2():
     }
     # finds the current user
     current_user = User.query.get(browser_session['user_id'])
-
     current_user.attempted_flights += 1
-
     numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     false_functions  = ['arm_drone()', 'undefined()', 'loiter_time()', 'set_yaw()', 'take_picture()','land_drone()']
     for dictionary in body:
-
         for command, function in dictionary.items():
             if function in false_functions:
                 print(f'function "{function}" not in commands_for_db')
@@ -231,43 +228,14 @@ def mavproxy_2():
                         input += letter
                     else:   
                         actual_function += letter 
-
-                print("actual_function: ", actual_function)
-                print("input: ", input) 
-
+                # print("actual_function: ", actual_function)
+                # print("input: ", input) 
                 # i love this, i hope this works 
                 field = commands_for_db[actual_function]  
                 current_value = getattr(current_user, field)          
                 setattr(current_user, field, current_value + int(input))              
                 # this is where i want to update the db with the input of the user    
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         current_user.total_commands +=1
-        # current_command = commands_for_db[command]
-        # current_user.current_command =+1
-        # print(dictionary)
-
     db.session.commit()    
 
     # # some set-up stuff to enable a ssh connection

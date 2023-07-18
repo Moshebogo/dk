@@ -21,7 +21,7 @@ function checkCookie(){
         return resp.json()
     })
     .then(returnedData => {
-        // console.log(returnedData)
+        // console.log(rweturnedData)
         setCreatedUsername(returnedData.username)
         setOldUser(returnedData.old_user)
         setUserData(returnedData)

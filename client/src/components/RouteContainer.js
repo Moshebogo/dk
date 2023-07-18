@@ -137,8 +137,8 @@ function clearCommands(e) {
        <div className="generalFlex">
        {/* style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}} */}
        <h1>Welcome {oldUser ? `Back ${createdUsername} !` : `${createdUsername} !` }</h1>
-       <button style={{'backgroundColor': 'green'}} onClick={ (e) => addCommand(e)}>ADD COMMAND</button>
-       <div style={{'margin': '1%'}}>
+       <button onClick={ (e) => addCommand(e)} style={{backgroundColor: 'green'}}>ADD COMMAND</button>
+       <div className="ip-for-select">
             <label>Enter the IP addres of the drone: </label>
             <input type="text"
                     placeholder="ie: 192.168.63.245"
@@ -148,20 +148,18 @@ function clearCommands(e) {
               {/* creates a controlled form, so every command can get it's own form and state */}
             {stateCommands.map((dictionary, index) => {
                 return (
-                    <div key={index} style={{display:'grid', 'margin': 'auto', 'width': '50%', 'textAlign': 'center'}}>
+                    <div key={index} className="eachForm">
                         <Form deleteCommand={deleteCommand} handleFormChange={handleFormChange} dictionary={dictionary} index={index}   />
                     </div>
                 )})
             }
-            <button style={{margin: '2%'}} onClick={ (e) => handleSubmit(e)}>SENDS COMMANDS TO RASPBERRYPI</button>
-            <button style={{margin: '2%'}} onClick={ (e) => saveRoute(e) }>Save Route</button>
-            <button style={{margin: '2%'}} onClick={ (e) => loadRoute(e)}>Load Saved Route</button>
-            <button style={{margin: '2%'}} onClick={ (e) => clearCommands(e)}>Clear Commands</button>
-            <button style={{margin: '2%'}} onClick={ (e) => viewStats(e)}>View Flight Stats </button>
-            <button style={{margin: '2%', backgroundColor: 'red'}} onClick={ (e) => deleteAccount(e)}>Delete My Account</button>
-            <div>
-              <button onClick={ (e) => handleLogOut(e)}>Log Out</button>
-            </div>  
+            <button  onClick={ (e) => handleSubmit(e)} style={{backgroundColor: 'green'}}>SENDS COMMANDS TO RASPBERRYPI</button>
+            <button  onClick={ (e) => saveRoute(e) }>Save Route</button>
+            <button  onClick={ (e) => loadRoute(e)}>Load Saved Route</button>
+            <button  onClick={ (e) => clearCommands(e)}>Clear Commands</button>
+            <button  onClick={ (e) => viewStats(e)}>View Flight Stats </button>
+            <button  onClick={ (e) => deleteAccount(e)} style={{backgroundColor: 'red'}}>Delete My Account</button>
+            <button  onClick={ (e) => handleLogOut(e)}>Log Out</button>
        </div>
     )
 }       
