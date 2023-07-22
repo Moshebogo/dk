@@ -21,24 +21,28 @@ export default function Header({ stateUser, setDarkMode}) {
             <h3 >{!stateUser ? "Log-In / Register" : "Log Out"}</h3>
           </Link> */}
 
+          <Link to="/">
+            <h3>Home</h3>
+          </Link>
+
           <Link to="/testConnection">
-            <h3 >Test Connection</h3>
+            <h3>Test Connection</h3>
           </Link>
           
           <Link to="/map">
-            <h3 >Map</h3>
+            <h3>Map</h3>
           </Link>
 
           <Link to="/savedroutes">
-            <h3 >Routes</h3>
+            <h3>Routes</h3>
           </Link>
 
           <Link to="/mavproxyform">
-            <h3 >Mavproxy</h3>
+            <h3>Mavproxy</h3>
           </Link>
 
           <Link to="/contact">
-            <h3 >Contact Us</h3>
+            <h3>Contact Us</h3>
           </Link>
 
           <h3 onClick={handleDarkMode}>Dark Mode</h3>

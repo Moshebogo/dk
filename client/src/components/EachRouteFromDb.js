@@ -1,4 +1,4 @@
-    import { GoogleMap, useJsApiLoader, Marker, MarkerClusterer } from "@react-google-maps/api"
+    import { GoogleMap, useJsApiLoader, Marker, MarkerClusterer, Polyline } from "@react-google-maps/api"
 
     export default function EachRouteFromDb({ usersRoutes, routeIndex, setMarkersFromAllRoutes }) {
 
@@ -7,14 +7,12 @@
 
     // Boiler-plate stuff for google maps
     const container = {
-        // position: 'sticky',
-        // width: '100%',
         height: '700px',
         margin: '10px',
-        width: '500px',
+        width: '30%',
         border: '2px solid blue',
-        'box-sizing' : 'border-box'
-        // 'overflow-X': 'scroll'
+        // 'box-sizing' : 'border-box',
+        'overflow-x': 'scroll'
     }
     const {isLoaded} = useJsApiLoader({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -23,15 +21,17 @@
         disableDefaultUI: true
     }
 
+    
         return ( isLoaded ?
             // <div className="gallery_image">
                 <GoogleMap
                     mapContainerStyle={container}
                     center={{lat: 40.7347, lng: -74.3152}}
-                    zoom={15}
+                    zoom={14}
                     options={options}
                     position={{lat: 40.7347, lng: -74.3152}}
                     onClick={ (e) => setMarkersFromAllRoutes(routeIndex)}
+                    id="sd"
                     >
                      {usersRoutes.map( (route, index) => {
                           return <Marker 
@@ -43,10 +43,10 @@
                                         }}
                                   />
                     }) }
-
-                    </GoogleMap>
-                    
-                
+                    <Polyline 
+                        path={usersRoutes}
+                    />
+                    </GoogleMap>    
             //  </div> 
                 :
             null

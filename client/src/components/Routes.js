@@ -4,10 +4,10 @@ import RouteContainer from "./RouteContainer";
 import LoggedIn from "./LoggedIn";
 
 
-export default function Routes({ userData, setUserData }) {
+export default function Routes({ userData, setUserData, setUser, stateUser }) {
 
 
-const [stateUser, setUser] = useState(false)
+// const [stateUser, setUser] = useState(false)
 const [createdUsername, setCreatedUsername] = useState("")
 const [oldUser, setOldUser] = useState(false) 
 

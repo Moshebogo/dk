@@ -45,10 +45,17 @@ class User(db.Model):
         }
     
 class Commands(db.Model):
-    id                = db.Column(db.Integer, primary_key = True)
-    user              = db.Column(db.Integer, nullable = False)   
-    selected_commands = db.Column(db.String)
-    marker_commands   = db.Column(db.String)    
+    id                        = db.Column(db.Integer, primary_key = True)
+    user                      = db.Column(db.Integer, nullable = False)  
+     
+    selected_commands         = db.Column(db.String)
+    selected_commands_name    = db.Column(db.String)
+    selected_commands_created = db.Column(db.DateTime)
+
+    marker_commands           = db.Column(db.String)
+    marker_commands_name      = db.Column(db.String)
+    marker_commands_created   = db.Column(db.DateTime)
+
 
     def to_dict(self):
         return {

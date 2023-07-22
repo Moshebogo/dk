@@ -27,7 +27,7 @@ const [markers, setMarker] = useState( [] )
     <BrowserRouter>
       <Header stateUser={stateUser} setDarkMode={setDarkMode} />
         <Routes>
-            <Route path="/"                element={<Home setMarker={setMarker} />}/>
+            <Route path="/"                element={<Home setMarker={setMarker} stateUser={stateUser} />}/>
             <Route path="/testConnection"  element={<TestConnection />}/> 
             <Route path="/map"             element={<Map markers={markers} setMarker={setMarker} />}/>
             <Route path="/savedroutes"     element={<SavedRoutes stateUser={stateUser} setUser={setUser} userData={userData} setUserData={setUserData} />}/>

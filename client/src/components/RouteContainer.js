@@ -136,7 +136,7 @@ function clearCommands(e) {
         // basic styling to make it easier to work with
        <div className="generalFlex">
        {/* style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}} */}
-       <h1>Welcome {oldUser ? `Back ${createdUsername} !` : `${createdUsername} !` }</h1>
+       <h1>{oldUser ? `Welcome Back ${createdUsername} !` : `Welcome ${createdUsername} !` }</h1>
        <button onClick={ (e) => addCommand(e)} style={{backgroundColor: 'green'}}>ADD COMMAND</button>
        <div className="ip-for-select">
             <label>Enter the IP addres of the drone: </label>
@@ -154,12 +154,12 @@ function clearCommands(e) {
                 )})
             }
             <button  onClick={ (e) => handleSubmit(e)} style={{backgroundColor: 'green'}}>SENDS COMMANDS TO RASPBERRYPI</button>
-            <button  onClick={ (e) => saveRoute(e) }>Save Route</button>
-            <button  onClick={ (e) => loadRoute(e)}>Load Saved Route</button>
-            <button  onClick={ (e) => clearCommands(e)}>Clear Commands</button>
-            <button  onClick={ (e) => viewStats(e)}>View Flight Stats </button>
-            <button  onClick={ (e) => deleteAccount(e)} style={{backgroundColor: 'red'}}>Delete My Account</button>
-            <button  onClick={ (e) => handleLogOut(e)}>Log Out</button>
+            <button  onClick={ (e) => saveRoute(e)}                                      >Save Route</button>
+            <button  onClick={ (e) => loadRoute(e)}                                      >Load Saved Route</button>
+            <button  onClick={ (e) => clearCommands(e)}                                  >Clear Commands</button>
+            <button  onClick={ (e) => viewStats(e)}                                      >View Flight Stats </button>
+            <button  onClick={ (e) => deleteAccount(e)} style={{backgroundColor: 'red'}} >Delete My Account</button>
+            <button  onClick={ (e) => handleLogOut(e)}  style={{height: '2rem', fontSize: 'large'}}         >Log Out</button>
        </div>
     )
 }       

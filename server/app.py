@@ -107,7 +107,8 @@ def save_route_to_marker_commands():
     body = request.get_json()
     print(body)   
     active_user = User.query.get(browser_session['user_id'])
-    new_marker_route = Commands(user = active_user.id, marker_commands = f'{body}') 
+    route_name = body[-1]['routeName']
+    new_marker_route = Commands(user = active_user.id, marker_commands = f'{body}', marker_commands_name = route_name) 
     db.session.add(new_marker_route)
     db.session.commit()
     return {'body' : body}, 200

@@ -1,7 +1,7 @@
 * {
   font-family: 'Times New Roman', Times, serif;
   text-align: center;
-  /* border: 2px solid green; */
+  border: 2px solid green;
 }
 
 select, input {
@@ -15,7 +15,7 @@ button {
 
 /* testing */
 
-button, .reveal, div {
+button, .reveal {
  cursor: pointer;  
  border-radius: 20px;
  border-width: 0;
@@ -156,6 +156,7 @@ label {
 
 .generalFlex {
   border: 2px solid black;
+  border-radius: 20px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -163,7 +164,8 @@ label {
   justify-content: center;
   margin: 2% auto;
   width: 40%;
-  padding: 0 10%;
+  padding: 2% 10%;
+  font-size: large;
 }
 .generalFlex button{
  width: 40%;
@@ -195,12 +197,12 @@ label {
 
  .gallery_items {
   display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  overflow-x: scroll;
-  position: relative;
+  width: auto;
+  height: auto;
+  /* justify-content: space-between; */
+  overflow-x: auto;
   margin: 5% auto;
-  /* width: 60%; */
+  /* width: 80%; */
   border: 2px solid red;
  }
 
@@ -255,4 +257,65 @@ label {
 #darkMode {
   background-color: black;
   color: white;
+}
+
+#loggedOutForSavedRoutes {
+  margin: 10% auto;
+  padding: 3%;
+  width: 50%;
+  height: 50%;
+  border: black solid 2px;
+  border-radius: 20px;
+  box-shadow: 2px 2px 2px 2px;
+  text-decoration: underline;
+  text-decoration-color: white;
+  color: black;
+}
+
+#biggestDivForMap {
+  border-radius: 200px;
+}
+
+#biggerContainerShowName{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  /* border: red solid 10px; */
+  z-index: 1;
+  backdrop-filter: blur(15px);
+}
+
+#smallerShowNameContainer {
+  /* border: blue solid 2px; */
+  position: relative;
+  width: 50%;
+  height: 70%;
+  margin: auto;
+}
+
+#formShowNameForSavedRoute {
+  width: 20%;
+  height: 20%;
+  margin: -5% auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* border: green solid 10px; */
+}
+
+#butonforShowNameForSavedRoute {
+  position: relative;
+  display: flex;
+  margin-left: 95%;
+  width: 5%;
+  cursor: pointer;
+}
+#butonforShowNameForSavedRoute:hover {
+  opacity: .7;
+}
+#aTagToLogIn {
+  color: black;
+  display: inline-block;
+  padding: 0 1% ;
 }

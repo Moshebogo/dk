@@ -1,9 +1,12 @@
 import { GoogleMap, useJsApiLoader, Marker, Polyline } from "@react-google-maps/api"
 import Geocode from "react-geocode";
 import { useEffect, useState } from 'react'
+import RouteToBeSaved from "./RouteToBeSaved";
 
 export default function Map({ markers, setMarker }) {
 
+const [routeName, setRouteName] = useState("")    
+const [showNameForSavedRoute, setShowNameForSavedRoute] = useState(false)      
 const [mapCenter, setMapCenter] = useState({
     lat: 40.7347,
     lng: -74.3152
@@ -92,8 +95,8 @@ function findDeviceLocation() {
                 case 'denied':
                     console.log('Unable To Find Current Location: Permission Denied')
                     break;
-            }
-            })        
+             }
+         })        
     }
 }    
 
@@ -130,7 +133,9 @@ const container = {
     margin: '1% auto',
     width: '90%',
     height: '70vh',
-    border: 'solid black 3px'
+    border: 'solid black 3px',
+    borderRadius: '20px',
+    boxShadow: '2px 2px'
 }
 const {isLoaded} = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -151,14 +156,28 @@ function removeMarker(index) {
 }
 
 // function to save route of MARKERS
+function makeApearShowName(e) {
+    setShowNameForSavedRoute(!showNameForSavedRoute)
+}
+function removeShowName(e) {
+    setShowNameForSavedRoute(false)
+}
 function saveMarkerRoute(e) {
+    
+    setMarker(prev => [...markers, {"routeName": routeName}])
+
     fetch("/save_route_to_marker_commands", {
         method: 'POST',
         headers: {'Content-Type' : 'application/JSON'},
         body: JSON.stringify(markers)
     })
     .then(resp => resp.json())
-    // .then(returedMarkerRoute => console.log(returedMarkerRoute))
+    .then(returedMarkerRoute => {
+        console.log(returedMarkerRoute)
+        setRouteName("")
+        setShowNameForSavedRoute(!showNameForSavedRoute)
+        }
+    )
 }
 
 //  TODO load all routes so the user can save multiple and select anyone
@@ -204,6 +223,30 @@ function handleMapSubmit(e) {
 
 return (isLoaded ?
        <div>
+       { showNameForSavedRoute && 
+           <div id="biggerContainerShowName">
+
+                <svg id="butonforShowNameForSavedRoute" onClick={removeShowName} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                </svg>
+           
+            <div id="smallerShowNameContainer">
+                <form id="formShowNameForSavedRoute" 
+                      onSubmit={saveMarkerRoute}>
+                        <label>Route Name: </label>
+                        <input type="text" value={routeName} onChange={ (e) => setRouteName(e.target.value)} required></input>
+                        <input type="submit" value="Save Route"></input>           
+                </form>
+
+              {/* TODO put the route to be saved here */}
+ 
+                 <RouteToBeSaved routeFromMarkers={markers}/>
+
+
+                           {/*  */}
+            </div>
+            </div>
+        }
        <div style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>
         <label style={{'textAlign' : 'center', marginTop: '5%'}}>Look up address Manually: </label>
         <input type="text"
@@ -213,6 +256,8 @@ return (isLoaded ?
                ></input>
                <button onClick={ (e) => findDeviceLocation(e)}>Or Just Find My Location</button>
         </div>
+
+
             <GoogleMap
                 mapContainerStyle={container}
                 center={mapCenter}
@@ -240,6 +285,8 @@ return (isLoaded ?
                             onClick={ (e) => removeMarker(index)}    
                             />  
                 })}
+                        {/* TODO finish this feature so a red pin can be diplayed where the found location is  */}
+                        
                         {/* { foundLocation &&  (<Marker 
                            position={{lat: 40.7347, lng: -74.3152}}
                            icon={{
@@ -250,6 +297,7 @@ return (isLoaded ?
                         
   
                 </GoogleMap>
+
                 {/* input for the altitude and IP Address */}
                 <form onSubmit={ (e) => handleMapSubmit(e)} style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>
                     <label style={{'textAlign' : 'center'}}>IP Address: </label>
@@ -268,11 +316,19 @@ return (isLoaded ?
                     </input>
                     <input type="submit" value="Send Commands!"></input>
                 </form>
-                <button onClick={ (e) => saveMarkerRoute(e)}>Save Route</button>
-                <button onClick={ (e) => loadMarkerRoute(e)}>Load Route</button>
+                <button onClick={ (e) => makeApearShowName (e)}>Save Route</button>
+                <button onClick={ (e) => loadMarkerRoute (e)}>Load Route</button>
                 <button onClick={ (e) => clearMarkerRoute(e)}>Clear All Markers</button>
           <div>
-            <h3>{markers.length > 1 ? `Total Distance In Feet: ${actualDistance}` : "Create a route to view the Total Distance here."}</h3>
+            { markers.length > 1 ? 
+              <div>
+                <h3>Total Distance In Feet: {actualDistance}</h3>
+                <h3>Total Distance In Miles: { (actualDistance / 5280).toFixed(1) }</h3>
+              </div>
+            : 
+            <h2>Create a route to view the Total Distance here.</h2>
+            } 
+            
           </div>
           </div>  
           

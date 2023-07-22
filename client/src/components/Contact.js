@@ -41,7 +41,7 @@ export default function Contact() {
     return (
         <div> 
           <form id="contactForm" onSubmit={submitForm}>
-          <h1>We would love to hear any of your  Feedback, Criticism or thoghts!</h1>
+          <h1>We would love to hear any of your  Feedback, Criticism or thoughts!</h1>
             <label>Name: </label>
             <input 
               type="text"
