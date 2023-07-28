@@ -95,6 +95,8 @@ function findDeviceLocation() {
                 case 'denied':
                     console.log('Unable To Find Current Location: Permission Denied')
                     break;
+                default:
+                    console.log("default activated") 
              }
          })        
     }
