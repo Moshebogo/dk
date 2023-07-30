@@ -36,26 +36,28 @@ function submitForm(e) {
     }
 // TODO make this work!!!
 function changeShowPassword(e) {
-    if (showPassword == "password") {
-        setShowPassword("text")
-    } else if (showPassword == "text")  {
-      setShowPassword("password")
-    }
+    // showPassword === "password" ? setShowPassword("text") : setShowPassword("password")
+        if (showPassword === "password") {
+            setShowPassword("text")
+        } else if (showPassword === "text")  {
+        setShowPassword("password")
+        }
 }    
     
 
 return (
    <div id="register">
+       <h2 id="welcomeMesssage">Welcome! Please log in if you and account with us already. If you don't have one, feel free to create one!</h2>
        {userError && <h3 style={{textAlign: 'center', color: 'red'}}>Username or Password Incorrect, Please try Again.</h3>}
-        <form id="form"   onSubmit={ (e) => submitForm(e)}>
-            <label className="label_on_the_left">Username: </label>
-            <input className="username_input" value={stateUsername} onChange={ (e) => setUsername(e.target.value)} type="text" name="name"></input>
-            <label className="label_on_the_left">Password: </label>
-            <div>
-                <input className="password_input" value={statePassword} onChange={ (e) => setPassword(e.target.value)} type={showPassword}></input>
-                <FiEye className="reveal" onClick={changeShowPassword}/>
+        <form id="registerForm"   onSubmit={ (e) => submitForm(e)}>
+            <label>Username: </label>
+            <input className="registerInput" value={stateUsername} onChange={ (e) => setUsername(e.target.value)} type="text" name="name" required></input>
+            <div id="revealPassword">
+                <label>Password: </label>
+                <FiEye id="FiEye" onClick={changeShowPassword}/>
             </div>
-            <input style={{'backgroundColor': 'green', cursor: 'pointer'}}  type="submit" value="Register/Log In"></input>
+            <input className="registerInput" value={statePassword} onChange={ (e) => setPassword(e.target.value)} type={showPassword} required></input>
+            <input id="registerButton"  type="submit" value="Register/Log In"></input>
         </form>
     </div> 
     )

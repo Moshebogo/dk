@@ -100,15 +100,15 @@ def load_route_from_selected_commands_func():
     # the most recent route will always be loaded.
     return {"route": ast.literal_eval(all_routes[-1].selected_commands) }, 201
 
- 
+                                                                   
 # save the flight ""MARKERS"" to the database
 @app.route("/save_route_to_marker_commands", methods = ['POST'])
 def save_route_to_marker_commands():
     body = request.get_json()
-    print(body)   
+    print(body)          
     active_user = User.query.get(browser_session['user_id'])
-    route_name = body[-1]['routeName']
-    new_marker_route = Commands(user = active_user.id, marker_commands = f'{body}', marker_commands_name = route_name) 
+    # route_name = body[-1]['routeName']
+    new_marker_route = Commands(user = active_user.id, marker_commands = f'{body}') 
     db.session.add(new_marker_route)
     db.session.commit()
     return {'body' : body}, 200
@@ -161,7 +161,7 @@ def arm_drone():
     stderr.close()
     client.close()
     return make_response(jsonify({"RETURN CODE ":stdout.channel.recv_exit_status()}), 200)
-
+    
 
 
 #  route to arm the drone by running mavproxy.py on the raspi

@@ -109,7 +109,7 @@ Geocode.setLocationType("ROOFTOP")
 
 // sets the center of the map to the manually entered address 
 function handlekeyDown(e) {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
         Geocode.fromAddress(e.target.value).then(
             resp => {
                 setRedPin({
@@ -157,16 +157,21 @@ function removeMarker(index) {
     setMarker(prev => markers.filter( (marker) => markers.indexOf(marker) !== index))      
 }
 
-// function to save route of MARKERS
+// all the functions to save route of MARKERS
 function makeApearShowName(e) {
-    setShowNameForSavedRoute(!showNameForSavedRoute)
+    setShowNameForSavedRoute(prev => !prev)   
 }
 function removeShowName(e) {
-    setShowNameForSavedRoute(false)
+    showNameForSavedRoute ? setShowNameForSavedRoute(false) : setShowNameForSavedRoute(true)
 }
 function saveMarkerRoute(e) {
+    e.preventDefault()
+    
+// the next line adds the name of the route to be saved so it can be displayed when user 'loads save routes'
+    console.log("routeName: ", routeName)
     
     setMarker(prev => [...markers, {"routeName": routeName}])
+    console.log(markers)
 
     fetch("/save_route_to_marker_commands", {
         method: 'POST',
@@ -178,8 +183,11 @@ function saveMarkerRoute(e) {
         console.log(returedMarkerRoute)
         setRouteName("")
         setShowNameForSavedRoute(!showNameForSavedRoute)
+        setMarker(prev => prev.filter(marker => marker.routeName !== routeName) )
+        console.log(markers)
         }
     )
+    .catch(error => console.log("Error: ", error))
 }
 
 //  TODO load all routes so the user can save multiple and select anyone
@@ -222,9 +230,9 @@ function handleMapSubmit(e) {
     )
 }
  
+return (isLoaded ? <div >  
+ 
 
-return (isLoaded ?
-       <div>
        { showNameForSavedRoute && 
            <div id="biggerContainerShowName">
 
@@ -238,17 +246,21 @@ return (isLoaded ?
                         <label>Route Name: </label>
                         <input type="text" value={routeName} onChange={ (e) => setRouteName(e.target.value)} required></input>
                         <input type="submit" value="Save Route"></input>           
-                </form>
+                </form> 
 
-              {/* TODO put the route to be saved here */}
- 
                  <RouteToBeSaved routeFromMarkers={markers}/>
 
 
-                           {/*  */}
-            </div>
-            </div>
+              </div>
+           </div>
         }
+         
+          {/* TODO test this put and make sure it actually works.
+              It should enable the user to click anywhere other than the save route div to remove it, 
+              but it should noy work when the save route dic didi nit aoear yet */}
+        <everythingButTheSaveRouteDiv onClick={removeShowName}>
+       
+
        <div style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>
         <label style={{'textAlign' : 'center', marginTop: '5%'}}>Look up address Manually: </label>
         <input type="text"
@@ -321,6 +333,9 @@ return (isLoaded ?
                 <button onClick={ (e) => makeApearShowName (e)}>Save Route</button>
                 <button onClick={ (e) => loadMarkerRoute (e)}>Load Route</button>
                 <button onClick={ (e) => clearMarkerRoute(e)}>Clear All Markers</button>
+                
+                </everythingButTheSaveRouteDiv>
+          
           <div>
             { markers.length > 1 ? 
               <div>

@@ -18,8 +18,16 @@ const [stateUser, setUser] = useState(false)
 const [userData, setUserData] = useState("")
 // testing
 const [markers, setMarker] = useState( [] )
+// state ro remove to div with the 2 options when on one is picked
+const [removeDiv, setRemoveDiv] = useState("")
+const [flyWithDirect, setFlyWithDirect] = useState(false)
+const [flyWithMap, setFlyWithMap] = useState(false)
 
-
+function changeOptionsForFlight() {
+   setRemoveDiv("")
+   setFlyWithDirect(false)
+   setFlyWithMap(false)
+}
 
 
   return (
@@ -29,8 +37,8 @@ const [markers, setMarker] = useState( [] )
         <Routes>
             <Route path="/"                element={<Home setMarker={setMarker} stateUser={stateUser} />}/>
             <Route path="/testConnection"  element={<TestConnection />}/> 
-            <Route path="/map"             element={<Map markers={markers} setMarker={setMarker} />}/>
-            <Route path="/savedroutes"     element={<SavedRoutes stateUser={stateUser} setUser={setUser} userData={userData} setUserData={setUserData} />}/>
+            <Route path="/map"             element={<Map  markers={markers} setMarker={setMarker} />}/>
+            <Route path="/savedroutes"     element={<SavedRoutes changeOptionsForFlight={changeOptionsForFlight} setFlyWithMap={setFlyWithMap} flyWithMap={flyWithMap} setFlyWithDirect={setFlyWithDirect} flyWithDirect={flyWithDirect} setRemoveDiv={setRemoveDiv} stateUser={stateUser} setUser={setUser} userData={userData} setUserData={setUserData} markers={markers} setMarker={setMarker}/>}/>
             <Route path="/mavproxyform"    element={<MavproxyForm />}/>   
             <Route path="/contact"         element={<Contact />}/>
         </Routes>

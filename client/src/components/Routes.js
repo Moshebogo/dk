@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import Register from "./Register"
 import RouteContainer from "./RouteContainer";
 import LoggedIn from "./LoggedIn";
+import Map from "./Map.js"
 
 
-export default function Routes({ userData, setUserData, setUser, stateUser }) {
+export default function Routes({ userData, setUserData, setUser, stateUser, markers, setMarker, removeDiv, setRemoveDiv, setFlyWithMap ,flyWithMap, setFlyWithDirect, flyWithDirect }) {
 
 
 // const [stateUser, setUser] = useState(false)
@@ -12,6 +13,18 @@ const [createdUsername, setCreatedUsername] = useState("")
 const [oldUser, setOldUser] = useState(false) 
 
 
+
+function renderFlyWithDirect(e) {
+  setFlyWithDirect(true)
+  setFlyWithMap(false)
+  changeClassNameForRemovediv()
+}
+
+function renderFlyWithMap(e) {
+  setFlyWithMap(true)
+  setFlyWithDirect(false)
+//   changeClassNameForRemovediv()
+}
 
 // for when the user correctly logs in 
 function checkCookie(){
@@ -42,6 +55,16 @@ useEffect( () => {
     checkCookie()   
 }, [])
 
+function changeClassNameForRemovediv() {
+    if (removeDiv === "") {
+       setRemoveDiv("removeTheDiv")   
+    } else {
+       setRemoveDiv("")
+       setFlyWithMap(false)
+       setFlyWithDirect(false)
+    }
+  }
+
 
     return (
         <div>
@@ -49,10 +72,25 @@ useEffect( () => {
             <div>
                 <Register setUserData={setUserData} checkCookie={checkCookie} stateUser={stateUser} setUser={setUser} />
             </div> 
-            ) : (<>
-               <LoggedIn userData={userData}/>
-               <RouteContainer createdUsername={createdUsername} handleLogOut={handleLogOut} checkCookie={checkCookie} oldUser={oldUser}/>
-               </>
+            ) : (
+               <div>
+                    { flyWithDirect && 
+                    <>
+                      <RouteContainer setRemoveDiv={setRemoveDiv} createdUsername={createdUsername} handleLogOut={handleLogOut} checkCookie={checkCookie} oldUser={oldUser}/> 
+                      <LoggedIn userData={userData}/>
+                    </>
+                    }
+                    { flyWithMap &&
+                        <Map markers={markers} setMarker={setMarker}/>
+                    }
+               <div className={removeDiv}>
+                    <h1>How Would You Like To Get Flying Today? </h1>
+                    <div id="directOrMapDiv">
+                        <div onClick={renderFlyWithDirect}><h2>Let's Fly Using Direct Commands</h2></div>
+                        <div onClick={renderFlyWithMap}   ><h2>Let's Fly Using A Map</h2></div>
+                    </div> 
+                 </div>            
+               </div>
             )
         }
         </div>

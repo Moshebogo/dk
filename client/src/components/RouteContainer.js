@@ -2,8 +2,10 @@ import { useState } from "react"
 import { confirmAlert } from 'react-confirm-alert'
 import Form from "./Form.js"
 
-export default function RouteContainer({ handleLogOut, createdUsername, checkCookie, oldUser }) {
+export default function RouteContainer({ handleLogOut, createdUsername, checkCookie, oldUser, changeOptionsForFlight }) {
 
+
+    
     // the basic setup for the controlled form
     const form = {'input': '', 'select': ''}
     const [stateIP, setIP] = useState("")
@@ -131,10 +133,18 @@ function clearCommands(e) {
    setIP("")
 }
  
+// allowes the entire dic to 'disapear'
+
 
     return (
         // basic styling to make it easier to work with
+    <div >
        <div className="generalFlex">
+
+       <svg id="butonforShowNameForSavedRoute" onClick={changeOptionsForFlight} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                </svg>
+
        {/* style={{'display' : 'grid', 'width' : '40%', 'margin' : 'auto', 'alignItems': 'center'}} */}
        <h1>{oldUser ? `Welcome Back ${createdUsername} !` : `Welcome ${createdUsername} !` }</h1>
        <button onClick={ (e) => addCommand(e)} style={{backgroundColor: 'green'}}>ADD COMMAND</button>
@@ -161,5 +171,6 @@ function clearCommands(e) {
             <button  onClick={ (e) => deleteAccount(e)} style={{backgroundColor: 'red'}} >Delete My Account</button>
             <button  onClick={ (e) => handleLogOut(e)}  style={{height: '2rem', fontSize: 'large'}}         >Log Out</button>
        </div>
+    </div>  
     )
 }       
