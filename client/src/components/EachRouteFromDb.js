@@ -1,18 +1,20 @@
-    import { GoogleMap, useJsApiLoader, Marker, MarkerClusterer, Polyline } from "@react-google-maps/api"
+    import { GoogleMap, useJsApiLoader, Marker, Polyline } from "@react-google-maps/api"
 
-    export default function EachRouteFromDb({ usersRoutes, routeIndex, setMarkersFromAllRoutes }) {
+    export default function EachRouteFromDb({ usersRoutes, routeIndex, setMarkersFromAllRoutes, routeName }) {
 
     // console.log("inside EachRouteFromDb => ", usersRoutes)
+    console.log("inside EachRouteFromDb => ", routeName)
     
-
+   
     // Boiler-plate stuff for google maps
     const container = {
         height: '700px',
         margin: '10px',
         width: '30%',
-        border: '2px solid blue',
-        // 'box-sizing' : 'border-box',
-        'overflow-x': 'scroll'
+        border: '2px solid black',
+        borderRadius: '20px',
+        boxShadow: '1px 1px',
+        'overflowX': 'scroll'
     }
     const {isLoaded} = useJsApiLoader({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -23,7 +25,10 @@
 
     
         return ( isLoaded ?
-            // <div className="gallery_image">
+    // <div className="gallery_image">
+            // <div>
+            <div id="containerDivEachLoadedMap">
+            <h1 id="eachRouteName">{routeName}</h1>
                 <GoogleMap
                     mapContainerStyle={container}
                     center={{lat: 40.7347, lng: -74.3152}}
@@ -46,10 +51,11 @@
                     <Polyline 
                         path={usersRoutes}
                     />
-                    </GoogleMap>    
-            //  </div> 
+                    </GoogleMap>
+                    </div>    
+            //   </div> 
+     //   </div>
                 :
-            null
-            
-        )
+              null
+         )
     }

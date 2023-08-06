@@ -107,8 +107,9 @@ def save_route_to_marker_commands():
     body = request.get_json()
     print(body)          
     active_user = User.query.get(browser_session['user_id'])
-    # route_name = body[-1]['routeName']
-    new_marker_route = Commands(user = active_user.id, marker_commands = f'{body}') 
+    route_name = body[-1]['routeName']
+    del body[-1]
+    new_marker_route = Commands(user = active_user.id, marker_commands = f'{body}', marker_commands_name = route_name) 
     db.session.add(new_marker_route)
     db.session.commit()
     return {'body' : body}, 200
@@ -124,13 +125,14 @@ def load_route_from_marker_commands_func():
 @app.route("/load_all_marker_routes")
 def load_all_marker_routes():
     all_marker_routes = Commands.query.filter(Commands.user == browser_session['user_id']).all()
-    print(list(all_marker_routes))
     marker_routes_ready_for_json = []
+    route_names_ready_for_json = []
     for route in all_marker_routes:
+        route_names_ready_for_json.append(route.marker_commands_name)   
         marker_routes_ready_for_json.append(ast.literal_eval(route.marker_commands)) 
-    print(marker_routes_ready_for_json)
-    print()
-    return {"routes" : marker_routes_ready_for_json}, 200
+    print(route_names_ready_for_json)
+    print("from the 'load_all_marker_routes' end point")
+    return {"routes" : marker_routes_ready_for_json, 'routeNames': route_names_ready_for_json}, 200
             
 
 # default route    

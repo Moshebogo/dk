@@ -15,7 +15,7 @@ const [altitude, setAltitude] = useState(2)
 const [IpAddress, setIpAddress] = useState(1)
 const [homeLocation, setHomeLocation] = useState("")
 // state for the red pin if an address is found
-const [foundLocation, setFoundLocation] = useState(false)
+// const [foundLocation, setFoundLocation] = useState(false)
 const [redPin, setRedPin] = useState({
     lat: '',
     lng: ''
@@ -72,7 +72,7 @@ function findDeviceLocation() {
             lng: pos.coords.longitude
         })
         console.log(redPin)
-        setFoundLocation(true)
+        // setFoundLocation(true)
 
     }
     function errors(err) {
@@ -171,12 +171,15 @@ function saveMarkerRoute(e) {
     console.log("routeName: ", routeName)
     
     setMarker(prev => [...markers, {"routeName": routeName}])
-    console.log(markers)
+        
+    // console.log([...markers, {"routeName": routeName}])   
+    const dataForMapPost = [...markers, {"routeName": routeName}]
+    
 
     fetch("/save_route_to_marker_commands", {
         method: 'POST',
         headers: {'Content-Type' : 'application/JSON'},
-        body: JSON.stringify(markers)
+        body: JSON.stringify(dataForMapPost)
     })
     .then(resp => resp.json())
     .then(returedMarkerRoute => {
@@ -184,7 +187,6 @@ function saveMarkerRoute(e) {
         setRouteName("")
         setShowNameForSavedRoute(!showNameForSavedRoute)
         setMarker(prev => prev.filter(marker => marker.routeName !== routeName) )
-        console.log(markers)
         }
     )
     .catch(error => console.log("Error: ", error))
@@ -232,33 +234,31 @@ function handleMapSubmit(e) {
  
 return (isLoaded ? <div >  
  
-
+                                 {/* The whole save route div  */}
        { showNameForSavedRoute && 
-           <div id="biggerContainerShowName">
-
-                <svg id="butonforShowNameForSavedRoute" onClick={removeShowName} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-                </svg>
-           
+        <div id="biggerContainerShowName">
             <div id="smallerShowNameContainer">
+                                {/* the back button */}
+                <svg id="butonforShowNameForSavedRoute" onClick={removeShowName} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
                 <form id="formShowNameForSavedRoute" 
                       onSubmit={saveMarkerRoute}>
                         <label>Route Name: </label>
                         <input type="text" value={routeName} onChange={ (e) => setRouteName(e.target.value)} required></input>
                         <input type="submit" value="Save Route"></input>           
                 </form> 
-
-                 <RouteToBeSaved routeFromMarkers={markers}/>
-
-
-              </div>
-           </div>
+                <RouteToBeSaved routeFromMarkers={markers}/>
+            </div>
+        </div>
         }
          
           {/* TODO test this put and make sure it actually works.
               It should enable the user to click anywhere other than the save route div to remove it, 
               but it should noy work when the save route dic didi nit aoear yet */}
-        <everythingButTheSaveRouteDiv onClick={removeShowName}>
+        <everythingButTheSaveRouteDiv 
+        // onClick={removeShowName}
+        >
        
 
        <div style={{'display':'flex', 'flexDirection':'column', 'width':'20%', 'margin':'auto'}}>

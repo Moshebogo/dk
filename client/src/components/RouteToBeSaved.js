@@ -1,16 +1,18 @@
-import { GoogleMap, useJsApiLoader, Marker, MarkerClusterer, Polyline } from "@react-google-maps/api"
+import { GoogleMap, useJsApiLoader, Marker, Polyline } from "@react-google-maps/api"
 
 
 export default function RouteToBeSaved({ routeFromMarkers }){
     
     // Boiler-plate stuff for google maps
     const container = {
-        position: 'raelative',
+        position: 'relative',
         height: '700px',
-        margin: ' 1% auto',
+        margin: ' auto',
         width: '700px',
         border: '2px solid black',
-        borderRadius: '20px'
+        borderRadius: '20px',
+        boxShadow: '10px 10px',
+        overflow: 'hidden'
     }
     const {isLoaded} = useJsApiLoader({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,

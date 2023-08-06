@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom"
 import Register from "./Register"
 import RouteContainer from "./RouteContainer";
 import LoggedIn from "./LoggedIn";
@@ -86,8 +87,22 @@ function changeClassNameForRemovediv() {
                <div className={removeDiv}>
                     <h1>How Would You Like To Get Flying Today? </h1>
                     <div id="directOrMapDiv">
-                        <div onClick={renderFlyWithDirect}><h2>Let's Fly Using Direct Commands</h2></div>
-                        <div onClick={renderFlyWithMap}   ><h2>Let's Fly Using A Map</h2></div>
+                        {/* <div onClick={renderFlyWithDirect}><h2>Let's Fly Using Direct Commands</h2></div>
+                        <div onClick={renderFlyWithMap}   ><h2>Let's Fly Using A Map</h2></div> */}
+
+              <Link to="/savedroutes">
+                  {/* <div><h2> */}
+                  Let's Fly Using Direct Commands
+                  {/* </h2></div> */}
+              </Link>
+                        
+                       <Link to="/map">
+                          {/* <div><h2> */}
+                          Let's Fly Using A Map
+                          {/* </h2></div> */}
+                       </Link>
+                   
+                   
                     </div> 
                  </div>            
                </div>
