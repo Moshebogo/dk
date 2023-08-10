@@ -27,7 +27,7 @@ def register_login():
     if user_exists and (bcrypt.checkpw(encoded_password, user_exists.password)):
         # if user_exists:        
         print(user_exists.to_dict())
-        # changes the user to an old one so the frony end will render 'Welcome Back'
+        # changes the user to an old one so the front end will render 'Welcome "Back"'
         user_exists.old_user = True
         db.session.commit()
         # sets a cookie as the id of the existing user
@@ -38,7 +38,7 @@ def register_login():
     elif user_exists:
         return {}, 404
     # this will create a new user
-    else:                 
+    else:                  
         new_user = User(username = username, password = bcrypt.hashpw(encoded_password, bcrypt.gensalt()))
         db.session.add(new_user)
         db.session.commit()    

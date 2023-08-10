@@ -1,5 +1,7 @@
 import  {useState}  from "react"
 import { FiEye } from "react-icons/fi";
+import { Link } from "react-router-dom"
+
 
 export default function Register({ checkCookie }) {
 
@@ -22,7 +24,7 @@ function submitForm(e) {
         })
     })
     .then(resp => {
-       if (resp.status == 404) {
+       if (resp.status === 404) {
         setUserError(true)
        } 
        return  resp.json()
@@ -34,7 +36,7 @@ function submitForm(e) {
           checkCookie()     
     })
     }
-// TODO make this work!!!
+// This worrks, and it's more simple than i thought it would have to be
 function changeShowPassword(e) {
     // showPassword === "password" ? setShowPassword("text") : setShowPassword("password")
         if (showPassword === "password") {
@@ -57,7 +59,9 @@ return (
                 <FiEye id="FiEye" onClick={changeShowPassword}/>
             </div>
             <input className="registerInput" value={statePassword} onChange={ (e) => setPassword(e.target.value)} type={showPassword} required></input>
-            <input id="registerButton"  type="submit" value="Register/Log In"></input>
+           {/* <Link to="/savedRoutes"> */}
+             <input id="registerButton"  type="submit" value="Register/Log In"></input>
+           {/* </Link>    */}
         </form>
     </div> 
     )

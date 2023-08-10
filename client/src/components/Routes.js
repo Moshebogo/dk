@@ -6,12 +6,11 @@ import LoggedIn from "./LoggedIn";
 import Map from "./Map.js"
 
 
-export default function Routes({ userData, setUserData, setUser, stateUser, markers, setMarker, removeDiv, setRemoveDiv, setFlyWithMap ,flyWithMap, setFlyWithDirect, flyWithDirect }) {
+export default function Routes({ checkCookie, oldUser ,createdUsername, setCreatedUsername ,setOldUser ,userData, setUserData, setUser, stateUser, markers, setMarker, removeDiv, setRemoveDiv, setFlyWithMap ,flyWithMap, setFlyWithDirect, flyWithDirect }) {
 
 
 // const [stateUser, setUser] = useState(false)
-const [createdUsername, setCreatedUsername] = useState("")
-const [oldUser, setOldUser] = useState(false) 
+
 
 
 
@@ -28,19 +27,19 @@ function renderFlyWithMap(e) {
 }
 
 // for when the user correctly logs in 
-function checkCookie(){
-    fetch("/checkCookie")
-    .then(resp => {
-        resp.ok ? setUser(true) : setUser(false)
-        return resp.json()
-    })
-    .then(returnedData => {
-        // console.log(rweturnedData)
-        setCreatedUsername(returnedData.username)
-        setOldUser(returnedData.old_user)
-        setUserData(returnedData)
-     })
-}
+// function checkCookie(){
+//     fetch("/checkCookie")
+//     .then(resp => {
+//         resp.ok ? setUser(true) : setUser(false)
+//         return resp.json()
+//     })
+//     .then(returnedData => {
+//         // console.log(rweturnedData)
+//         setCreatedUsername(returnedData.username)
+//         setOldUser(returnedData.old_user)
+//         setUserData(returnedData)
+//      })
+// }
 
 // DELETE the cookie and Log Out
 function handleLogOut(e) {
@@ -51,10 +50,12 @@ function handleLogOut(e) {
 }
 
 // This is so that if the page gets reloaded, it will log in the user from the set cookie,
-// with out this the cookie can only affect the front end right when the user logs in.
+// without this the cookie can only affect the front end immidiatly after the user logs in.
 useEffect( () => {
-    checkCookie()   
+    checkCookie()  
+    console.log("This is from the useEffect of checkCookie") 
 }, [])
+console.log("This if from routes: stateUser: ", stateUser)
 
 function changeClassNameForRemovediv() {
     if (removeDiv === "") {

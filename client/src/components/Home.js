@@ -25,7 +25,7 @@ useEffect( () => {
                 :
             <div id="loggedOutForSavedRoutes">
                Click  
-              <a  href="/savedRoutes" id="aTagToLogIn">{` Here `}</a>
+              <a  href="/register" id="aTagToLogIn">{` Here `}</a>
               To Log In and View Your Saved Routes.
             </div> 
             }

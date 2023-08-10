@@ -33,7 +33,7 @@ export default function Header({ stateUser, setDarkMode}) {
             <h3>Map</h3>
           </Link>
 
-          <Link to="/savedroutes">
+          <Link to="/register">
             <h3>Routes</h3>
           </Link>
 
