@@ -57,6 +57,7 @@ def go_to_coordinates(lat, lng):
     while True:
         remaining_distance = 7
         LocationGlobal
+    # TODO finish this function
        
 
 

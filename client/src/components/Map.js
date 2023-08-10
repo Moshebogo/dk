@@ -137,7 +137,8 @@ const container = {
     height: '70vh',
     border: 'solid black 3px',
     borderRadius: '20px',
-    boxShadow: '2px 2px'
+    boxShadow: '2px 2px',
+    minWidth: '50%'
 }
 const {isLoaded} = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API,
@@ -282,11 +283,6 @@ return (isLoaded ? <div >
                 >
                 { polyLine && <Polyline 
                                 path={markers} 
-                                // options={{
-                                //     strokeColor: '#FF0000',
-                                //     strokeOpacity: 1.0,
-                                //     strokeWeight: 2,
-                                //         }}
                 /> }
                 {markers.map( (marker, index) => {
                 return <Marker 

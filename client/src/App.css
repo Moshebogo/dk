@@ -204,7 +204,7 @@ label {
   height: auto;
   overflow-x: scroll;
   margin: 5% auto;
-  border: solid 2px red;
+  /* border: solid 2px red; */
  }
 
  .gallery_image {

@@ -67,5 +67,4 @@ class Commands(db.Model):
             'selected_commands_created': self. selected_commands_created,
             'marker_commands_name': self.marker_commands_name,
             'marker_commands_created': self.marker_commands_created
-
         }
